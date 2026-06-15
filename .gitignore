@@ -1,0 +1,231 @@
+# ============================================================================
+# .gitignore - Proyecto Análisis Electoral Colombia
+# ============================================================================
+
+# DATOS - No versionar (archivos grandes)
+# ============================================================================
+data/*
+!data/.gitkeep
+
+# Excepción: Datos de referencia pequeños pueden versionarse
+!data/referencias/
+data/referencias/*
+!data/referencias/.gitkeep
+
+# OUTPUTS TEMPORALES
+# ============================================================================
+output/
+*.tmp
+*.temp
+
+# LOGS
+# ============================================================================
+logs/
+*.log
+
+# ============================================================================
+# R
+# ============================================================================
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+.Rapp.history
+
+# Session Data files
+.RData
+.RDataTmp
+
+# User-specific files
+.Ruserdata
+
+# OAuth2 token
+.httr-oauth
+
+# knitr and R markdown default cache directories
+*_cache/
+/cache/
+
+# Temporary files created by R markdown
+*.utf8.md
+*.knit.md
+
+# R Environment Variables
+.Renviron
+
+# renv: versionar renv.lock, .Rprofile, settings y activate.R.
+renv/library/
+renv/local/
+renv/lock/
+renv/python/
+renv/sandbox/
+renv/staging/
+
+# pkgdown site
+docs/site/
+
+# ============================================================================
+# Python
+# ============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+*.manifest
+*.spec
+
+# pytest
+.pytest_cache/
+.cache
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# ============================================================================
+# Sistema Operativo
+# ============================================================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ============================================================================
+# IDEs y Editores
+# ============================================================================
+.claude/settings.local.json
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# JetBrains (PyCharm, IntelliJ, etc.)
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+
+# ============================================================================
+# Archivos de configuración local (NO versionar)
+# ============================================================================
+config.local.R
+config.local.py
+.env
+.env.local
+secrets.json
+credentials.json
+
+# ============================================================================
+# Archivos grandes temporales
+# ============================================================================
+*.csv
+!data/referencias/*.csv
+*.parquet
+*.rds
+*.RDS
+*.feather
+*.h5
+*.hdf5
+
+# Excepciones para archivos pequeños de metadatos
+!docs/**/*.csv
+
+# ============================================================================
+# Archivos de base de datos
+# ============================================================================
+*.sqlite
+*.sqlite3
+*.db
+
+# ============================================================================
+# Archivos comprimidos (excepto releases)
+# ============================================================================
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+
+# ============================================================================
+# Otros
+# ============================================================================
+# Backups
+*.bak
+*.backup
+*~.nib
+
+# Archives
+*.dmg
+*.iso
+
+# Compiled binaries
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so

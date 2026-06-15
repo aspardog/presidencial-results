@@ -1,0 +1,20 @@
+Package: presidencialresults
+Type: Project
+Title: Pipeline de Resultados Electorales de Colombia
+Version: 1.0.0
+Authors@R: person("Santiago", "Pardo", role = c("aut", "cre"))
+Description: Pipeline de datos electorales organizado con arquitectura
+    Medallion para limpieza, validacion, agregacion y preparacion de
+    visualizaciones.
+License: Unknown
+Encoding: UTF-8
+Imports:
+    arrow,
+    dplyr,
+    jsonlite,
+    knitr,
+    readr,
+    stringr,
+    tibble,
+    tidyr,
+    tidyverse

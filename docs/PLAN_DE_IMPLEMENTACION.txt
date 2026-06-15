@@ -1,0 +1,915 @@
+================================================================================
+PLAN DE IMPLEMENTACIÓN - MIGRACIÓN A MEDALLION ARCHITECTURE
+================================================================================
+
+Proyecto: Análisis Electoral Colombia
+Fecha inicio: 2026-06-15
+Estado: FASES 1-5 COMPLETADAS (GEOJSON PENDIENTE DE GEOMETRIAS)
+Aprobado por: Santiago Pardo
+
+NOTA DE ESTADO:
+  Este documento conserva propuestas, rutas anteriores y comandos del plan
+  original como registro historico. Para operar el proyecto usar README.md y
+  docs/guia-inicio-rapido.md.
+
+
+================================================================================
+CONTEXTO
+================================================================================
+
+ESTADO ACTUAL:
+  - 33 archivos CSV originales en carpeta Data/
+  - Script de limpieza creado: limpieza_datos.R
+  - Base master limpia en output/datos_electorales_master.*
+  - Diccionarios generados en output/
+
+OBJETIVO:
+  Migrar a estructura Medallion Architecture (Bronze → Silver → Gold)
+  con gobernanza de datos y múltiples niveles de agregación.
+
+DOCUMENTACIÓN BASE CREADA:
+  ✅ docs/medallion-architecture-explicacion.txt
+  ✅ docs/estructura-proyecto.txt
+  ✅ docs/PLAN_DE_IMPLEMENTACION.txt (este archivo)
+
+
+================================================================================
+FASES DE IMPLEMENTACIÓN
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ FASE 1: SETUP INICIAL - Crear Estructura de Carpetas                       │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+OBJETIVO: Crear toda la estructura de carpetas del proyecto según Medallion.
+
+TAREAS:
+
+[1.1] Crear script: scripts/00_setup/crear_estructura.R
+
+      CONTENIDO DEL SCRIPT:
+      - Crear carpeta data/ con subcarpetas:
+        * data/bronze/raw/electoral/
+        * data/bronze/raw/demograficos/
+        * data/bronze/raw/geograficos/
+        * data/bronze/raw/socioeconomicos/
+        * data/bronze/metadata/electoral/
+        * data/bronze/metadata/demograficos/
+        * data/bronze/metadata/socioeconomicos/
+
+        * data/silver/electoral/
+        * data/silver/demograficos/
+        * data/silver/geograficos/
+        * data/silver/socioeconomicos/
+        * data/silver/metadata/electoral/
+        * data/silver/metadata/demograficos/
+        * data/silver/metadata/socioeconomicos/
+
+        * data/gold/nacional/metadata/
+        * data/gold/departamental/metadata/
+        * data/gold/departamental/con_poblacion/
+        * data/gold/departamental/con_indicadores/
+        * data/gold/municipal/metadata/
+        * data/gold/municipal/con_poblacion/
+        * data/gold/barrio/metadata/
+        * data/gold/barrio/por_ciudad/bogota/
+        * data/gold/barrio/por_ciudad/medellin/
+        * data/gold/barrio/por_ciudad/cali/
+        * data/gold/barrio/por_ciudad/barranquilla/
+        * data/gold/visualizaciones/dashboard/
+        * data/gold/visualizaciones/mapas/geojson/
+        * data/gold/visualizaciones/graficos/
+        * data/gold/temporal/comparativo_2022_2026/
+        * data/gold/temporal/series_historicas/
+
+      - Crear carpeta scripts/ con subcarpetas:
+        * scripts/00_setup/
+        * scripts/01_bronze_to_silver/
+        * scripts/02_silver_to_gold/electoral/
+        * scripts/02_silver_to_gold/cruces/
+        * scripts/02_silver_to_gold/visualizaciones/
+        * scripts/03_visualizaciones/dashboard/
+        * scripts/03_visualizaciones/mapas/
+        * scripts/03_visualizaciones/reportes/
+        * scripts/04_analisis_avanzados/
+        * scripts/05_ingesta/
+        * scripts/utils/
+
+      - Crear carpetas adicionales:
+        * logs/
+        * notebooks/
+        * tests/
+
+      - Crear archivos .gitkeep en carpetas vacías
+
+      COMANDO:
+      Rscript scripts/00_setup/crear_estructura.R
+
+[1.2] Crear .gitignore
+
+      CONTENIDO:
+      # Datos
+      data/
+      !data/referencias/
+
+      # Outputs temporales
+      output/
+
+      # Logs
+      logs/
+      *.log
+
+      # R
+      .Rproj.user
+      .Rhistory
+      .RData
+      .Ruserdata
+      *.Rproj
+
+      # Python
+      __pycache__/
+      *.pyc
+      .ipynb_checkpoints/
+      venv/
+      env/
+
+      # Sistema
+      .DS_Store
+      Thumbs.db
+
+      # IDE
+      .vscode/
+      .idea/
+
+[1.3] Reorganizar archivos existentes
+
+      MOVER:
+      Data/ → data/bronze/raw/electoral/registraduria_2026-06-15/
+
+      output/datos_electorales_master.csv → data/silver/electoral/datos_master.csv
+      output/datos_electorales_master.rds → data/silver/electoral/datos_master.rds
+      output/datos_electorales_master.parquet → crear si no existe
+
+      output/diccionario_datos.csv → docs/diccionarios/diccionario_silver.csv
+      output/DICCIONARIO.md → docs/diccionarios/diccionario_silver.md
+      output/DICCIONARIO.txt → docs/diccionarios/diccionario_silver.txt
+
+      output/catalogo_*.csv → data/silver/metadata/electoral/
+      output/metadata.txt → data/silver/metadata/electoral/
+      output/resumen_*.csv → eliminar (se regenerarán en Gold)
+
+      limpieza_datos.R → scripts/01_bronze_to_silver/limpieza_datos.R
+      crear_diccionario.R → scripts/utils/crear_diccionario.R
+
+      COMANDOS (ejecutar manualmente o crear script):
+      mkdir -p data/bronze/raw/electoral/registraduria_2026-06-15/
+      mv Data/* data/bronze/raw/electoral/registraduria_2026-06-15/
+
+      mkdir -p data/silver/electoral/
+      mv output/datos_electorales_master.* data/silver/electoral/
+      (renombrar a datos_master.*)
+
+      mkdir -p docs/diccionarios/
+      mv output/DICCIONARIO.md docs/diccionarios/diccionario_silver.md
+
+      mkdir -p scripts/01_bronze_to_silver/
+      mv limpieza_datos.R scripts/01_bronze_to_silver/
+
+[1.4] Crear metadata de Bronze
+
+      CREAR: data/bronze/metadata/electoral/ingesta_2026-06-15.json
+
+      CONTENIDO:
+      {
+        "fecha_ingesta": "2026-06-15T10:30:00Z",
+        "fuente": "Registraduría Nacional del Estado Civil",
+        "url": "https://www.registraduria.gov.co/",
+        "tipo_eleccion": "Presidencial",
+        "año_eleccion": 2026,
+        "num_archivos": 33,
+        "num_departamentos": 33,
+        "total_registros": 922214,
+        "total_votos": 23399401,
+        "formato_original": "CSV",
+        "encoding": "UTF-8",
+        "delimiter": ";",
+        "responsable": "Santiago Pardo",
+        "notas": "Primera carga completa - Datos nivel mesa"
+      }
+
+      CREAR: data/bronze/metadata/electoral/source_info.txt
+
+      CONTENIDO:
+      Fuente: Registraduría Nacional del Estado Civil
+      URL: https://www.registraduria.gov.co/
+      Tipo: Resultados Electorales Presidenciales
+      Fecha elección: 2026-06-15
+      Granularidad: Mesa de votación
+      Cobertura: Nacional (33 departamentos)
+      Fecha descarga: 2026-06-15
+
+
+RESULTADO ESPERADO FASE 1:
+  ✅ Estructura completa de carpetas creada
+  ✅ Archivos reorganizados en nueva estructura
+  ✅ .gitignore configurado
+  ✅ Metadata de Bronze creada
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ FASE 2: ADAPTAR SCRIPT DE LIMPIEZA                                         │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+OBJETIVO: Modificar limpieza_datos.R para trabajar con nueva estructura.
+
+TAREAS:
+
+[2.1] Modificar scripts/01_bronze_to_silver/limpieza_datos.R
+
+      CAMBIOS A REALIZAR:
+
+      1. Actualizar rutas de entrada:
+         ANTES: archivos <- list.files("Data", ...)
+         DESPUÉS: archivos <- list.files("data/bronze/raw/electoral/registraduria_2026-06-15", ...)
+
+      2. Actualizar rutas de salida:
+         ANTES: write_csv(..., "output/datos_electorales_master.csv")
+         DESPUÉS: write_csv(..., "data/silver/electoral/datos_master.csv")
+                  write_parquet(..., "data/silver/electoral/datos_master.parquet")
+                  saveRDS(..., "data/silver/electoral/datos_master.rds")
+
+      3. Agregar logging:
+         - Crear log file en logs/limpieza_YYYYMMDD_HHMMSS.log
+         - Registrar inicio/fin
+         - Registrar transformaciones aplicadas
+         - Registrar validaciones
+
+      4. Guardar transformaciones en metadata:
+         ARCHIVO: data/silver/metadata/electoral/transformaciones.log
+         CONTENIDO:
+         - Fecha de ejecución
+         - Archivos procesados
+         - Transformaciones aplicadas
+         - Validaciones realizadas
+         - Registros antes/después
+
+      5. Guardar validaciones:
+         ARCHIVO: data/silver/metadata/electoral/validaciones.txt
+         CONTENIDO:
+         - Valores nulos por columna
+         - Votos negativos
+         - Duplicados
+         - Consistencia de códigos DANE
+
+      ESTRUCTURA SUGERIDA:
+
+      # ============================================
+      # CONFIGURACIÓN
+      # ============================================
+      library(tidyverse)
+      library(arrow)  # Para Parquet
+
+      # Rutas
+      DIR_BRONZE <- "data/bronze/raw/electoral/registraduria_2026-06-15"
+      DIR_SILVER <- "data/silver/electoral"
+      DIR_METADATA <- "data/silver/metadata/electoral"
+      DIR_LOGS <- "logs"
+
+      # Crear log
+      timestamp <- format(Sys.time(), "%Y%m%d_%H%M%S")
+      log_file <- file.path(DIR_LOGS, paste0("limpieza_", timestamp, ".log"))
+
+      log_msg <- function(msg) {
+        cat(sprintf("[%s] %s\n", Sys.time(), msg))
+        cat(sprintf("[%s] %s\n", Sys.time(), msg), file = log_file, append = TRUE)
+      }
+
+      log_msg("=== INICIANDO LIMPIEZA BRONZE → SILVER ===")
+
+      # ============================================
+      # LECTURA
+      # ============================================
+      log_msg("1. Leyendo archivos de Bronze...")
+      archivos <- list.files(DIR_BRONZE, pattern = "\\.csv$", full.names = TRUE)
+      log_msg(sprintf("   Archivos encontrados: %d", length(archivos)))
+
+      # ... resto del código de lectura ...
+
+      # ============================================
+      # LIMPIEZA Y NORMALIZACIÓN
+      # ============================================
+      log_msg("2. Aplicando transformaciones...")
+
+      # ... código de limpieza ...
+
+      # ============================================
+      # VALIDACIÓN
+      # ============================================
+      log_msg("3. Validando calidad de datos...")
+
+      # ... código de validación ...
+
+      # ============================================
+      # GUARDAR DATOS LIMPIOS
+      # ============================================
+      log_msg("4. Guardando datos limpios...")
+
+      write_csv(datos_limpios, file.path(DIR_SILVER, "datos_master.csv"))
+      write_parquet(datos_limpios, file.path(DIR_SILVER, "datos_master.parquet"))
+      saveRDS(datos_limpios, file.path(DIR_SILVER, "datos_master.rds"))
+
+      log_msg("   - CSV guardado")
+      log_msg("   - Parquet guardado")
+      log_msg("   - RDS guardado")
+
+      # ============================================
+      # GUARDAR METADATA
+      # ============================================
+      # ... guardar transformaciones.log y validaciones.txt ...
+
+      log_msg("=== PROCESO COMPLETADO ===")
+
+[2.2] Crear scripts/01_bronze_to_silver/validaciones.R
+
+      Script separado para validaciones exhaustivas:
+      - Verificar integridad de códigos DANE
+      - Validar rangos de votos
+      - Detectar anomalías
+      - Comparar con totales esperados
+
+      COMANDO:
+      Rscript scripts/01_bronze_to_silver/validaciones.R
+
+[2.3] Crear scripts/01_bronze_to_silver/README.md
+
+      Documentar el proceso de limpieza:
+      - Qué hace el script
+      - Qué transformaciones aplica
+      - Cómo ejecutarlo
+      - Qué archivos genera
+
+[2.4] Ejecutar limpieza actualizada
+
+      COMANDO:
+      Rscript scripts/01_bronze_to_silver/limpieza_datos.R
+
+      VERIFICAR:
+      - data/silver/electoral/datos_master.csv
+      - data/silver/electoral/datos_master.parquet
+      - data/silver/electoral/datos_master.rds
+      - data/silver/metadata/electoral/transformaciones.log
+      - data/silver/metadata/electoral/validaciones.txt
+      - logs/limpieza_YYYYMMDD_HHMMSS.log
+
+
+RESULTADO ESPERADO FASE 2:
+  ✅ Script de limpieza adaptado a nueva estructura
+  ✅ Datos en Silver en 3 formatos (CSV, Parquet, RDS)
+  ✅ Logs y metadata generados
+  ✅ Validaciones documentadas
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ FASE 3: SCRIPTS DE AGREGACIÓN (Silver → Gold)                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+OBJETIVO: Crear scripts para generar agregaciones en Gold.
+
+TAREAS:
+
+[3.1] Crear scripts/02_silver_to_gold/electoral/agregacion_nacional.R
+
+      FUNCIÓN: Agregar a nivel nacional
+
+      ENTRADA: data/silver/electoral/datos_master.parquet
+
+      SALIDAS:
+      - data/gold/nacional/votos_por_candidato.csv
+      - data/gold/nacional/votos_por_candidato.parquet
+      - data/gold/nacional/votos_por_partido.csv
+      - data/gold/nacional/metricas_participacion.csv
+      - data/gold/nacional/resumen_ejecutivo.csv
+
+      LÓGICA:
+
+      library(tidyverse)
+      library(arrow)
+
+      # Leer Silver
+      datos <- read_parquet("data/silver/electoral/datos_master.parquet")
+
+      # Votos por candidato
+      votos_candidato <- datos %>%
+        filter(TIPO_VOTO == "CANDIDATO") %>%
+        group_by(CANNOMBRE, PARNOMBRE, CANCEDULA) %>%
+        summarise(TOTAL_VOTOS = sum(VOTOS), .groups = "drop") %>%
+        mutate(PORCENTAJE = round(TOTAL_VOTOS / sum(TOTAL_VOTOS) * 100, 2)) %>%
+        arrange(desc(TOTAL_VOTOS))
+
+      write_csv(votos_candidato, "data/gold/nacional/votos_por_candidato.csv")
+      write_parquet(votos_candidato, "data/gold/nacional/votos_por_candidato.parquet")
+
+      # Votos por partido
+      votos_partido <- datos %>%
+        filter(TIPO_VOTO == "CANDIDATO") %>%
+        group_by(PARNOMBRE) %>%
+        summarise(TOTAL_VOTOS = sum(VOTOS), .groups = "drop") %>%
+        mutate(PORCENTAJE = round(TOTAL_VOTOS / sum(TOTAL_VOTOS) * 100, 2)) %>%
+        arrange(desc(TOTAL_VOTOS))
+
+      write_csv(votos_partido, "data/gold/nacional/votos_por_partido.csv")
+
+      # Métricas de participación
+      metricas <- datos %>%
+        group_by(TIPO_VOTO) %>%
+        summarise(TOTAL = sum(VOTOS), .groups = "drop") %>%
+        mutate(PORCENTAJE = round(TOTAL / sum(TOTAL) * 100, 2))
+
+      write_csv(metricas, "data/gold/nacional/metricas_participacion.csv")
+
+      # Resumen ejecutivo
+      resumen <- tibble(
+        METRICA = c("Total Votos", "Total Mesas", "Candidatos",
+                    "Ganador", "Votos Ganador", "Segundo Lugar",
+                    "Diferencia"),
+        VALOR = c(
+          sum(datos$VOTOS),
+          n_distinct(datos$MESA_ID),
+          sum(datos$TIPO_VOTO == "CANDIDATO" & !duplicated(datos$CANNOMBRE)),
+          votos_candidato$CANNOMBRE[1],
+          votos_candidato$TOTAL_VOTOS[1],
+          votos_candidato$CANNOMBRE[2],
+          votos_candidato$TOTAL_VOTOS[1] - votos_candidato$TOTAL_VOTOS[2]
+        )
+      )
+
+      write_csv(resumen, "data/gold/nacional/resumen_ejecutivo.csv")
+
+      COMANDO:
+      Rscript scripts/02_silver_to_gold/electoral/agregacion_nacional.R
+
+[3.2] Crear scripts/02_silver_to_gold/electoral/agregacion_departamental.R
+
+      FUNCIÓN: Agregar a nivel departamento
+
+      ENTRADA: data/silver/electoral/datos_master.parquet
+
+      SALIDAS:
+      - data/gold/departamental/votos_por_candidato_depto.csv
+      - data/gold/departamental/votos_por_candidato_depto.parquet
+      - data/gold/departamental/rankings_departamentales.csv
+      - data/gold/departamental/tasas_participacion_depto.csv
+      - data/gold/departamental/diferencias_primer_segundo.csv
+
+      LÓGICA:
+
+      # Votos por candidato y departamento
+      votos_depto <- datos %>%
+        group_by(DEP, DEPNOMBRE_COMPLETO, CANNOMBRE, PARNOMBRE) %>%
+        summarise(VOTOS = sum(VOTOS), .groups = "drop") %>%
+        group_by(DEP, DEPNOMBRE_COMPLETO) %>%
+        mutate(
+          TOTAL_DEPTO = sum(VOTOS),
+          PORCENTAJE_DEPTO = round(VOTOS / TOTAL_DEPTO * 100, 2)
+        ) %>%
+        ungroup()
+
+      write_csv(votos_depto, "data/gold/departamental/votos_por_candidato_depto.csv")
+      write_parquet(votos_depto, "data/gold/departamental/votos_por_candidato_depto.parquet")
+
+      # Rankings por departamento
+      rankings <- votos_depto %>%
+        group_by(DEPNOMBRE_COMPLETO) %>%
+        arrange(desc(VOTOS)) %>%
+        mutate(RANK = row_number()) %>%
+        filter(RANK <= 3) %>%
+        select(DEPNOMBRE_COMPLETO, RANK, CANNOMBRE, VOTOS, PORCENTAJE_DEPTO)
+
+      write_csv(rankings, "data/gold/departamental/rankings_departamentales.csv")
+
+      # Tasas de participación
+      participacion <- datos %>%
+        group_by(DEPNOMBRE_COMPLETO, TIPO_VOTO) %>%
+        summarise(VOTOS = sum(VOTOS), .groups = "drop") %>%
+        pivot_wider(names_from = TIPO_VOTO, values_from = VOTOS, values_fill = 0) %>%
+        mutate(
+          TOTAL_VOTOS = CANDIDATO + BLANCO + NULO + NO_MARCADO,
+          TASA_BLANCOS = round(BLANCO / TOTAL_VOTOS * 100, 2),
+          TASA_NULOS = round(NULO / TOTAL_VOTOS * 100, 2)
+        )
+
+      write_csv(participacion, "data/gold/departamental/tasas_participacion_depto.csv")
+
+      # Diferencias primer-segundo lugar
+      diferencias <- votos_depto %>%
+        group_by(DEPNOMBRE_COMPLETO) %>%
+        arrange(desc(VOTOS)) %>%
+        slice(1:2) %>%
+        summarise(
+          PRIMERO = CANNOMBRE[1],
+          VOTOS_PRIMERO = VOTOS[1],
+          SEGUNDO = CANNOMBRE[2],
+          VOTOS_SEGUNDO = VOTOS[2],
+          DIFERENCIA = VOTOS_PRIMERO - VOTOS_SEGUNDO,
+          DIFERENCIA_PCT = round((VOTOS_PRIMERO - VOTOS_SEGUNDO) / VOTOS_PRIMERO * 100, 2)
+        )
+
+      write_csv(diferencias, "data/gold/departamental/diferencias_primer_segundo.csv")
+
+      COMANDO:
+      Rscript scripts/02_silver_to_gold/electoral/agregacion_departamental.R
+
+[3.3] Crear scripts/02_silver_to_gold/electoral/agregacion_municipal.R
+
+      FUNCIÓN: Agregar a nivel municipio
+
+      ENTRADA: data/silver/electoral/datos_master.parquet
+
+      SALIDAS:
+      - data/gold/municipal/votos_por_candidato_mun.csv
+      - data/gold/municipal/votos_por_candidato_mun.parquet
+      - data/gold/municipal/mapeo_mesas_municipios.csv
+      - data/gold/municipal/participacion_municipal.csv
+
+      LÓGICA SIMILAR a departamental pero agrupando por:
+      DEP, MUN, MUNNOMBRE, DEPNOMBRE_COMPLETO
+
+      COMANDO:
+      Rscript scripts/02_silver_to_gold/electoral/agregacion_municipal.R
+
+[3.4] Crear script maestro para ejecutar todas las agregaciones
+
+      CREAR: scripts/02_silver_to_gold/ejecutar_todas_agregaciones.R
+
+      CONTENIDO:
+
+      cat("=== Ejecutando agregaciones Silver → Gold ===\n\n")
+
+      cat("1. Agregación nacional...\n")
+      source("scripts/02_silver_to_gold/electoral/agregacion_nacional.R")
+
+      cat("\n2. Agregación departamental...\n")
+      source("scripts/02_silver_to_gold/electoral/agregacion_departamental.R")
+
+      cat("\n3. Agregación municipal...\n")
+      source("scripts/02_silver_to_gold/electoral/agregacion_municipal.R")
+
+      cat("\n=== Todas las agregaciones completadas ===\n")
+
+      COMANDO:
+      Rscript scripts/02_silver_to_gold/ejecutar_todas_agregaciones.R
+
+
+RESULTADO ESPERADO FASE 3:
+  ✅ Datos agregados a nivel nacional en Gold
+  ✅ Datos agregados a nivel departamental en Gold
+  ✅ Datos agregados a nivel municipal en Gold
+  ✅ Múltiples productos de datos listos para análisis
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ FASE 4: PREPARAR DATOS PARA VISUALIZACIONES                                │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+OBJETIVO: Generar archivos JSON/GeoJSON para dashboards y mapas.
+
+TAREAS:
+
+[4.1] Crear scripts/02_silver_to_gold/visualizaciones/preparar_dashboard.R
+
+      FUNCIÓN: Generar JSONs para dashboard web
+
+      SALIDAS:
+      - data/gold/visualizaciones/dashboard/summary_nacional.json
+      - data/gold/visualizaciones/dashboard/series_candidatos.json
+      - data/gold/visualizaciones/dashboard/metricas_resumen.json
+
+      LÓGICA:
+
+      library(jsonlite)
+      library(arrow)
+
+      # Leer datos agregados
+      votos_nacional <- read_csv("data/gold/nacional/votos_por_candidato.csv")
+      resumen <- read_csv("data/gold/nacional/resumen_ejecutivo.csv")
+
+      # Summary nacional
+      summary <- list(
+        total_votos = resumen$VALOR[resumen$METRICA == "Total Votos"],
+        total_mesas = resumen$VALOR[resumen$METRICA == "Total Mesas"],
+        ganador = resumen$VALOR[resumen$METRICA == "Ganador"],
+        votos_ganador = resumen$VALOR[resumen$METRICA == "Votos Ganador"],
+        segundo = resumen$VALOR[resumen$METRICA == "Segundo Lugar"],
+        diferencia = resumen$VALOR[resumen$METRICA == "Diferencia"]
+      )
+
+      write_json(summary, "data/gold/visualizaciones/dashboard/summary_nacional.json",
+                 auto_unbox = TRUE, pretty = TRUE)
+
+      # Series candidatos
+      series <- votos_nacional %>%
+        select(candidato = CANNOMBRE, partido = PARNOMBRE,
+               votos = TOTAL_VOTOS, porcentaje = PORCENTAJE)
+
+      write_json(series, "data/gold/visualizaciones/dashboard/series_candidatos.json",
+                 pretty = TRUE)
+
+      COMANDO:
+      Rscript scripts/02_silver_to_gold/visualizaciones/preparar_dashboard.R
+
+[4.2] Crear scripts/02_silver_to_gold/visualizaciones/generar_geojson.py
+
+      FUNCIÓN: Generar GeoJSON para mapas (FUTURO - requiere shapefiles)
+
+      NOTA: Por ahora dejar como placeholder. Se implementará cuando se
+            tengan shapefiles de departamentos y municipios.
+
+      SALIDAS FUTURAS:
+      - data/gold/visualizaciones/mapas/geojson/colombia_deptos_votos.geojson
+      - data/gold/visualizaciones/mapas/geojson/colombia_municipios_votos.geojson
+
+
+RESULTADO ESPERADO FASE 4:
+  ✅ JSONs generados para dashboard
+  ⏸️ GeoJSON (pendiente de shapefiles)
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ FASE 5: DOCUMENTACIÓN                                                      │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+OBJETIVO: Documentar cada capa con diccionarios y guías.
+
+TAREAS:
+
+[5.1] Crear docs/diccionarios/diccionario_bronze.md
+
+      CONTENIDO:
+      - Descripción de archivos en Bronze
+      - Estructura de archivos originales
+      - Códigos de departamentos
+      - Fuente de datos
+      - Metadata de ingesta
+
+[5.2] Actualizar docs/diccionarios/diccionario_silver.md
+
+      Ya existe en output/DICCIONARIO.md
+      Mover y actualizar rutas
+
+[5.3] Crear docs/diccionarios/diccionarios_gold/nacional.md
+
+      Documentar:
+      - votos_por_candidato.csv (columnas, tipos, ejemplos)
+      - votos_por_partido.csv
+      - metricas_participacion.csv
+      - resumen_ejecutivo.csv
+
+[5.4] Crear docs/diccionarios/diccionarios_gold/departamental.md
+
+      Documentar todos los archivos en gold/departamental/
+
+[5.5] Crear docs/diccionarios/diccionarios_gold/municipal.md
+
+      Documentar todos los archivos en gold/municipal/
+
+[5.6] Crear README.md principal
+
+      SECCIONES:
+
+      # Análisis Electoral Colombia
+
+      ## Descripción
+      Sistema de análisis de resultados electorales basado en Medallion Architecture.
+
+      ## Estructura del Proyecto
+      [Enlace a docs/estructura-proyecto.txt]
+
+      ## Inicio Rápido
+
+      ### 1. Setup inicial
+      ```bash
+      Rscript scripts/00_setup/crear_estructura.R
+      Rscript scripts/00_setup/install_packages.R
+      ```
+
+      ### 2. Limpieza de datos (Bronze → Silver)
+      ```bash
+      Rscript scripts/01_bronze_to_silver/limpieza_datos.R
+      ```
+
+      ### 3. Agregaciones (Silver → Gold)
+      ```bash
+      Rscript scripts/02_silver_to_gold/ejecutar_todas_agregaciones.R
+      ```
+
+      ### 4. Preparar visualizaciones
+      ```bash
+      Rscript scripts/02_silver_to_gold/visualizaciones/preparar_dashboard.R
+      ```
+
+      ## Documentación
+      - [Medallion Architecture](docs/medallion-architecture-explicacion.txt)
+      - [Estructura del Proyecto](docs/estructura-proyecto.txt)
+      - [Diccionarios de Datos](docs/diccionarios/)
+
+      ## Datos
+      Los datos no se incluyen en Git. Para obtenerlos:
+      1. Descargar de Registraduría Nacional
+      2. Colocar en `data/bronze/raw/electoral/registraduria_2026-06-15/`
+      3. Ejecutar pipeline de limpieza
+
+      ## Tecnologías
+      - R (limpieza, agregación)
+      - Python (mapas, análisis avanzados)
+      - Scheme/JS (dashboards)
+
+      ## Contribuir
+      Ver [docs/guia-contribucion.md]
+
+      ## Licencia
+      [Por definir]
+
+[5.7] Crear CHANGELOG.md
+
+      CONTENIDO:
+
+      # Changelog
+
+      ## [1.0.0] - 2026-06-15
+
+      ### Added
+      - Estructura completa de Medallion Architecture
+      - Script de limpieza Bronze → Silver
+      - Scripts de agregación Silver → Gold (nacional, departamental, municipal)
+      - Documentación completa del proyecto
+      - Diccionarios de datos por capa
+
+      ### Changed
+      - Migración de estructura plana a Medallion Architecture
+
+      ### Fixed
+      - Normalización de nombres de departamentos
+      - Validación de valores nulos
+
+[5.8] Crear docs/guia-inicio-rapido.md
+
+      Guía paso a paso para nuevos usuarios del proyecto
+
+
+RESULTADO ESPERADO FASE 5:
+  ✅ Diccionarios completos por capa
+  ✅ README.md con instrucciones claras
+  ✅ CHANGELOG.md iniciado
+  ✅ Guías de uso
+
+
+================================================================================
+ORDEN DE EJECUCIÓN RECOMENDADO
+================================================================================
+
+SESIÓN 1: Setup (30 min)
+  1. Crear scripts/00_setup/crear_estructura.R
+  2. Ejecutar para crear carpetas
+  3. Crear .gitignore
+  4. Reorganizar archivos manualmente
+
+SESIÓN 2: Limpieza (1 hora)
+  5. Adaptar limpieza_datos.R
+  6. Crear validaciones.R
+  7. Ejecutar limpieza
+  8. Verificar outputs en Silver
+
+SESIÓN 3: Agregaciones (1-2 horas)
+  9. Crear agregacion_nacional.R
+  10. Crear agregacion_departamental.R
+  11. Crear agregacion_municipal.R
+  12. Ejecutar todas las agregaciones
+  13. Verificar outputs en Gold
+
+SESIÓN 4: Visualizaciones (1 hora)
+  14. Crear preparar_dashboard.R
+  15. Ejecutar y generar JSONs
+  16. Verificar outputs
+
+SESIÓN 5: Documentación (1 hora)
+  17. Crear diccionarios
+  18. Crear README.md
+  19. Crear CHANGELOG.md
+  20. Revisar toda la documentación
+
+
+================================================================================
+VERIFICACIÓN FINAL
+================================================================================
+
+CHECKLIST AL TERMINAR:
+
+ESTRUCTURA:
+  ✅ Carpetas data/ creadas según estructura
+  ✅ Carpetas scripts/ creadas
+  ✅ Carpetas docs/ organizadas
+  ✅ .gitignore configurado
+
+DATOS:
+  ⏸ Bronze: 33 archivos originales no disponibles
+  ✅ Silver: datos_master en 3 formatos (CSV, Parquet, RDS)
+  ✅ Gold/nacional: 5 archivos
+  ✅ Gold/departamental: 4+ archivos
+  ✅ Gold/municipal: 3+ archivos
+  ✅ Gold/visualizaciones: JSONs generados
+  ⏸ GeoJSON: pendiente de geometrías oficiales
+
+SCRIPTS:
+  ✅ crear_estructura.R funciona
+  ✅ limpieza_datos.R funciona con nueva estructura
+  ✅ agregacion_nacional.R genera outputs
+  ✅ agregacion_departamental.R genera outputs
+  ✅ agregacion_municipal.R genera outputs
+  ✅ preparar_dashboard.R genera JSONs
+
+DOCUMENTACIÓN:
+  ✅ README.md completo
+  ✅ CHANGELOG.md creado
+  ✅ Diccionario Bronze
+  ✅ Diccionario Silver
+  ✅ Diccionarios Gold (nacional, departamental, municipal)
+  ✅ Guías de uso
+
+METADATA:
+  ✅ Bronze metadata creada
+  ✅ Silver metadata generada (transformaciones, validaciones)
+  ✅ Logs de ejecución
+
+GIT:
+  ✅ .gitignore configurado para excluir datos y outputs
+  ⏸ Verificación Git pendiente: esta carpeta no contiene un repositorio .git
+
+
+================================================================================
+COMANDOS RÁPIDOS DE REFERENCIA
+================================================================================
+
+# Setup completo
+Rscript scripts/00_setup/crear_estructura.R
+
+# Pipeline completo
+Rscript scripts/01_bronze_to_silver/limpieza_datos.R
+Rscript scripts/02_silver_to_gold/ejecutar_todas_agregaciones.R
+Rscript scripts/02_silver_to_gold/visualizaciones/preparar_dashboard.R
+
+# Verificar estructura
+tree data/ -L 3
+tree scripts/ -L 2
+
+# Verificar tamaños
+du -sh data/bronze/
+du -sh data/silver/
+du -sh data/gold/
+
+
+================================================================================
+NOTAS IMPORTANTES
+================================================================================
+
+1. SIEMPRE leer desde Bronze, nunca modificar Bronze
+2. Silver se puede regenerar completamente desde Bronze
+3. Gold se puede regenerar completamente desde Silver
+4. Documentar TODAS las transformaciones
+5. Validar datos en cada paso
+6. Generar logs de todas las ejecuciones
+7. Mantener 3 formatos en Silver (CSV, Parquet, RDS)
+8. Priorizar Parquet en Gold (más eficiente)
+9. Todos los scripts deben ser idempotentes (ejecutables múltiples veces)
+10. Git solo para código y docs, NUNCA datos
+
+
+================================================================================
+PRÓXIMOS PASOS (FUTURO)
+================================================================================
+
+DESPUÉS DE COMPLETAR FASE 1-5:
+
+- Agregar datos de población (DANE)
+- Crear scripts de cruce electoral x población
+- Implementar mapeo de barrios
+- Crear agregación por barrios
+- Desarrollar análisis temporal (cuando haya datos 2022)
+- Crear dashboard web interactivo
+- Desarrollar mapas con Python/Folium
+- Implementar tests automatizados
+- Configurar CI/CD para regeneración automática
+
+
+================================================================================
+FIN DEL PLAN
+================================================================================
+
+Estado: IMPLEMENTACION BASE COMPLETADA
+Aprobado: Sí
+Próxima acción: Ejecutar FASE 1, Tarea 1.1
+
+Para retomar este plan:
+1. Leer este archivo completo
+2. Verificar estado actual del proyecto
+3. Continuar desde la siguiente tarea pendiente
+4. Marcar tareas completadas con ✅

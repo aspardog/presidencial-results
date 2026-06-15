@@ -1,0 +1,23 @@
+Columna,Tipo,Descripción,Ejemplo,Notas
+DEP,character,Código DANE del departamento (2 dígitos),01,Padded con ceros a la izquierda
+DEPNOMBRE,character,Nombre abreviado del departamento,ANTIOQUIA,Puede estar abreviado
+DEPNOMBRE_COMPLETO,character,Nombre completo normalizado del departamento,NORTE DE SANTANDER,Columna agregada - nombres oficiales completos
+MUN,character,Código DANE del municipio (3 dígitos),001,Padded con ceros a la izquierda
+MUNNOMBRE,character,Nombre del municipio,MEDELLIN,En mayúsculas
+ZONA,character,Código de zona electoral,01,Zona dentro del municipio
+PUESTO,character,Código del puesto de votación,01,Identifica el lugar de votación
+PUESNOMBRE,character,Nombre del puesto de votación,ESTADIO ATANASIO GIRARDOT,Nombre del establecimiento
+MESA,character,Número de mesa de votación,002,Identificador único de mesa en el puesto
+MESA_ID,character,ID único de mesa,01_001_90_01_002,Columna agregada - Formato: DEP_MUN_ZONA_PUESTO_MESA
+COMUCODIGO,character,Código de comuna/comunidad,000,"000 = Nacional, otros = comunas locales"
+COMUNOMBRE,character,Nombre de comuna/comunidad,NACIONAL,Nivel administrativo local
+CORCODIGO,character,Código de corporación electoral,01,Identifica el tipo de elección
+CORNOMBRE,character,Nombre de corporación,PRESIDENTE,Tipo de elección
+CIR,character,Código de circunscripción,0,Circunscripción electoral
+PAR,character,Código de partido político,0026,Código asignado al partido
+PARNOMBRE,character,Nombre del partido político,MOVIMIENTO POLÍTICO PACTO HISTÓRICO,Nombre completo del partido
+CAN,character,Código del candidato,001,Número del candidato dentro del partido
+CANCEDULA,character,Número de cédula del candidato,79262397,"NA para votos especiales (blanco, nulo)"
+CANNOMBRE,character,Nombre del candidato,IVÁN CEPEDA CASTRO,Nombre completo del candidato o tipo de voto
+VOTOS,integer,Número de votos obtenidos,76,Votos en esta mesa para este candidato
+TIPO_VOTO,character,Categoría del voto,CANDIDATO,"Columna agregada - Valores: CANDIDATO, BLANCO, NULO, NO_MARCADO"

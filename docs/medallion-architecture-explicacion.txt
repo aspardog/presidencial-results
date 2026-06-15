@@ -1,0 +1,530 @@
+================================================================================
+MEDALLION ARCHITECTURE - GUÍA PARA PRINCIPIANTES
+================================================================================
+
+Proyecto: Análisis Electoral Colombia
+Fecha: 2026-06-15
+Autor: Equipo de Análisis Electoral
+
+
+================================================================================
+1. ¿QUÉ ES MEDALLION ARCHITECTURE?
+================================================================================
+
+Medallion Architecture es una metodología de organización de datos que separa
+la información en TRES CAPAS (o "medallas"), cada una con un propósito específico.
+
+Piensa en ello como una LÍNEA DE PRODUCCIÓN:
+
+    Materia Prima  →  Producto Limpio  →  Producto Final Empaquetado
+    (Bronze)          (Silver)            (Gold)
+
+
+ANALOGÍA SIMPLE: Es como cocinar
+
+  🥉 BRONZE (Bronce):
+     - Es como los ingredientes crudos que compras en el supermercado
+     - Vienen en su empaque original, sin lavar, sin procesar
+     - NUNCA los tiras a la basura (son tu fuente de verdad)
+     - Ejemplo: Tomates sin lavar, pollo sin deshuesar
+
+  🥈 SILVER (Plata):
+     - Es como los ingredientes lavados, pelados y cortados
+     - Están limpios y listos para cocinar
+     - Puedes regenerarlos siempre desde Bronze
+     - Ejemplo: Tomates picados, pollo deshuesado
+
+  🥇 GOLD (Oro):
+     - Es el plato final listo para servir
+     - Optimizado para consumo específico
+     - Cada "plato" es para un comensal diferente
+     - Ejemplo: Ensalada César, Pollo asado, Sopa
+
+
+================================================================================
+2. LAS TRES CAPAS EN DETALLE
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 🥉 CAPA BRONZE (BRONCE) - "La Bodega de Datos Crudos"                      │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+PROPÓSITO:
+  - Almacenar los datos EXACTAMENTE como llegaron
+  - Fuente de verdad inmutable (NUNCA se modifica)
+  - Histórico completo
+
+CARACTERÍSTICAS:
+  ✓ Datos sin procesar
+  ✓ Pueden tener errores, duplicados, formatos inconsistentes
+  ✓ Solo se escribe UNA VEZ
+  ✓ Se conserva PARA SIEMPRE
+  ✓ Incluye metadata de origen (fecha de carga, fuente, etc.)
+
+REGLAS DE ORO:
+  ❌ NUNCA borrar
+  ❌ NUNCA modificar
+  ❌ NUNCA "limpiar en el lugar"
+  ✅ Solo lectura después de carga inicial
+  ✅ Timestamped (saber cuándo llegó cada dato)
+
+EJEMPLO EN NUESTRO PROYECTO:
+  - Los 33 archivos CSV originales de la Registraduría
+  - Con sus nombres abreviados (NORTE DE SAN, VALLE, etc.)
+  - Con todos sus formatos originales
+  - Sin transformaciones
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 🥈 CAPA SILVER (PLATA) - "Datos Limpios y Estandarizados"                  │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+PROPÓSITO:
+  - Datos limpios, validados y estandarizados
+  - Listos para análisis pero AÚN granulares
+  - Se pueden regenerar desde Bronze cuando sea necesario
+
+CARACTERÍSTICAS:
+  ✓ Datos validados y limpios
+  ✓ Tipos de datos correctos
+  ✓ Duplicados eliminados
+  ✓ Nombres estandarizados
+  ✓ Errores corregidos
+  ✓ AÚN en su máxima granularidad (nivel mesa en nuestro caso)
+
+TRANSFORMACIONES TÍPICAS:
+  - Normalizar nombres (NORTE DE SAN → NORTE DE SANTANDER)
+  - Convertir tipos de datos (texto → número)
+  - Eliminar espacios extras
+  - Estandarizar formatos de fecha
+  - Agregar IDs únicos
+  - Agregar categorías derivadas simples
+
+REGLAS:
+  ✅ Reproducible desde Bronze
+  ✅ Documentar todas las transformaciones
+  ✅ Mantener máxima granularidad
+  ❌ No agregar datos aún
+  ❌ No hacer cálculos complejos todavía
+
+EJEMPLO EN NUESTRO PROYECTO:
+  - Base master consolidada (922,214 registros)
+  - Nombres de departamentos completos
+  - Tipos de dato correctos
+  - MESA_ID único
+  - TIPO_VOTO categorizado
+  - Pero TODAVÍA nivel MESA (sin agregar)
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 🥇 CAPA GOLD (ORO) - "Datos Listos para Consumo"                           │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+PROPÓSITO:
+  - Datos agregados y optimizados para casos de uso específicos
+  - Listos para visualización, reportes, dashboards
+  - Cada "tabla gold" responde a una pregunta de negocio
+
+CARACTERÍSTICAS:
+  ✓ Agregaciones y resúmenes
+  ✓ Cálculos complejos ya realizados
+  ✓ Optimizado para consumo rápido
+  ✓ Múltiples niveles de granularidad
+  ✓ Joins pre-calculados
+  ✓ Métricas de negocio
+
+TIPOS DE AGREGACIONES:
+  - Por dimensión geográfica (municipio, departamento, nacional)
+  - Por dimensión temporal (si hay varias elecciones)
+  - Por candidato/partido
+  - Combinaciones específicas para visualizaciones
+
+REGLAS:
+  ✅ Optimizado para lectura rápida
+  ✅ Se puede regenerar desde Silver
+  ✅ Múltiples "sabores" según necesidad
+  ✅ Documentar lógica de negocio
+
+EJEMPLO EN NUESTRO PROYECTO:
+  - Votos por candidato a nivel MUNICIPIO
+  - Votos por candidato a nivel DEPARTAMENTO
+  - Votos por candidato a nivel NACIONAL
+  - Votos por candidato por BARRIO (TBD)
+  - Tasas de participación por región
+  - Rankings de candidatos por zona
+  - Mapas de calor electoral
+
+
+================================================================================
+3. ¿POR QUÉ USAR MEDALLION ARCHITECTURE?
+================================================================================
+
+BENEFICIO 1: TRAZABILIDAD
+  - Siempre puedes rastrear de dónde vino cada dato
+  - Bronze → Silver → Gold (camino claro)
+  - Si algo está mal en Gold, revisas Silver, y si es necesario Bronze
+
+BENEFICIO 2: REPRODUCIBILIDAD
+  - Puedes regenerar cualquier capa intermedia
+  - Si cambias la lógica de limpieza, re-ejecutas todo el pipeline
+  - No pierdes el dato original
+
+BENEFICIO 3: SEPARACIÓN DE RESPONSABILIDADES
+  - Bronze: Ingenieros de datos (carga)
+  - Silver: Ingenieros de datos (calidad)
+  - Gold: Analistas (agregaciones para negocio)
+
+BENEFICIO 4: EFICIENCIA
+  - No repites limpieza cada vez
+  - Las agregaciones están pre-calculadas
+  - Consultas rápidas en Gold
+
+BENEFICIO 5: FLEXIBILIDAD
+  - Múltiples capas Gold para diferentes audiencias
+  - Gold para dashboards
+  - Gold para científicos de datos
+  - Gold para reportes ejecutivos
+
+BENEFICIO 6: AUDITORÍA Y CUMPLIMIENTO
+  - Datos originales siempre disponibles
+  - Transformaciones documentadas
+  - Versionamiento claro
+
+
+================================================================================
+4. FLUJO DE DATOS EN MEDALLION
+================================================================================
+
+    ┌──────────────────────────────────────────────────────────────┐
+    │                        INGESTA                               │
+    │  (Registraduría, APIs, archivos, web scraping, etc.)        │
+    └───────────────────────────┬──────────────────────────────────┘
+                                │
+                                ▼
+    ┌─────────────────────────────────────────────────────────────┐
+    │  🥉 BRONZE - Raw Data Lake                                  │
+    │  • Datos crudos sin procesar                                │
+    │  • Inmutables, append-only                                  │
+    │  • Timestamped                                              │
+    │  • Formato original preservado                              │
+    └───────────────────────────┬─────────────────────────────────┘
+                                │
+                                │  SCRIPT: limpieza_datos.R
+                                │  PROCESO: Validación, normalización
+                                ▼
+    ┌─────────────────────────────────────────────────────────────┐
+    │  🥈 SILVER - Cleaned & Conformed Data                       │
+    │  • Datos validados y limpios                                │
+    │  • Esquema estandarizado                                    │
+    │  • Máxima granularidad                                      │
+    │  • Reproducible desde Bronze                                │
+    └───────────────────────────┬─────────────────────────────────┘
+                                │
+                                │  SCRIPT: agregacion_datos.R
+                                │  PROCESO: Group by, resúmenes
+                                ▼
+    ┌─────────────────────────────────────────────────────────────┐
+    │  🥇 GOLD - Business-Level Aggregates                        │
+    │  • Datos agregados por caso de uso                          │
+    │  • Optimizado para consumo                                  │
+    │  • Métricas de negocio calculadas                           │
+    │  • Múltiples "productos" de datos                           │
+    └───────────────────────────┬─────────────────────────────────┘
+                                │
+                                ▼
+    ┌─────────────────────────────────────────────────────────────┐
+    │                    CONSUMO                                  │
+    │  • Dashboards (Scheme/JS)                                   │
+    │  • Mapas (Python/Folium/Leaflet)                            │
+    │  • Reportes (R Markdown)                                    │
+    │  • APIs                                                     │
+    └─────────────────────────────────────────────────────────────┘
+
+
+================================================================================
+5. APLICACIÓN A NUESTRO PROYECTO ELECTORAL
+================================================================================
+
+CONTEXTO:
+  - Datos: Resultados electorales presidenciales de Colombia
+  - Granularidad original: Nivel MESA (118,313 mesas únicas)
+  - Fuente: 33 archivos CSV de la Registraduría (uno por departamento)
+  - Objetivo: Análisis comparativo entre candidatos y visualizaciones
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 🥉 BRONZE - En Nuestro Proyecto                                            │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+CONTENIDO:
+  ✓ Los 33 archivos CSV originales
+  ✓ Exactamente como los descargamos de la Registraduría
+  ✓ Con sus nombres originales: MMV_XXX_01_000_XXX_XX_XX_XXX_1000.csv
+  ✓ Metadata de carga (fecha, fuente, checksum)
+
+ESTRUCTURA:
+  data/
+    bronze/
+      raw/
+        registraduria_2026/
+          MMV_XXX_01_000_XXX_XX_XX_XXX_1000.csv  (Antioquia)
+          MMV_XXX_03_000_XXX_XX_XX_XXX_1001.csv  (Atlántico)
+          ...
+          MMV_XXX_72_000_XXX_XX_XX_XXX_1032.csv  (Vichada)
+      metadata/
+        ingesta_2026-06-15.json
+        checksums.txt
+
+NUNCA SE MODIFICA: Estos archivos son sagrados.
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 🥈 SILVER - En Nuestro Proyecto                                            │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+CONTENIDO:
+  ✓ Base consolidada de 922,214 registros
+  ✓ 33 archivos unidos en uno solo
+  ✓ Nombres de departamentos normalizados
+  ✓ Tipos de voto categorizados (CANDIDATO, BLANCO, NULO, NO_MARCADO)
+  ✓ IDs únicos de mesa (MESA_ID)
+  ✓ Validaciones aplicadas (sin nulos, sin negativos)
+  ✓ TODAVÍA nivel MESA (sin agregar)
+
+ESTRUCTURA:
+  data/
+    silver/
+      electoral/
+        datos_electorales_master.parquet  (comprimido, eficiente)
+        datos_electorales_master.rds      (para R)
+        datos_electorales_master.csv      (para compatibilidad)
+      metadata/
+        diccionario_datos.csv
+        transformaciones_aplicadas.txt
+        validaciones.log
+
+TRANSFORMACIONES DOCUMENTADAS:
+  - Script: scripts/bronze_to_silver/limpieza_datos.R
+  - Log de cambios: data/silver/metadata/changelog.txt
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 🥇 GOLD - En Nuestro Proyecto                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+MÚLTIPLES "PRODUCTOS" DE DATOS:
+
+1. NIVEL NACIONAL:
+   - votos_nacional_por_candidato.csv
+   - participacion_nacional.csv
+
+2. NIVEL DEPARTAMENTAL:
+   - votos_departamento_por_candidato.csv
+   - ranking_candidatos_por_depto.csv
+   - mapa_calor_departamental.geojson
+
+3. NIVEL MUNICIPAL:
+   - votos_municipio_por_candidato.csv
+   - comparativo_urbano_rural.csv
+
+4. NIVEL BARRIO (TBD - futuro):
+   - votos_barrio_por_candidato.csv
+   - mapas_barrios_bogota.geojson
+   - mapas_barrios_medellin.geojson
+
+5. ANÁLISIS ESPECÍFICOS:
+   - votos_blancos_por_region.csv
+   - tasas_participacion.csv
+   - diferencia_primer_segundo_lugar.csv
+
+ESTRUCTURA:
+  data/
+    gold/
+      nacional/
+        votos_por_candidato.parquet
+        metricas_nacionales.csv
+      departamental/
+        votos_por_candidato_depto.parquet
+        rankings_departamentales.csv
+      municipal/
+        votos_por_candidato_mun.parquet
+      barrio/  (TBD)
+        votos_por_candidato_barrio.parquet
+      visualizaciones/
+        dashboard_data.json
+        mapa_calor.geojson
+      metadata/
+        diccionarios/
+          diccionario_nacional.md
+          diccionario_departamental.md
+          diccionario_municipal.md
+
+
+================================================================================
+6. VERSIONAMIENTO EN MEDALLION
+================================================================================
+
+El versionamiento en esta arquitectura opera en TRES NIVELES:
+
+NIVEL 1: VERSIONAMIENTO DE DATOS
+  - Cada carga de Bronze puede tener una versión/timestamp
+  - Útil cuando recibes actualizaciones de la fuente
+
+  Ejemplo:
+    data/bronze/raw/registraduria_v1_2026-06-15/
+    data/bronze/raw/registraduria_v2_2026-07-01/  (si hubiera correcciones)
+
+NIVEL 2: VERSIONAMIENTO DE SCRIPTS
+  - Tus scripts de transformación se versionan con Git
+  - Cada cambio en lógica de limpieza/agregación queda registrado
+
+  Ejemplo:
+    scripts/bronze_to_silver/limpieza_datos.R  (versión en Git)
+    → Commit: "Agregado campo BARRIO para geolocalización"
+    → Commit: "Corregido cálculo de TIPO_VOTO"
+
+NIVEL 3: VERSIONAMIENTO DE ESQUEMA
+  - Si cambias la estructura de Silver o Gold, versiona el esquema
+
+  Ejemplo:
+    data/silver/electoral/schema_v1.json
+    data/silver/electoral/schema_v2.json  (si agregas columna BARRIO)
+
+
+¿CUÁNDO REGENERAR LAS CAPAS?
+
+  BRONZE → SILVER:
+    ✓ Cuando mejoras la lógica de limpieza
+    ✓ Cuando agregas nuevas validaciones
+    ✓ Cuando corriges un error en transformación
+    → Re-ejecutas: scripts/bronze_to_silver/limpieza_datos.R
+
+  SILVER → GOLD:
+    ✓ Cuando cambias agregaciones
+    ✓ Cuando agregas nuevas métricas de negocio
+    ✓ Cuando creas nuevos niveles geográficos
+    → Re-ejecutas: scripts/silver_to_gold/agregacion_*.R
+
+
+================================================================================
+7. GOBERNANZA DE DATOS EN MEDALLION
+================================================================================
+
+PRINCIPIO 1: INMUTABILIDAD DE BRONZE
+  - Bronze es la fuente de verdad
+  - Solo append (agregar), nunca update/delete
+  - Si hay error en origen, se documenta pero NO se corrige aquí
+
+PRINCIPIO 2: REPRODUCIBILIDAD DE SILVER Y GOLD
+  - Cualquier capa se puede regenerar desde la anterior
+  - Scripts documentados y versionados
+  - Transformaciones auditables
+
+PRINCIPIO 3: SEPARACIÓN DE RESPONSABILIDADES
+  - Bronze: Ingesta y preservación
+  - Silver: Calidad y estandarización
+  - Gold: Producto analítico
+
+PRINCIPIO 4: DOCUMENTACIÓN OBLIGATORIA
+  - Cada capa tiene su diccionario de datos
+  - Cada transformación está documentada
+  - Metadata siempre presente
+
+PRINCIPIO 5: TRAZABILIDAD COMPLETA
+  - De cualquier dato en Gold puedo rastrear hasta Bronze
+  - Logs de transformación
+  - Lineage de datos claro
+
+
+================================================================================
+8. FLUJO DE TRABAJO TÍPICO
+================================================================================
+
+CASO 1: Nueva Carga de Datos
+  1. Recibo nuevos CSVs de Registraduría
+  2. Los coloco en Bronze SIN modificar
+  3. Ejecuto script Bronze → Silver
+  4. Ejecuto scripts Silver → Gold
+  5. Actualizo dashboards/visualizaciones
+
+CASO 2: Mejora en Lógica de Limpieza
+  1. Modifico script de limpieza en Git
+  2. Re-ejecuto Bronze → Silver (datos se regeneran)
+  3. Re-ejecuto Silver → Gold
+  4. Comparo resultados anteriores vs nuevos
+  5. Documento cambios en changelog
+
+CASO 3: Nuevo Análisis Requerido
+  1. Verifico si puedo obtenerlo desde Gold existente
+  2. Si no, creo nuevo script Silver → Gold para ese caso
+  3. Genero nuevo dataset Gold específico
+  4. Documento nuevo producto de datos
+
+CASO 4: Error Detectado en Datos Originales
+  1. NUNCA corrijo en Bronze
+  2. Documento el error en metadata de Bronze
+  3. Aplico corrección en transformación Silver
+  4. Documento la corrección en changelog de Silver
+
+
+================================================================================
+9. VENTAJAS PARA NUESTRO PROYECTO
+================================================================================
+
+✅ FLEXIBILIDAD TECNOLÓGICA:
+   - Bronze: Simple storage (CSVs)
+   - Silver: Procesamiento en R
+   - Gold: Consumo desde múltiples lenguajes (R, Python, JS, Scheme)
+
+✅ PREPARADO PARA TEMPORALES:
+   - Cuando lleguen datos de elecciones anteriores/futuras:
+     → Van a Bronze con timestamp
+     → Silver consolida todo
+     → Gold puede hacer análisis temporal
+
+✅ ANÁLISIS POR BARRIO:
+   - Cuando mapees MESA → BARRIO:
+     → Agregas mapping en Silver
+     → Creas nueva capa Gold nivel barrio
+     → Sin tocar Bronze ni Silver existente
+
+✅ MÚLTIPLES VISUALIZACIONES:
+   - Dashboard en JS consume Gold/visualizaciones/
+   - Mapas en Python consumen Gold/departamental/ y Gold/municipal/
+   - Reportes en R consumen cualquier nivel de Gold
+
+✅ COLABORACIÓN:
+   - Científico de datos puede trabajar en Silver
+   - Desarrollador web consume Gold
+   - No se pisan entre ellos
+
+
+================================================================================
+10. CONCLUSIÓN
+================================================================================
+
+Medallion Architecture es como tener una COCINA ORGANIZADA:
+
+  🥉 Bronze = Despensa con ingredientes originales (no se toca)
+  🥈 Silver = Ingredientes preparados y limpios (estándar)
+  🥇 Gold = Platos específicos listos para servir (variedad)
+
+Para nuestro proyecto electoral:
+  - Bronze preserva los datos originales de Registraduría
+  - Silver mantiene la base limpia a nivel MESA
+  - Gold genera agregaciones para análisis específicos
+
+Esta estructura permite:
+  ✓ Trazabilidad completa
+  ✓ Reproducibilidad
+  ✓ Flexibilidad para múltiples análisis
+  ✓ Preparación para datos temporales
+  ✓ Escalabilidad (agregar barrios, nuevas elecciones, etc.)
+
+
+================================================================================
+FIN DEL DOCUMENTO
+================================================================================
+
+Para más información sobre la implementación específica en este proyecto,
+consultar: docs/estructura-proyecto.txt

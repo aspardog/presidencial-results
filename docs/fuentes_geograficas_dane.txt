@@ -1,0 +1,147 @@
+================================================================================
+FUENTES GEOGRAFICAS RECOMENDADAS - DANE MGN 2025
+================================================================================
+
+Fecha de verificacion: 2026-06-15
+
+OBJETIVO
+--------------------------------------------------------------------------------
+
+Obtener limites oficiales y completos para generar mapas electorales de
+Colombia a nivel nacional, departamental y municipal. Opcionalmente, obtener
+manzanas censales para analisis urbanos futuros.
+
+
+FUENTE OFICIAL
+--------------------------------------------------------------------------------
+
+Marco Geoestadistico Nacional (MGN) del DANE:
+
+https://geoportal.dane.gov.co/servicios/descarga-y-metadatos/datos-geoestadisticos/
+
+
+DESCARGAS RECOMENDADAS
+--------------------------------------------------------------------------------
+
+1. Municipios 2025 - Shapefile
+
+https://geoportal.dane.gov.co/descargas/mgn_2025/MGN2025_MPIO_GRAFICO.zip
+
+Tamano verificado: aproximadamente 68 MB.
+
+
+2. Departamentos 2025 - Shapefile
+
+https://geoportal.dane.gov.co/descargas/mgn_2025/MGN2025_DPTO_POLITICO.zip
+
+Tamano verificado: aproximadamente 12 MB.
+
+
+3. Municipios 2025 - GeoPackage
+
+https://geoportal.dane.gov.co/descargas/mgn_2025/MGN2025_ADM_MPIO_GRAFICO_(Geopackage).zip
+
+Tamano verificado: aproximadamente 68 MB.
+
+
+4. Manzanas censales 2025 - GeoPackage
+
+https://geoportal.dane.gov.co/descargas/mgn_2025/MGN2025_URB_MANZANA_(Geopackage).zip
+
+Tamano verificado: aproximadamente 300 MB.
+
+
+5. Colombia 2025 - Todos los niveles geograficos
+
+https://geoportal.dane.gov.co/descargas/mgn_2025/MGN2025_00_COLOMBIA.zip
+
+Tamano publicado: aproximadamente 1,5 GB.
+
+
+FORMATO RECOMENDADO
+--------------------------------------------------------------------------------
+
+Para este proyecto se recomienda usar GeoPackage cuando este disponible:
+
+- Conserva nombres de columnas sin las limitaciones de Shapefile.
+- Evita administrar archivos separados .shp, .shx, .dbf y .prj.
+- Maneja mejor caracteres, tipos de datos y geometrías grandes.
+- Puede contener varias capas en un solo archivo.
+
+Shapefile sigue siendo valido si las herramientas disponibles no soportan
+GeoPackage.
+
+
+UBICACION EN EL PROYECTO
+--------------------------------------------------------------------------------
+
+Guardar las descargas originales y descomprimidas en:
+
+data/bronze/raw/geograficos/dane_mgn_2025/
+
+Bronze debe conservarse sin modificaciones.
+
+Los productos limpios y normalizados deben generarse posteriormente en:
+
+data/silver/geograficos/
+
+Nombres esperados por el pipeline actual:
+
+data/silver/geograficos/geometrias_deptos.geojson
+data/silver/geograficos/geometrias_municipios.geojson
+
+
+HOMOLOGACION CON DATOS ELECTORALES
+--------------------------------------------------------------------------------
+
+El MGN usa codigos DIVIPOLA/DANE de cinco digitos para municipios.
+
+Los datos electorales actuales usan codigos internos de Registraduria:
+
+- DEP: codigo electoral de departamento.
+- MUN: codigo municipal dentro del departamento.
+
+Estos codigos no coinciden directamente con DIVIPOLA en la mayoria de casos.
+
+Ejemplo:
+
+- Electoral: Baranoa, DEP=03, MUN=004.
+- DANE: Baranoa, codigo municipio=08078.
+
+Antes del cruce espacial se debe crear una tabla de homologacion:
+
+codigo_registraduria_departamento
+codigo_registraduria_municipio
+nombre_departamento
+nombre_municipio
+codigo_dane_departamento
+codigo_dane_municipio
+
+La homologacion debe validarse por departamento y nombre normalizado.
+
+
+MANZANAS
+--------------------------------------------------------------------------------
+
+La capa de manzanas censales 2025 es opcional. Puede complementar o reemplazar
+la capa catastral U_MANZANA actualmente disponible, cuya cobertura es parcial.
+
+Los resultados electorales no contienen votos por manzana. Para análisis a ese
+nivel seria necesario:
+
+1. Geolocalizar puestos de votacion.
+2. Relacionar puestos con manzanas, barrios o sectores.
+3. Documentar que la ubicacion del puesto no representa necesariamente el
+   lugar de residencia de los votantes.
+
+
+ESTADO
+--------------------------------------------------------------------------------
+
+- Enlaces oficiales verificados el 2026-06-15.
+- Descarga pendiente.
+- Transformacion Bronze a Silver pendiente.
+- Homologacion Registraduria-DIVIPOLA pendiente.
+- Generacion de GeoJSON electoral pendiente.
+
+================================================================================
