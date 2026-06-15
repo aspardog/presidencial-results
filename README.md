@@ -122,5 +122,6 @@ documentacion son los artefactos previstos para Git.
 
 ## Licencia
 
-La licencia del proyecto esta por definir. Los datos deben conservar y respetar
-los terminos de uso de sus fuentes oficiales.
+Este proyecto está licenciado bajo la licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.
+
+Los datos electorales deben conservar y respetar los términos de uso de sus fuentes oficiales (Registraduría Nacional del Estado Civil de Colombia).
