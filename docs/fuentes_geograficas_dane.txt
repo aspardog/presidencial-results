@@ -139,9 +139,11 @@ ESTADO
 --------------------------------------------------------------------------------
 
 - Enlaces oficiales verificados el 2026-06-15.
-- Descarga pendiente.
-- Transformacion Bronze a Silver pendiente.
+- Descarga completada: MGN2025_DPTO_POLITICO.zip (12 MB), MGN2025_MPIO_GRAFICO.zip (68 MB).
+- Transformacion Bronze a Silver completada:
+  * data/silver/geograficos/geometrias_deptos.geojson (43 MB, 33 departamentos)
+  * data/silver/geograficos/geometrias_municipios.geojson (244 MB, 1122 municipios)
 - Homologacion Registraduria-DIVIPOLA pendiente.
-- Generacion de GeoJSON electoral pendiente.
+- Generacion de GeoJSON electoral con datos de votos pendiente.
 
 ================================================================================
