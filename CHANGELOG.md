@@ -2,6 +2,30 @@
 
 Los cambios relevantes del proyecto se documentan en este archivo.
 
+## [1.1.0] - 2026-06-15
+
+### Added
+
+- Descarga automatica de shapefiles DANE MGN 2025 (departamentos y municipios).
+- Conversion de shapefiles a GeoJSON con encoding UTF-8 correcto.
+- Tabla de homologacion departamental Registraduria-DANE (33/33, 100%).
+- Tabla de homologacion municipal Registraduria-DANE (1122/1122, 100%).
+- GeoJSON electoral departamental con votos y ganador por departamento.
+- GeoJSON electoral municipal con votos y ganador por municipio.
+- Archivo SECURITY.md con politicas de seguridad.
+- Archivo LICENSE con licencia MIT.
+- Configuracion Dependabot para alertas de seguridad.
+- Repositorio publicado en GitHub: github.com/aspardog/presidencial-results.
+
+### Changed
+
+- README actualizado con estructura completa y productos GeoJSON.
+- Documentacion de fuentes geograficas actualizada con estado completado.
+
+### Removed
+
+- Archivo PLAN_DE_IMPLEMENTACION.txt (plan completado).
+
 ## [1.0.0] - 2026-06-15
 
 ### Added
@@ -38,6 +62,4 @@ Los cambios relevantes del proyecto se documentan en este archivo.
 ### Known limitations
 
 - Los 33 CSV originales de Bronze no estan disponibles.
-- Los GeoJSON estan pendientes de geometrías oficiales.
 - No hay suite automatizada de tests.
-- La licencia del proyecto esta pendiente de definicion.
