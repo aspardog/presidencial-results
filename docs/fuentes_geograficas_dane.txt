@@ -143,7 +143,23 @@ ESTADO
 - Transformacion Bronze a Silver completada:
   * data/silver/geograficos/geometrias_deptos.geojson (43 MB, 33 departamentos)
   * data/silver/geograficos/geometrias_municipios.geojson (244 MB, 1122 municipios)
-- Homologacion Registraduria-DIVIPOLA pendiente.
-- Generacion de GeoJSON electoral con datos de votos pendiente.
+- Homologacion Registraduria-DIVIPOLA completada:
+  * data/silver/metadata/electoral/homologacion_deptos.csv (33 departamentos, 100%)
+  * data/silver/metadata/electoral/homologacion_municipios.csv (1122 municipios, 100%)
+- GeoJSON electoral con datos de votos generados:
+  * data/gold/visualizaciones/mapas/geojson/departamentos_electoral.geojson (43 MB)
+  * data/gold/visualizaciones/mapas/geojson/municipios_electoral.geojson (244 MB)
+
+ATRIBUTOS EN GEOJSON ELECTORAL
+--------------------------------------------------------------------------------
+
+Cada feature incluye:
+- Geometria original del DANE
+- total_votos: votos totales en la unidad geografica
+- ganador: nombre del candidato ganador
+- votos_ganador: votos del candidato ganador
+- porcentaje_ganador: porcentaje del ganador sobre el total
+- segundo: nombre del segundo lugar
+- diferencia: votos de diferencia entre primero y segundo
 
 ================================================================================
