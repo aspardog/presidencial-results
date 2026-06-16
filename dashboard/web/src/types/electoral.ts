@@ -95,6 +95,52 @@ export interface ClavesTerritoriales {
 }
 
 // ============================================================
+// ANÁLISIS DE POLARIZACIÓN
+// ============================================================
+
+export interface PolarizacionNacional {
+  nep: number;
+  indice_bipartidista: number;
+  interpretacion_nep: string;
+}
+
+export interface PolarizacionGeografica {
+  desviacion_margenes: number;
+  coeficiente_variacion_margenes: number;
+  margen_promedio: number;
+  interpretacion: string;
+}
+
+export interface Competitividad {
+  ultra_competidos: number;
+  competidos: number;
+  ventaja_clara: number;
+  bastiones: number;
+}
+
+export type ClasificacionCompetitividad = 'ultra_competido' | 'competido' | 'ventaja_clara' | 'bastion';
+
+export interface DepartamentoPolarizacion {
+  codigo: string;
+  nombre: string;
+  nep: number;
+  indice_bipartidista: number;
+  margen: number;
+  clasificacion: ClasificacionCompetitividad;
+  ganador: string;
+  total_votos: number;
+}
+
+export interface AnalisisPolarizacion {
+  nacional: PolarizacionNacional;
+  polarizacion_geografica: PolarizacionGeografica;
+  competitividad: Competitividad;
+  departamentos_mas_polarizados: DepartamentoPolarizacion[];
+  departamentos_menos_polarizados: DepartamentoPolarizacion[];
+  por_departamento: DepartamentoPolarizacion[];
+}
+
+// ============================================================
 // DEPARTAMENTOS
 // ============================================================
 

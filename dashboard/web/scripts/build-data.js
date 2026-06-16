@@ -304,6 +304,157 @@ function buildMunicipiosPorDepartamento() {
   return porDepartamento;
 }
 
+// ============================================================
+// ANÁLISIS DE POLARIZACIÓN
+// ============================================================
+
+/**
+ * Calcula el Número Efectivo de Partidos (NEP) usando el índice Laakso-Taagepera.
+ * NEP = 1 / Σ(pi²) donde pi es la proporción de votos de cada candidato.
+ * Valores cercanos a 2 indican alta polarización bipartidista.
+ */
+function calcularNEP(proporciones) {
+  const sumaCuadrados = proporciones.reduce((sum, p) => sum + (p * p), 0);
+  return sumaCuadrados > 0 ? 1 / sumaCuadrados : 0;
+}
+
+/**
+ * Calcula el índice de polarización bipartidista.
+ * Es la suma de los porcentajes de los dos primeros candidatos.
+ * Valores cercanos a 100 indican alta concentración en dos opciones.
+ */
+function calcularIndiceBipartidista(candidatosOrdenados) {
+  if (candidatosOrdenados.length < 2) return 0;
+  return candidatosOrdenados[0].porcentaje + candidatosOrdenados[1].porcentaje;
+}
+
+/**
+ * Calcula estadísticas de dispersión para polarización geográfica.
+ */
+function calcularEstadisticasDispersion(valores) {
+  if (!valores.length) return { media: 0, desviacion: 0, coeficienteVariacion: 0 };
+
+  const media = valores.reduce((sum, v) => sum + v, 0) / valores.length;
+  const varianza = valores.reduce((sum, v) => sum + Math.pow(v - media, 2), 0) / valores.length;
+  const desviacion = Math.sqrt(varianza);
+  const coeficienteVariacion = media !== 0 ? (desviacion / Math.abs(media)) * 100 : 0;
+
+  return { media, desviacion, coeficienteVariacion };
+}
+
+function buildAnalisisPolarizacion() {
+  const data = readCSV('departamental/votos_por_candidato_depto.csv');
+  const candidatosNacionales = buildCandidatosNacional();
+
+  if (!data.length || !candidatosNacionales.length) {
+    return null;
+  }
+
+  // --- MÉTRICAS NACIONALES ---
+  const proporcionesNacionales = candidatosNacionales.map(c => c.porcentaje / 100);
+  const nepNacional = calcularNEP(proporcionesNacionales);
+  const indiceBipartidistaNacional = calcularIndiceBipartidista(candidatosNacionales);
+
+  // --- MÉTRICAS POR DEPARTAMENTO ---
+  const deptos = {};
+  data.forEach(row => {
+    const codigo = String(row.DEP).padStart(2, '0');
+    if (!deptos[codigo]) deptos[codigo] = [];
+    deptos[codigo].push(row);
+  });
+
+  const metricasPorDepartamento = [];
+  const margenes = [];
+  const indicesBipartidistas = [];
+  const neps = [];
+
+  Object.entries(deptos).forEach(([codigo, rows]) => {
+    rows.sort((a, b) => b.VOTOS - a.VOTOS);
+    if (rows.length < 2) return;
+
+    const totalVotos = rows.reduce((sum, r) => sum + r.VOTOS, 0);
+    const proporciones = rows.map(r => r.VOTOS / totalVotos);
+
+    // Calcular métricas
+    const nep = calcularNEP(proporciones);
+    const porcentajes = rows.map(r => (r.VOTOS / totalVotos) * 100);
+    const indiceBipartidista = porcentajes[0] + porcentajes[1];
+    const margen = porcentajes[0] - porcentajes[1];
+
+    // Clasificar competitividad
+    let clasificacion;
+    if (margen < 2) clasificacion = 'ultra_competido';
+    else if (margen < 10) clasificacion = 'competido';
+    else if (margen < 20) clasificacion = 'ventaja_clara';
+    else clasificacion = 'bastion';
+
+    margenes.push(margen);
+    indicesBipartidistas.push(indiceBipartidista);
+    neps.push(nep);
+
+    metricasPorDepartamento.push({
+      codigo,
+      nombre: rows[0].DEPNOMBRE_COMPLETO,
+      nep: Math.round(nep * 100) / 100,
+      indice_bipartidista: Math.round(indiceBipartidista * 100) / 100,
+      margen: Math.round(margen * 100) / 100,
+      clasificacion,
+      ganador: rows[0].CANNOMBRE,
+      total_votos: totalVotos,
+    });
+  });
+
+  // --- POLARIZACIÓN GEOGRÁFICA ---
+  const estadisticasMargen = calcularEstadisticasDispersion(margenes);
+  const estadisticasBipartidismo = calcularEstadisticasDispersion(indicesBipartidistas);
+  const estadisticasNEP = calcularEstadisticasDispersion(neps);
+
+  // Contar por clasificación
+  const conteoClasificacion = metricasPorDepartamento.reduce((acc, d) => {
+    acc[d.clasificacion] = (acc[d.clasificacion] || 0) + 1;
+    return acc;
+  }, {});
+
+  // Ordenar departamentos por polarización (menor NEP = más polarizado)
+  const deptosMasPolarizados = [...metricasPorDepartamento]
+    .sort((a, b) => a.nep - b.nep)
+    .slice(0, 5);
+
+  const deptosMenosPolarizados = [...metricasPorDepartamento]
+    .sort((a, b) => b.nep - a.nep)
+    .slice(0, 5);
+
+  return {
+    // Métricas nacionales
+    nacional: {
+      nep: Math.round(nepNacional * 100) / 100,
+      indice_bipartidista: Math.round(indiceBipartidistaNacional * 100) / 100,
+      interpretacion_nep: nepNacional < 2.5 ? 'Alta polarización' :
+                          nepNacional < 3.5 ? 'Polarización moderada' : 'Sistema fragmentado',
+    },
+    // Polarización geográfica
+    polarizacion_geografica: {
+      desviacion_margenes: Math.round(estadisticasMargen.desviacion * 100) / 100,
+      coeficiente_variacion_margenes: Math.round(estadisticasMargen.coeficienteVariacion * 100) / 100,
+      margen_promedio: Math.round(estadisticasMargen.media * 100) / 100,
+      interpretacion: estadisticasMargen.desviacion > 15 ? 'Alta división territorial' :
+                      estadisticasMargen.desviacion > 8 ? 'División territorial moderada' : 'Resultados homogéneos',
+    },
+    // Clasificación de competitividad
+    competitividad: {
+      ultra_competidos: conteoClasificacion.ultra_competido || 0,
+      competidos: conteoClasificacion.competido || 0,
+      ventaja_clara: conteoClasificacion.ventaja_clara || 0,
+      bastiones: conteoClasificacion.bastion || 0,
+    },
+    // Rankings
+    departamentos_mas_polarizados: deptosMasPolarizados,
+    departamentos_menos_polarizados: deptosMenosPolarizados,
+    // Todos los departamentos con métricas
+    por_departamento: metricasPorDepartamento.sort((a, b) => a.codigo.localeCompare(b.codigo)),
+  };
+}
+
 function buildClavesTerritoriales() {
   const data = readCSV('departamental/votos_por_candidato_depto.csv');
   const resumen = buildResumenNacional();
@@ -481,6 +632,9 @@ function main() {
   console.log('\nAnálisis:');
   const claves = buildClavesTerritoriales();
   writeJSON('analisis/claves-territoriales.json', claves);
+
+  const polarizacion = buildAnalisisPolarizacion();
+  if (polarizacion) writeJSON('analisis/polarizacion.json', polarizacion);
 
   console.log('\nGeoJSON:');
   copyGeoJSON();

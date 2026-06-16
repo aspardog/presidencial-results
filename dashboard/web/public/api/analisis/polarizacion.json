@@ -1,0 +1,455 @@
+{
+  "nacional": {
+    "nep": 2.63,
+    "indice_bipartidista": 86.32,
+    "interpretacion_nep": "Polarización moderada"
+  },
+  "polarizacion_geografica": {
+    "desviacion_margenes": 17.14,
+    "coeficiente_variacion_margenes": 74.59,
+    "margen_promedio": 22.98,
+    "interpretacion": "Alta división territorial"
+  },
+  "competitividad": {
+    "ultra_competidos": 2,
+    "competidos": 5,
+    "ventaja_clara": 12,
+    "bastiones": 14
+  },
+  "departamentos_mas_polarizados": [
+    {
+      "codigo": "17",
+      "nombre": "CHOCO",
+      "nep": 1.61,
+      "indice_bipartidista": 93.21,
+      "margen": 61.13,
+      "clasificacion": "bastion",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "total_votos": 142333
+    },
+    {
+      "codigo": "68",
+      "nombre": "VAUPES",
+      "nep": 1.63,
+      "indice_bipartidista": 92.04,
+      "margen": 61.5,
+      "clasificacion": "bastion",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "total_votos": 9030
+    },
+    {
+      "codigo": "64",
+      "nombre": "PUTUMAYO",
+      "nep": 1.75,
+      "indice_bipartidista": 92.45,
+      "margen": 53.63,
+      "clasificacion": "bastion",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "total_votos": 129239
+    },
+    {
+      "codigo": "25",
+      "nombre": "NORTE DE SANTANDER",
+      "nep": 1.83,
+      "indice_bipartidista": 89.16,
+      "margen": 53.87,
+      "clasificacion": "bastion",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 726070
+    },
+    {
+      "codigo": "23",
+      "nombre": "NARIÑO",
+      "nep": 1.85,
+      "indice_bipartidista": 91.86,
+      "margen": 48.17,
+      "clasificacion": "bastion",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "total_votos": 678804
+    }
+  ],
+  "departamentos_menos_polarizados": [
+    {
+      "codigo": "09",
+      "nombre": "CALDAS",
+      "nep": 3.12,
+      "indice_bipartidista": 75.94,
+      "margen": 15.11,
+      "clasificacion": "ventaja_clara",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 480749
+    },
+    {
+      "codigo": "16",
+      "nombre": "BOGOTA D.C.",
+      "nep": 2.93,
+      "indice_bipartidista": 80.83,
+      "margen": 4.04,
+      "clasificacion": "competido",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "total_votos": 4019154
+    },
+    {
+      "codigo": "24",
+      "nombre": "RISARALDA",
+      "nep": 2.81,
+      "indice_bipartidista": 82.57,
+      "margen": 8.91,
+      "clasificacion": "competido",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 494811
+    },
+    {
+      "codigo": "26",
+      "nombre": "QUINDIO",
+      "nep": 2.73,
+      "indice_bipartidista": 82.35,
+      "margen": 16.84,
+      "clasificacion": "ventaja_clara",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 287931
+    },
+    {
+      "codigo": "15",
+      "nombre": "CUNDINAMARCA",
+      "nep": 2.72,
+      "indice_bipartidista": 84.37,
+      "margen": 7.98,
+      "clasificacion": "competido",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 1568926
+    }
+  ],
+  "por_departamento": [
+    {
+      "codigo": "01",
+      "nombre": "ANTIOQUIA",
+      "nep": 2.57,
+      "indice_bipartidista": 81.45,
+      "margen": 29.54,
+      "clasificacion": "bastion",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 3108951
+    },
+    {
+      "codigo": "03",
+      "nombre": "ATLANTICO",
+      "nep": 2.2,
+      "indice_bipartidista": 94.46,
+      "margen": 11.5,
+      "clasificacion": "ventaja_clara",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "total_votos": 1044003
+    },
+    {
+      "codigo": "05",
+      "nombre": "BOLIVAR",
+      "nep": 2.2,
+      "indice_bipartidista": 93.74,
+      "margen": 16.23,
+      "clasificacion": "ventaja_clara",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "total_votos": 806593
+    },
+    {
+      "codigo": "07",
+      "nombre": "BOYACA",
+      "nep": 2.62,
+      "indice_bipartidista": 84.2,
+      "margen": 18.47,
+      "clasificacion": "ventaja_clara",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 657030
+    },
+    {
+      "codigo": "09",
+      "nombre": "CALDAS",
+      "nep": 3.12,
+      "indice_bipartidista": 75.94,
+      "margen": 15.11,
+      "clasificacion": "ventaja_clara",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 480749
+    },
+    {
+      "codigo": "11",
+      "nombre": "CAUCA",
+      "nep": 1.87,
+      "indice_bipartidista": 90.05,
+      "margen": 50.29,
+      "clasificacion": "bastion",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "total_votos": 659938
+    },
+    {
+      "codigo": "12",
+      "nombre": "CESAR",
+      "nep": 2.24,
+      "indice_bipartidista": 94.35,
+      "margen": 0.21,
+      "clasificacion": "ultra_competido",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "total_votos": 475985
+    },
+    {
+      "codigo": "13",
+      "nombre": "CORDOBA",
+      "nep": 2.13,
+      "indice_bipartidista": 95.03,
+      "margen": 18.02,
+      "clasificacion": "ventaja_clara",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "total_votos": 698100
+    },
+    {
+      "codigo": "15",
+      "nombre": "CUNDINAMARCA",
+      "nep": 2.72,
+      "indice_bipartidista": 84.37,
+      "margen": 7.98,
+      "clasificacion": "competido",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 1568926
+    },
+    {
+      "codigo": "16",
+      "nombre": "BOGOTA D.C.",
+      "nep": 2.93,
+      "indice_bipartidista": 80.83,
+      "margen": 4.04,
+      "clasificacion": "competido",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "total_votos": 4019154
+    },
+    {
+      "codigo": "17",
+      "nombre": "CHOCO",
+      "nep": 1.61,
+      "indice_bipartidista": 93.21,
+      "margen": 61.13,
+      "clasificacion": "bastion",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "total_votos": 142333
+    },
+    {
+      "codigo": "19",
+      "nombre": "HUILA",
+      "nep": 2.38,
+      "indice_bipartidista": 88.19,
+      "margen": 22.5,
+      "clasificacion": "bastion",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 537724
+    },
+    {
+      "codigo": "21",
+      "nombre": "MAGDALENA",
+      "nep": 2.24,
+      "indice_bipartidista": 93.43,
+      "margen": 13.27,
+      "clasificacion": "ventaja_clara",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "total_votos": 492755
+    },
+    {
+      "codigo": "23",
+      "nombre": "NARIÑO",
+      "nep": 1.85,
+      "indice_bipartidista": 91.86,
+      "margen": 48.17,
+      "clasificacion": "bastion",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "total_votos": 678804
+    },
+    {
+      "codigo": "24",
+      "nombre": "RISARALDA",
+      "nep": 2.81,
+      "indice_bipartidista": 82.57,
+      "margen": 8.91,
+      "clasificacion": "competido",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 494811
+    },
+    {
+      "codigo": "25",
+      "nombre": "NORTE DE SANTANDER",
+      "nep": 1.83,
+      "indice_bipartidista": 89.16,
+      "margen": 53.87,
+      "clasificacion": "bastion",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 726070
+    },
+    {
+      "codigo": "26",
+      "nombre": "QUINDIO",
+      "nep": 2.73,
+      "indice_bipartidista": 82.35,
+      "margen": 16.84,
+      "clasificacion": "ventaja_clara",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 287931
+    },
+    {
+      "codigo": "27",
+      "nombre": "SANTANDER",
+      "nep": 2.34,
+      "indice_bipartidista": 87.17,
+      "margen": 28.8,
+      "clasificacion": "bastion",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 1180629
+    },
+    {
+      "codigo": "28",
+      "nombre": "SUCRE",
+      "nep": 2.14,
+      "indice_bipartidista": 94.26,
+      "margen": 20.5,
+      "clasificacion": "bastion",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "total_votos": 395418
+    },
+    {
+      "codigo": "29",
+      "nombre": "TOLIMA",
+      "nep": 2.71,
+      "indice_bipartidista": 83.52,
+      "margen": 12.06,
+      "clasificacion": "ventaja_clara",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 659885
+    },
+    {
+      "codigo": "31",
+      "nombre": "VALLE DEL CAUCA",
+      "nep": 2.39,
+      "indice_bipartidista": 88.76,
+      "margen": 19.94,
+      "clasificacion": "ventaja_clara",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "total_votos": 2068619
+    },
+    {
+      "codigo": "40",
+      "nombre": "ARAUCA",
+      "nep": 2.44,
+      "indice_bipartidista": 88.28,
+      "margen": 17.3,
+      "clasificacion": "ventaja_clara",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 96093
+    },
+    {
+      "codigo": "44",
+      "nombre": "CAQUETA",
+      "nep": 2.46,
+      "indice_bipartidista": 89.26,
+      "margen": 9.21,
+      "clasificacion": "competido",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 166094
+    },
+    {
+      "codigo": "46",
+      "nombre": "CASANARE",
+      "nep": 2.17,
+      "indice_bipartidista": 87.69,
+      "margen": 37.31,
+      "clasificacion": "bastion",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 215184
+    },
+    {
+      "codigo": "48",
+      "nombre": "LA GUAJIRA",
+      "nep": 2.14,
+      "indice_bipartidista": 94.87,
+      "margen": 17.87,
+      "clasificacion": "ventaja_clara",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "total_votos": 249854
+    },
+    {
+      "codigo": "50",
+      "nombre": "GUAINIA",
+      "nep": 2.28,
+      "indice_bipartidista": 89.52,
+      "margen": 26.06,
+      "clasificacion": "bastion",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "total_votos": 11729
+    },
+    {
+      "codigo": "52",
+      "nombre": "META",
+      "nep": 2.51,
+      "indice_bipartidista": 86.24,
+      "margen": 20.1,
+      "clasificacion": "bastion",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 526391
+    },
+    {
+      "codigo": "54",
+      "nombre": "GUAVIARE",
+      "nep": 2.55,
+      "indice_bipartidista": 87.43,
+      "margen": 10.29,
+      "clasificacion": "ventaja_clara",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 32876
+    },
+    {
+      "codigo": "56",
+      "nombre": "SAN ANDRES Y PROVIDENCIA",
+      "nep": 2.4,
+      "indice_bipartidista": 90.9,
+      "margen": 0.83,
+      "clasificacion": "ultra_competido",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "total_votos": 17303
+    },
+    {
+      "codigo": "60",
+      "nombre": "AMAZONAS",
+      "nep": 2.34,
+      "indice_bipartidista": 88.54,
+      "margen": 24.65,
+      "clasificacion": "bastion",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "total_votos": 24672
+    },
+    {
+      "codigo": "64",
+      "nombre": "PUTUMAYO",
+      "nep": 1.75,
+      "indice_bipartidista": 92.45,
+      "margen": 53.63,
+      "clasificacion": "bastion",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "total_votos": 129239
+    },
+    {
+      "codigo": "68",
+      "nombre": "VAUPES",
+      "nep": 1.63,
+      "indice_bipartidista": 92.04,
+      "margen": 61.5,
+      "clasificacion": "bastion",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "total_votos": 9030
+    },
+    {
+      "codigo": "72",
+      "nombre": "VICHADA",
+      "nep": 2.38,
+      "indice_bipartidista": 91.31,
+      "margen": 2.27,
+      "clasificacion": "competido",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "total_votos": 20968
+    }
+  ]
+}
