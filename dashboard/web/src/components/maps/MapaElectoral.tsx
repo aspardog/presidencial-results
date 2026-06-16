@@ -51,7 +51,9 @@ export type NivelMapa = 'departamentos' | 'municipios';
 interface MapaElectoralProps {
   nivel?: NivelMapa;
   onDepartamentoClick?: (codigo: string, nombre: string) => void;
+  onReset?: () => void;
   departamentoSeleccionado?: string | null;
+  departamentoSeleccionadoNombre?: string | null;
 }
 
 const VIEWBOX_WIDTH = 1000;
@@ -62,7 +64,11 @@ const departamentosGeoJSON = departamentosData as unknown as FeatureCollection;
 
 function getCodigo(properties: FeatureProperties, isMunicipio: boolean): string {
   if (isMunicipio) {
-    return properties.mpio_cdpmp || `${properties.dpto_ccdgo}${properties.mpio_ccdgo}` || '';
+    if (properties.mpio_cdpmp) return properties.mpio_cdpmp;
+    if (properties.dpto_ccdgo && properties.mpio_ccdgo) {
+      return `${properties.dpto_ccdgo}${properties.mpio_ccdgo}`;
+    }
+    return '';
   }
   return getCodigoDepartamento(properties);
 }
@@ -161,7 +167,9 @@ function featureToPath(feature: GeoFeature, project: (position: Position) => Pos
 export default function MapaElectoral({
   nivel = 'departamentos',
   onDepartamentoClick,
+  onReset,
   departamentoSeleccionado,
+  departamentoSeleccionadoNombre,
 }: MapaElectoralProps) {
   const [hoveredCode, setHoveredCode] = useState<string | null>(null);
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
@@ -190,8 +198,20 @@ export default function MapaElectoral({
   }, [nivel, municipiosGeoJSON]);
 
   const isMunicipio = nivel === 'municipios';
-  const currentGeoJSON = isMunicipio ? municipiosGeoJSON : departamentosGeoJSON;
+  const currentGeoJSON = useMemo(() => {
+    if (!isMunicipio) return departamentosGeoJSON;
+    if (!municipiosGeoJSON) return null;
+    if (!departamentoSeleccionado) return municipiosGeoJSON;
+
+    return {
+      ...municipiosGeoJSON,
+      features: municipiosGeoJSON.features.filter(
+        (feature) => getCodigoDepartamento(feature.properties) === departamentoSeleccionado
+      ),
+    };
+  }, [departamentoSeleccionado, isMunicipio, municipiosGeoJSON]);
   const loadingMunicipios = nivel === 'municipios' && !municipiosGeoJSON && !municipiosError;
+  const emptyMunicipios = nivel === 'municipios' && !loadingMunicipios && currentGeoJSON?.features.length === 0;
 
   const paths = useMemo(() => {
     if (!currentGeoJSON?.features.length) return [];
@@ -209,9 +229,30 @@ export default function MapaElectoral({
   }, [currentGeoJSON, isMunicipio]);
 
   const labelText = isMunicipio ? 'municipio' : 'departamento';
+  const mapTitle = isMunicipio && departamentoSeleccionadoNombre
+    ? `Municipios de ${departamentoSeleccionadoNombre}`
+    : 'Colombia por departamentos';
 
   return (
     <div className="relative h-full min-h-[400px] w-full overflow-hidden rounded-gb-lg bg-gb-teal-50">
+      <div className="absolute left-4 top-4 z-10 flex max-w-[calc(100%-2rem)] flex-wrap items-center gap-2">
+        <div className="rounded-gb-md border border-gb-border bg-white px-3 py-2 shadow-gb-sm">
+          <p className="gb-eyebrow leading-none">{isMunicipio ? 'Vista municipal' : 'Vista departamental'}</p>
+          <p className="mt-1 max-w-[220px] truncate text-sm font-semibold text-gb-ink sm:max-w-[320px]">
+            {mapTitle}
+          </p>
+        </div>
+        {isMunicipio && onReset && (
+          <button
+            className="rounded-gb-md border border-gb-border-strong bg-white px-3 py-2 text-sm font-semibold text-gb-slate shadow-gb-sm transition hover:border-gb-teal-600 hover:text-gb-teal-700"
+            type="button"
+            onClick={onReset}
+          >
+            Volver a Colombia
+          </button>
+        )}
+      </div>
+
       {nivel === 'municipios' && loadingMunicipios && (
         <div className="absolute inset-0 flex items-center justify-center bg-gb-teal-50/80 z-10">
           <div className="text-center">
@@ -223,6 +264,11 @@ export default function MapaElectoral({
       {nivel === 'municipios' && municipiosError && (
         <div className="absolute inset-0 z-10 flex items-center justify-center bg-gb-teal-50/90 px-6 text-center">
           <p className="text-sm font-medium text-gb-slate">{municipiosError}</p>
+        </div>
+      )}
+      {emptyMunicipios && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-gb-teal-50/90 px-6 text-center">
+          <p className="text-sm font-medium text-gb-slate">No hay municipios disponibles para este departamento.</p>
         </div>
       )}
 
@@ -239,9 +285,7 @@ export default function MapaElectoral({
       >
         <rect width={VIEWBOX_WIDTH} height={VIEWBOX_HEIGHT} fill="#F1F8F9" />
         {paths.map(({ d, properties, codigo, codigoDepartamento, nombreDepartamento, nombre, color }) => {
-          const isActive = isMunicipio
-            ? departamentoSeleccionado === codigoDepartamento
-            : departamentoSeleccionado === codigo;
+          const isActive = !isMunicipio && departamentoSeleccionado === codigo;
           const isHovered = hoveredCode === codigo;
 
           return (
@@ -249,11 +293,11 @@ export default function MapaElectoral({
               key={codigo || nombre}
               d={d}
               fill={color}
-              fillOpacity={isActive || isHovered ? 0.92 : 0.74}
-              stroke={isActive ? '#15252A' : isMunicipio ? '#ffffff40' : '#ffffff'}
+              fillOpacity={isActive || isHovered ? 0.92 : isMunicipio ? 0.8 : 0.74}
+              stroke={isHovered || isActive ? '#15252A' : isMunicipio ? '#ffffff66' : '#ffffff'}
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeWidth={isActive ? 3 : isMunicipio ? 0.3 : 1.2}
+              strokeWidth={isHovered ? 1.5 : isMunicipio ? 0.7 : isActive ? 3 : 1.2}
               className="cursor-pointer transition-opacity duration-150 outline-none focus-visible:stroke-gb-ink"
               tabIndex={0}
               onClick={() => {

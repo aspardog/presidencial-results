@@ -42,10 +42,12 @@ export default function HomePage() {
 
   const handleDepartamentoClick = (codigo: string, nombre: string) => {
     setDepartamentoSeleccionado({ codigo, nombre });
+    setNivelMapa('municipios');
   };
 
   const handleReset = () => {
     setDepartamentoSeleccionado(null);
+    setNivelMapa('departamentos');
   };
 
   const ganador = mostrarNacional
@@ -88,18 +90,28 @@ export default function HomePage() {
               >
                 {(['departamentos', 'municipios'] as const).map((nivel) => {
                   const isSelected = nivelMapa === nivel;
+                  const isDisabled = nivel === 'municipios' && !departamentoSeleccionado;
                   return (
                     <button
                       key={nivel}
                       aria-selected={isSelected}
+                      disabled={isDisabled}
                       className={`rounded-gb-sm px-4 py-2 transition ${
                         isSelected
                           ? 'bg-gb-teal-700 text-white'
+                          : isDisabled
+                            ? 'cursor-not-allowed text-gb-slate-muted opacity-50'
                           : 'text-gb-slate hover:bg-gb-teal-50 hover:text-gb-teal-700'
                       }`}
                       role="tab"
                       type="button"
-                      onClick={() => setNivelMapa(nivel)}
+                      onClick={() => {
+                        if (nivel === 'departamentos') {
+                          handleReset();
+                          return;
+                        }
+                        setNivelMapa(nivel);
+                      }}
                     >
                       {nivel === 'departamentos' ? 'Departamentos' : 'Municipios'}
                     </button>
@@ -110,7 +122,9 @@ export default function HomePage() {
               <MapaElectoral
                 nivel={nivelMapa}
                 onDepartamentoClick={handleDepartamentoClick}
+                onReset={handleReset}
                 departamentoSeleccionado={departamentoSeleccionado?.codigo}
+                departamentoSeleccionadoNombre={departamentoSeleccionado?.nombre}
               />
               </div>
             </div>
