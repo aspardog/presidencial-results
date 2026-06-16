@@ -14,16 +14,19 @@ import type {
   CandidatoNacional,
   ResumenNacional,
   DepartamentoDetalle,
+  MunicipioResumen,
 } from '@/types/electoral';
 
 // Importar datos estáticos (build time)
 import resumenData from '../../public/api/nacional/resumen.json';
 import candidatosData from '../../public/api/nacional/candidatos.json';
 import departamentosDetalleData from '../../public/api/departamentos/detalle.json';
+import municipiosData from '../../public/api/departamentos/municipios.json';
 
 const resumen = resumenData as ResumenNacional;
 const candidatos = candidatosData as CandidatoNacional[];
 const departamentosDetalle = departamentosDetalleData as Record<string, DepartamentoDetalle>;
+const municipiosPorDepartamento = municipiosData as Record<string, MunicipioResumen[]>;
 
 export default function HomePage() {
   const [departamentoSeleccionado, setDepartamentoSeleccionado] = useState<{
@@ -37,6 +40,9 @@ export default function HomePage() {
 
   const mostrarNacional = !departamentoSeleccionado;
   const candidatosActuales = mostrarNacional ? candidatos : departamento?.candidatos;
+  const municipiosActuales = departamentoSeleccionado
+    ? municipiosPorDepartamento[departamentoSeleccionado.codigo] || []
+    : [];
   const opcionesDepartamento = useMemo(
     () => Object.values(departamentosDetalle).sort((a, b) => a.nombre.localeCompare(b.nombre, 'es')),
     []
@@ -187,6 +193,43 @@ export default function HomePage() {
                   }))}
                   maxVisible={5}
                 />
+              </div>
+            )}
+
+            {departamentoSeleccionado && municipiosActuales.length > 0 && (
+              <div className="gb-card p-4">
+                <div className="mb-3 flex items-baseline justify-between gap-3">
+                  <h3 className="gb-eyebrow">Municipios</h3>
+                  <span className="font-mono text-xs text-gb-slate-muted">
+                    Top {Math.min(municipiosActuales.length, 8)} de {municipiosActuales.length}
+                  </span>
+                </div>
+                <div className="max-h-[360px] space-y-3 overflow-y-auto pr-1">
+                  {municipiosActuales.slice(0, 8).map((municipio, index) => (
+                    <div
+                      key={municipio.codigo}
+                      className="rounded-gb-md border border-gb-border bg-gb-bg p-3"
+                    >
+                      <div className="flex items-baseline justify-between gap-3">
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-semibold text-gb-ink">
+                            {index + 1}. {municipio.nombre}
+                          </p>
+                          <p className="truncate text-xs text-gb-slate-muted">
+                            {municipio.ganador}
+                          </p>
+                        </div>
+                        <span className="shrink-0 font-mono text-sm font-semibold text-gb-teal-700">
+                          {municipio.porcentaje_ganador.toFixed(1)}%
+                        </span>
+                      </div>
+                      <div className="mt-2 flex items-center justify-between gap-3 font-mono text-xs text-gb-slate-muted">
+                        <span>{formatNumber(municipio.total_votos)} votos</span>
+                        <span>+{formatNumber(municipio.diferencia)}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </div>

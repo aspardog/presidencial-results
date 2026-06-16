@@ -114,3 +114,16 @@ export interface DepartamentoDetalle extends DepartamentoResumen {
   candidatos: CandidatoDepartamento[];
   total_municipios: number;
 }
+
+export interface MunicipioResumen {
+  codigo: string;
+  nombre: string;
+  total_votos: number;
+  ganador: string;
+  partido_ganador: string;
+  votos_ganador: number;
+  porcentaje_ganador: number;
+  segundo: string;
+  votos_segundo: number;
+  diferencia: number;
+}

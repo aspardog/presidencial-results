@@ -251,6 +251,59 @@ function buildDepartamentoDetalle() {
   return resultado;
 }
 
+function buildMunicipiosPorDepartamento() {
+  const data = readCSV('municipal/votos_por_candidato_mun.csv');
+  if (!data.length) return {};
+
+  const municipios = {};
+
+  data.forEach(row => {
+    const codigoDepartamento = String(row.DEP).padStart(2, '0');
+    const codigoMunicipio = String(row.MUN).padStart(3, '0');
+    const key = `${codigoDepartamento}_${codigoMunicipio}`;
+
+    if (!municipios[key]) {
+      municipios[key] = [];
+    }
+    municipios[key].push(row);
+  });
+
+  const porDepartamento = {};
+
+  Object.values(municipios).forEach(rows => {
+    rows.sort((a, b) => b.VOTOS - a.VOTOS);
+
+    const ganador = rows[0];
+    const segundo = rows[1];
+    const codigoDepartamento = String(ganador.DEP).padStart(2, '0');
+    const codigoMunicipio = String(ganador.MUN).padStart(3, '0');
+    const totalVotos = ganador.TOTAL_VOTOS_VALIDOS || rows.reduce((sum, row) => sum + row.VOTOS, 0);
+
+    if (!porDepartamento[codigoDepartamento]) {
+      porDepartamento[codigoDepartamento] = [];
+    }
+
+    porDepartamento[codigoDepartamento].push({
+      codigo: codigoMunicipio,
+      nombre: ganador.MUNNOMBRE,
+      total_votos: totalVotos,
+      ganador: ganador.CANNOMBRE,
+      partido_ganador: ganador.PARNOMBRE,
+      votos_ganador: ganador.VOTOS,
+      porcentaje_ganador: Math.round(ganador.PORCENTAJE_MUN * 100) / 100,
+      segundo: segundo?.CANNOMBRE || '',
+      votos_segundo: segundo?.VOTOS || 0,
+      diferencia: ganador.VOTOS - (segundo?.VOTOS || 0),
+    });
+  });
+
+  Object.values(porDepartamento).forEach(rows => {
+    rows.sort((a, b) => b.total_votos - a.total_votos || a.nombre.localeCompare(b.nombre, 'es'));
+  });
+
+  return porDepartamento;
+}
+
 function buildClavesTerritoriales() {
   const data = readCSV('departamental/votos_por_candidato_depto.csv');
   const resumen = buildResumenNacional();
@@ -421,6 +474,9 @@ function main() {
 
   const detalle = buildDepartamentoDetalle();
   if (Object.keys(detalle).length) writeJSON('departamentos/detalle.json', detalle);
+
+  const municipios = buildMunicipiosPorDepartamento();
+  if (Object.keys(municipios).length) writeJSON('departamentos/municipios.json', municipios);
 
   console.log('\nAnálisis:');
   const claves = buildClavesTerritoriales();

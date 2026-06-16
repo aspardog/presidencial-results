@@ -138,10 +138,11 @@ function validatePublicApi() {
   const candidatos = readJson('public/api/nacional/candidatos.json');
   const departamentos = readJson('public/api/departamentos/lista.json');
   const detalle = readJson('public/api/departamentos/detalle.json');
+  const municipios = readJson('public/api/departamentos/municipios.json');
   const claves = readJson('public/api/analisis/claves-territoriales.json');
   const geojson = readJson('public/api/mapas/departamentos.json');
 
-  if (!resumen || !Array.isArray(candidatos) || !Array.isArray(departamentos) || !detalle || !claves || !geojson) {
+  if (!resumen || !Array.isArray(candidatos) || !Array.isArray(departamentos) || !detalle || !municipios || !claves || !geojson) {
     return;
   }
 
@@ -168,15 +169,31 @@ function validatePublicApi() {
 
   assert(departamentos.length === 33, `Expected 33 departments, found ${departamentos.length}.`);
   assert(detalleCodes.size === 33, `Expected 33 department detail entries, found ${detalleCodes.size}.`);
+  assert(Object.keys(municipios).length === 33, `Expected municipal breakdown for 33 departments, found ${Object.keys(municipios).length}.`);
   assert(totalDepartamentos === resumen.votos_validos, 'Department vote total does not match national valid votes.');
 
   for (const depto of departamentos) {
     const codigo = normalizeCode(depto.codigo);
     const deptoDetalle = detalle[codigo];
+    const deptoMunicipios = municipios[codigo];
+
     assert(detalleCodes.has(codigo), `Department ${codigo} is missing from detalle.json.`);
     assert(depto.total_votos > 0, `Department ${codigo} has no votes.`);
     assert(deptoDetalle?.candidatos?.length >= 2, `Department ${codigo} needs at least two candidates.`);
     assert(deptoDetalle?.ganador === depto.ganador, `Department ${codigo} winner mismatch between lista and detalle.`);
+    assert(Array.isArray(deptoMunicipios), `Department ${codigo} is missing municipal breakdown.`);
+    assert(
+      deptoMunicipios?.length === deptoDetalle?.total_municipios,
+      `Department ${codigo} municipal breakdown count does not match total_municipios.`
+    );
+
+    for (const municipio of deptoMunicipios || []) {
+      assert(Boolean(municipio.codigo), `Department ${codigo} has a municipality without code.`);
+      assert(Boolean(municipio.nombre), `Department ${codigo} has a municipality without name.`);
+      assert(municipio.total_votos > 0, `Municipality ${codigo}-${municipio.codigo} has no votes.`);
+      assert(Boolean(municipio.ganador), `Municipality ${codigo}-${municipio.codigo} has no winner.`);
+      assert(municipio.votos_ganador > 0, `Municipality ${codigo}-${municipio.codigo} has no winner votes.`);
+    }
   }
 
   assert(geojson.type === 'FeatureCollection', 'Map file must be a GeoJSON FeatureCollection.');
