@@ -19,6 +19,9 @@ type FeatureProperties = {
   ganador?: string;
   votos_ganador?: number;
   porcentaje_ganador?: number;
+  segundo?: string;
+  votos_segundo?: number;
+  diferencia?: number;
 };
 
 type GeoFeature = {
@@ -267,6 +270,14 @@ export default function MapaElectoral({
           <p className="font-mono text-gb-teal-700">
             {formatNumber(tooltip.properties.votos_ganador || 0)} votos (
             {formatPercent(tooltip.properties.porcentaje_ganador || 0)})
+          </p>
+          {tooltip.properties.segundo && (
+            <p className="mt-2 text-gb-slate">
+              Segundo: <span className="font-medium">{tooltip.properties.segundo}</span>
+            </p>
+          )}
+          <p className="font-mono text-gb-slate-muted">
+            Margen: {formatNumber(tooltip.properties.diferencia || 0)} votos
           </p>
         </div>
       )}

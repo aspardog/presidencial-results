@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Header from '@/components/layout/Header';
 import MapaElectoral from '@/components/maps/MapaElectoral';
 import CardGanador from '@/components/cards/CardGanador';
@@ -37,13 +37,34 @@ export default function HomePage() {
 
   const mostrarNacional = !departamentoSeleccionado;
   const candidatosActuales = mostrarNacional ? candidatos : departamento?.candidatos;
+  const opcionesDepartamento = useMemo(
+    () => Object.values(departamentosDetalle).sort((a, b) => a.nombre.localeCompare(b.nombre, 'es')),
+    []
+  );
 
   const handleDepartamentoClick = (codigo: string, nombre: string) => {
+    if (departamentoSeleccionado?.codigo === codigo) {
+      handleReset();
+      return;
+    }
+
     setDepartamentoSeleccionado({ codigo, nombre });
   };
 
   const handleReset = () => {
     setDepartamentoSeleccionado(null);
+  };
+
+  const handleDepartamentoSelect = (codigo: string) => {
+    if (!codigo) {
+      handleReset();
+      return;
+    }
+
+    const detalle = departamentosDetalle[codigo];
+    if (detalle) {
+      setDepartamentoSeleccionado({ codigo, nombre: detalle.nombre });
+    }
   };
 
   const ganador = mostrarNacional
@@ -78,7 +99,41 @@ export default function HomePage() {
       <main className="p-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
-            <div className="gb-card flex h-[600px] flex-col p-4">
+            <div className="gb-card flex h-[600px] flex-col gap-3 p-4">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex min-w-0 items-center gap-2 text-sm font-semibold text-gb-slate">
+                  <button
+                    className={`shrink-0 transition ${departamentoSeleccionado ? 'text-gb-teal-700 hover:text-gb-teal-600' : 'text-gb-ink'}`}
+                    type="button"
+                    onClick={handleReset}
+                  >
+                    Colombia
+                  </button>
+                  {departamentoSeleccionado && (
+                    <>
+                      <span className="text-gb-slate-muted">/</span>
+                      <span className="truncate text-gb-ink">{departamentoSeleccionado.nombre}</span>
+                    </>
+                  )}
+                </div>
+
+                <label className="flex w-full items-center gap-2 sm:w-auto">
+                  <span className="sr-only">Seleccionar departamento</span>
+                  <select
+                    className="h-10 w-full rounded-gb-md border border-gb-border-strong bg-white px-3 text-sm font-semibold text-gb-slate shadow-gb-sm outline-none transition focus:border-gb-teal-600 sm:w-64"
+                    value={departamentoSeleccionado?.codigo || ''}
+                    onChange={(event) => handleDepartamentoSelect(event.target.value)}
+                  >
+                    <option value="">Seleccionar departamento</option>
+                    {opcionesDepartamento.map((opcion) => (
+                      <option key={opcion.codigo} value={opcion.codigo}>
+                        {opcion.nombre}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+
               <div className="min-h-0 flex-1">
                 <MapaElectoral
                   onDepartamentoClick={handleDepartamentoClick}
