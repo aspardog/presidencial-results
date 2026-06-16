@@ -2,6 +2,30 @@
 
 Los cambios relevantes del proyecto se documentan en este archivo.
 
+## [1.2.0] - 2026-06-15
+
+### Added
+
+- Dashboard desplegado en Vercel: https://voto-colombia-2026.vercel.app
+- Seccion "Hallazgos clave" con analisis electoral automatizado.
+- Importacion estatica de datos JSON para compatibilidad con static export.
+- Componente de lecturas editoriales con insights principales.
+- Visualizacion de departamentos decisivos y elecciones cerradas.
+- Bastiones electorales por candidato con porcentajes departamentales.
+
+### Changed
+
+- Migracion a Next.js static export (`output: 'export'`).
+- Datos embebidos en build time en lugar de fetch HTTP.
+- Rediseno del mapa electoral con SVG nativo (sin Mapbox).
+- Estilos actualizados con branding Global Bridge Consultancy.
+- GeoJSON renombrado de `.geojson` a `.json` para compatibilidad webpack.
+
+### Fixed
+
+- Compatibilidad con Vercel deployment protection.
+- Build script separado para desarrollo local vs produccion.
+
 ## [1.1.0] - 2026-06-15
 
 ### Added

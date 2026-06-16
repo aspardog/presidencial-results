@@ -2,32 +2,119 @@
 
 Dashboard interactivo para visualizar resultados electorales presidenciales de Colombia.
 
+**Demo en vivo:** https://voto-colombia-2026.vercel.app
+
 ## Arquitectura
 
 ```
 dashboard/
-├── api/          # Backend FastAPI (Python)
-├── web/          # Frontend Next.js (React + TypeScript)
+├── api/          # Backend FastAPI (opcional, para desarrollo)
+├── web/          # Frontend Next.js (static export)
 └── docker-compose.yml
 ```
 
 ## Stack Tecnologico
 
-- **Frontend:** Next.js 14, React 18, TypeScript, Tailwind CSS
-- **Mapas:** Mapbox GL JS
+- **Frontend:** Next.js 15, React 18, TypeScript, Tailwind CSS
+- **Mapas:** SVG nativo con proyeccion geografica
 - **Graficos:** Nivo (basado en D3)
-- **Backend:** FastAPI, Pydantic, Pandas
-- **Datos:** Consume capa Gold del proyecto (Medallion Architecture)
+- **Deploy:** Vercel (static export)
+- **Datos:** JSON estaticos embebidos en build time
+
+## Caracteristicas
+
+- Mapa electoral interactivo por departamento
+- Resultados por candidato con barras comparativas
+- Seleccion de departamento para ver resultados locales
+- Seccion "Hallazgos clave" con analisis automatizado:
+  - Lecturas editoriales del resultado
+  - Metricas principales (resultado, competitividad, ventajas)
+  - Departamentos donde se definio la eleccion
+  - Elecciones mas cerradas
+  - Bastiones electorales por candidato
 
 ## Desarrollo Local
 
 ### Requisitos
 
 - Node.js 20+
-- Python 3.11+
-- Token de Mapbox (opcional, hay uno por defecto para desarrollo)
 
-### Backend (API)
+### Frontend (Web)
+
+```bash
+cd web
+
+# Instalar dependencias
+npm install
+
+# Ejecutar en desarrollo
+npm run dev
+```
+
+Dashboard disponible en: http://localhost:3000
+
+### Regenerar datos (opcional)
+
+Si necesitas actualizar los datos desde la capa Gold:
+
+```bash
+cd web
+
+# Regenerar JSON desde datos Gold
+npm run build:data
+
+# Build completo (datos + Next.js)
+npm run build:full
+```
+
+## Deploy
+
+El dashboard usa Next.js static export. Para desplegar:
+
+```bash
+cd web
+
+# Build de produccion
+npm run build
+
+# Deploy a Vercel
+vercel --prod
+```
+
+## Estructura de Datos
+
+Los datos se importan estaticamente desde `public/api/`:
+
+| Archivo | Contenido |
+|---------|-----------|
+| `nacional/resumen.json` | Resumen ejecutivo nacional |
+| `nacional/candidatos.json` | Lista de candidatos con votos |
+| `departamentos/lista.json` | Lista de departamentos |
+| `departamentos/detalle.json` | Detalle por departamento |
+| `analisis/claves-territoriales.json` | Hallazgos clave |
+| `mapas/departamentos.json` | GeoJSON de departamentos |
+
+## Componentes Principales
+
+| Componente | Descripcion |
+|------------|-------------|
+| `MapaElectoral` | Mapa SVG interactivo de Colombia |
+| `CardGanador` | Tarjeta de candidato con votos |
+| `BarrasCandidatos` | Grafico de barras comparativo |
+| `HallazgosClave` | Seccion de analisis electoral |
+| `ClavesTerritoriales` | Detalles territoriales |
+
+## Branding
+
+El dashboard usa el sistema de diseno Global Bridge Consultancy:
+
+- **Tipografia:** Fraunces (display), IBM Plex Sans (body), IBM Plex Mono (datos)
+- **Colores:** Paleta teal con acentos para candidatos
+- **Componentes:** Cards con bordes sutiles, eyebrows en mayusculas
+
+## API Backend (Opcional)
+
+El backend FastAPI es opcional para desarrollo local con datos dinamicos:
 
 ```bash
 cd api
@@ -45,69 +132,3 @@ uvicorn app.main:app --reload --port 8000
 
 API disponible en: http://localhost:8000
 Documentacion: http://localhost:8000/docs
-
-### Frontend (Web)
-
-```bash
-cd web
-
-# Instalar dependencias
-npm install
-
-# Ejecutar en desarrollo
-npm run dev
-```
-
-Dashboard disponible en: http://localhost:3000
-
-## Endpoints API
-
-| Endpoint | Descripcion |
-|----------|-------------|
-| `GET /api/v1/nacional/resumen` | Resumen ejecutivo nacional |
-| `GET /api/v1/nacional/candidatos` | Lista de candidatos con votos |
-| `GET /api/v1/departamentos` | Lista de departamentos |
-| `GET /api/v1/departamentos/{codigo}` | Detalle de un departamento |
-| `GET /api/v1/mapas/departamentos` | GeoJSON de departamentos |
-
-## Docker
-
-```bash
-# Construir y ejecutar
-docker-compose up --build
-
-# Solo backend
-docker-compose up api
-
-# Solo frontend
-docker-compose up web
-```
-
-## Datos
-
-El dashboard consume datos de la capa Gold del proyecto:
-
-- `data/gold/nacional/` - Resultados nacionales
-- `data/gold/departamental/` - Resultados por departamento
-- `data/gold/visualizaciones/mapas/simplified/` - GeoJSON optimizado
-
-Los datos se generan ejecutando el pipeline R:
-
-```bash
-Rscript scripts/02_silver_to_gold/ejecutar_todas_agregaciones.R
-```
-
-## Variables de Entorno
-
-### Frontend (.env.local)
-
-```env
-NEXT_PUBLIC_API_URL=http://localhost:8000
-NEXT_PUBLIC_MAPBOX_TOKEN=tu_token_aqui
-```
-
-### Backend (.env)
-
-```env
-# No requiere configuracion adicional por defecto
-```

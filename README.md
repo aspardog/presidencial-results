@@ -1,7 +1,11 @@
 # Analisis Electoral Colombia
 
 Pipeline de datos para resultados electorales presidenciales de Colombia,
-organizado con arquitectura Medallion:
+organizado con arquitectura Medallion.
+
+**Dashboard en vivo:** https://voto-colombia-2026.vercel.app
+
+Pipeline de datos:
 
 ```text
 Bronze (origen) -> Silver (datos limpios) -> Gold (productos analiticos)
