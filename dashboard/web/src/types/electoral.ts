@@ -141,6 +141,77 @@ export interface AnalisisPolarizacion {
 }
 
 // ============================================================
+// POLARIZACIÓN MUNICIPAL
+// ============================================================
+
+export interface ResumenMunicipal {
+  total_municipios: number;
+  municipios_ganador_nacional: number;
+  municipios_segundo_nacional: number;
+  municipios_otros: number;
+  porcentaje_ganador: number;
+  porcentaje_segundo: number;
+  ganador_nacional: string;
+  segundo_nacional: string;
+}
+
+export interface EstadisticasMunicipales {
+  nep_promedio: number;
+  nep_desviacion: number;
+  margen_promedio: number;
+  margen_desviacion: number;
+}
+
+export interface GanadorHeterogeneidad {
+  nombre: string;
+  count: number;
+  porcentaje: number;
+}
+
+export type NivelHeterogeneidad = 'muy_heterogeneo' | 'heterogeneo' | 'moderado' | 'homogeneo';
+
+export interface HeterogeneidadDepartamental {
+  codigo: string;
+  nombre: string;
+  total_municipios: number;
+  desviacion_margenes: number;
+  margen_promedio: number;
+  nivel_heterogeneidad: NivelHeterogeneidad;
+  ganadores: GanadorHeterogeneidad[];
+  dominancia_ganador: number;
+  es_dividido: boolean;
+}
+
+export interface MunicipioPolarizacion {
+  codigo_dep: string;
+  codigo_mun: string;
+  nombre_dep: string;
+  nombre_mun: string;
+  total_votos: number;
+  ganador: string;
+  porcentaje_ganador: number;
+  segundo: string;
+  porcentaje_segundo: number;
+  margen: number;
+  nep: number;
+  indice_bipartidista: number;
+  clasificacion: ClasificacionCompetitividad;
+}
+
+export interface PolarizacionMunicipal {
+  resumen: ResumenMunicipal;
+  estadisticas: EstadisticasMunicipales;
+  competitividad_municipal: Competitividad;
+  heterogeneidad_departamental: HeterogeneidadDepartamental[];
+  departamentos_mas_divididos: HeterogeneidadDepartamental[];
+  departamentos_mas_homogeneos: HeterogeneidadDepartamental[];
+  municipios_mas_polarizados: MunicipioPolarizacion[];
+  municipios_mas_competidos: MunicipioPolarizacion[];
+  bastiones_ganador: MunicipioPolarizacion[];
+  bastiones_segundo: MunicipioPolarizacion[];
+}
+
+// ============================================================
 // DEPARTAMENTOS
 // ============================================================
 

@@ -455,6 +455,217 @@ function buildAnalisisPolarizacion() {
   };
 }
 
+/**
+ * Análisis de polarización a nivel municipal.
+ * Incluye heterogeneidad intradepartamental, municipios extremos y fragmentación.
+ */
+function buildPolarizacionMunicipal() {
+  const data = readCSV('municipal/votos_por_candidato_mun.csv');
+  const resumen = buildResumenNacional();
+
+  if (!data.length || !resumen) {
+    return null;
+  }
+
+  const ganadorNacional = resumen.ganador;
+  const segundoNacional = resumen.segundo;
+
+  // Agrupar por municipio
+  const municipios = {};
+  data.forEach(row => {
+    const codigoDep = String(row.DEP).padStart(2, '0');
+    const codigoMun = String(row.MUN).padStart(3, '0');
+    const key = `${codigoDep}_${codigoMun}`;
+
+    if (!municipios[key]) {
+      municipios[key] = {
+        codigo_dep: codigoDep,
+        codigo_mun: codigoMun,
+        nombre_dep: row.DEPNOMBRE_COMPLETO,
+        nombre_mun: row.MUNNOMBRE,
+        candidatos: [],
+      };
+    }
+    municipios[key].candidatos.push({
+      nombre: row.CANNOMBRE,
+      partido: row.PARNOMBRE,
+      votos: row.VOTOS,
+      porcentaje: row.PORCENTAJE_MUN,
+    });
+  });
+
+  // Calcular métricas por municipio
+  const metricasMunicipales = [];
+
+  Object.values(municipios).forEach(mun => {
+    mun.candidatos.sort((a, b) => b.votos - a.votos);
+    if (mun.candidatos.length < 2) return;
+
+    const totalVotos = mun.candidatos.reduce((sum, c) => sum + c.votos, 0);
+    if (totalVotos === 0) return;
+
+    const proporciones = mun.candidatos.map(c => c.votos / totalVotos);
+    const nep = calcularNEP(proporciones);
+
+    const ganador = mun.candidatos[0];
+    const segundo = mun.candidatos[1];
+    const margen = ganador.porcentaje - segundo.porcentaje;
+    const indiceBipartidista = ganador.porcentaje + segundo.porcentaje;
+
+    // Clasificar competitividad
+    let clasificacion;
+    if (margen < 2) clasificacion = 'ultra_competido';
+    else if (margen < 10) clasificacion = 'competido';
+    else if (margen < 20) clasificacion = 'ventaja_clara';
+    else clasificacion = 'bastion';
+
+    metricasMunicipales.push({
+      codigo_dep: mun.codigo_dep,
+      codigo_mun: mun.codigo_mun,
+      nombre_dep: mun.nombre_dep,
+      nombre_mun: mun.nombre_mun,
+      total_votos: totalVotos,
+      ganador: ganador.nombre,
+      porcentaje_ganador: Math.round(ganador.porcentaje * 100) / 100,
+      segundo: segundo.nombre,
+      porcentaje_segundo: Math.round(segundo.porcentaje * 100) / 100,
+      margen: Math.round(margen * 100) / 100,
+      nep: Math.round(nep * 100) / 100,
+      indice_bipartidista: Math.round(indiceBipartidista * 100) / 100,
+      clasificacion,
+    });
+  });
+
+  // --- HETEROGENEIDAD INTRADEPARTAMENTAL ---
+  const porDepartamento = {};
+  metricasMunicipales.forEach(m => {
+    if (!porDepartamento[m.codigo_dep]) {
+      porDepartamento[m.codigo_dep] = {
+        codigo: m.codigo_dep,
+        nombre: m.nombre_dep,
+        municipios: [],
+        margenes: [],
+        ganadores: {},
+      };
+    }
+    porDepartamento[m.codigo_dep].municipios.push(m);
+    porDepartamento[m.codigo_dep].margenes.push(m.margen);
+    porDepartamento[m.codigo_dep].ganadores[m.ganador] =
+      (porDepartamento[m.codigo_dep].ganadores[m.ganador] || 0) + 1;
+  });
+
+  const heterogeneidadDepartamental = Object.values(porDepartamento).map(dep => {
+    const stats = calcularEstadisticasDispersion(dep.margenes);
+    const totalMunicipios = dep.municipios.length;
+
+    // Contar ganadores
+    const ganadoresArray = Object.entries(dep.ganadores)
+      .map(([nombre, count]) => ({ nombre, count, porcentaje: (count / totalMunicipios) * 100 }))
+      .sort((a, b) => b.count - a.count);
+
+    // Calcular fragmentación (% del ganador principal)
+    const dominancia = ganadoresArray[0]?.porcentaje || 0;
+    const esDividido = ganadoresArray.length > 1 && ganadoresArray[1]?.porcentaje > 20;
+
+    // Clasificar heterogeneidad
+    let nivelHeterogeneidad;
+    if (stats.desviacion > 25) nivelHeterogeneidad = 'muy_heterogeneo';
+    else if (stats.desviacion > 15) nivelHeterogeneidad = 'heterogeneo';
+    else if (stats.desviacion > 8) nivelHeterogeneidad = 'moderado';
+    else nivelHeterogeneidad = 'homogeneo';
+
+    return {
+      codigo: dep.codigo,
+      nombre: dep.nombre,
+      total_municipios: totalMunicipios,
+      desviacion_margenes: Math.round(stats.desviacion * 100) / 100,
+      margen_promedio: Math.round(stats.media * 100) / 100,
+      nivel_heterogeneidad: nivelHeterogeneidad,
+      ganadores: ganadoresArray.slice(0, 3),
+      dominancia_ganador: Math.round(dominancia * 100) / 100,
+      es_dividido: esDividido,
+    };
+  }).sort((a, b) => b.desviacion_margenes - a.desviacion_margenes);
+
+  // --- MUNICIPIOS EXTREMOS ---
+  // Top municipios más polarizados (menor NEP)
+  const municipiosMasPolarizados = [...metricasMunicipales]
+    .filter(m => m.total_votos >= 1000) // Filtrar municipios muy pequeños
+    .sort((a, b) => a.nep - b.nep)
+    .slice(0, 10);
+
+  // Top municipios más competidos (menor margen)
+  const municipiosMasCompetidos = [...metricasMunicipales]
+    .filter(m => m.total_votos >= 1000)
+    .sort((a, b) => a.margen - b.margen)
+    .slice(0, 10);
+
+  // Top bastiones de cada candidato principal
+  const bastionesGanador = [...metricasMunicipales]
+    .filter(m => m.ganador === ganadorNacional && m.total_votos >= 5000)
+    .sort((a, b) => b.porcentaje_ganador - a.porcentaje_ganador)
+    .slice(0, 10);
+
+  const bastionesSegundo = [...metricasMunicipales]
+    .filter(m => m.ganador === segundoNacional && m.total_votos >= 5000)
+    .sort((a, b) => b.porcentaje_ganador - a.porcentaje_ganador)
+    .slice(0, 10);
+
+  // --- FRAGMENTACIÓN NACIONAL ---
+  const totalMunicipiosNacional = metricasMunicipales.length;
+  const municipiosGanadorNacional = metricasMunicipales.filter(m => m.ganador === ganadorNacional).length;
+  const municipiosSegundoNacional = metricasMunicipales.filter(m => m.ganador === segundoNacional).length;
+  const municipiosOtros = totalMunicipiosNacional - municipiosGanadorNacional - municipiosSegundoNacional;
+
+  // Conteo por clasificación
+  const conteoClasificacion = metricasMunicipales.reduce((acc, m) => {
+    acc[m.clasificacion] = (acc[m.clasificacion] || 0) + 1;
+    return acc;
+  }, {});
+
+  // Estadísticas generales
+  const todosLosMargenes = metricasMunicipales.map(m => m.margen);
+  const todosLosNEP = metricasMunicipales.map(m => m.nep);
+  const statsMargen = calcularEstadisticasDispersion(todosLosMargenes);
+  const statsNEP = calcularEstadisticasDispersion(todosLosNEP);
+
+  return {
+    resumen: {
+      total_municipios: totalMunicipiosNacional,
+      municipios_ganador_nacional: municipiosGanadorNacional,
+      municipios_segundo_nacional: municipiosSegundoNacional,
+      municipios_otros: municipiosOtros,
+      porcentaje_ganador: Math.round((municipiosGanadorNacional / totalMunicipiosNacional) * 10000) / 100,
+      porcentaje_segundo: Math.round((municipiosSegundoNacional / totalMunicipiosNacional) * 10000) / 100,
+      ganador_nacional: ganadorNacional,
+      segundo_nacional: segundoNacional,
+    },
+    estadisticas: {
+      nep_promedio: Math.round(statsNEP.media * 100) / 100,
+      nep_desviacion: Math.round(statsNEP.desviacion * 100) / 100,
+      margen_promedio: Math.round(statsMargen.media * 100) / 100,
+      margen_desviacion: Math.round(statsMargen.desviacion * 100) / 100,
+    },
+    competitividad_municipal: {
+      ultra_competidos: conteoClasificacion.ultra_competido || 0,
+      competidos: conteoClasificacion.competido || 0,
+      ventaja_clara: conteoClasificacion.ventaja_clara || 0,
+      bastiones: conteoClasificacion.bastion || 0,
+    },
+    heterogeneidad_departamental: heterogeneidadDepartamental,
+    departamentos_mas_divididos: heterogeneidadDepartamental
+      .filter(d => d.es_dividido)
+      .slice(0, 10),
+    departamentos_mas_homogeneos: [...heterogeneidadDepartamental]
+      .sort((a, b) => a.desviacion_margenes - b.desviacion_margenes)
+      .slice(0, 5),
+    municipios_mas_polarizados: municipiosMasPolarizados,
+    municipios_mas_competidos: municipiosMasCompetidos,
+    bastiones_ganador: bastionesGanador,
+    bastiones_segundo: bastionesSegundo,
+  };
+}
+
 function buildClavesTerritoriales() {
   const data = readCSV('departamental/votos_por_candidato_depto.csv');
   const resumen = buildResumenNacional();
@@ -635,6 +846,9 @@ function main() {
 
   const polarizacion = buildAnalisisPolarizacion();
   if (polarizacion) writeJSON('analisis/polarizacion.json', polarizacion);
+
+  const polarizacionMunicipal = buildPolarizacionMunicipal();
+  if (polarizacionMunicipal) writeJSON('analisis/polarizacion-municipal.json', polarizacionMunicipal);
 
   console.log('\nGeoJSON:');
   copyGeoJSON();
