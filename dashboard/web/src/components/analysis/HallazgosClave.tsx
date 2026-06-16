@@ -88,28 +88,28 @@ export default function HallazgosClave() {
               Departamentos que más ampliaron la diferencia nacional.
             </p>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-2">
             {claves.ventajas_decisivas.slice(0, 5).map((depto, index) => {
-              const widthPercent = Math.max((depto.ventaja / maxVentaja) * 100, 4);
+              const widthPercent = Math.max((depto.ventaja / maxVentaja) * 100, 15);
               const ordinal = `${index + 1}°`;
 
               return (
-                <div key={depto.codigo} className="flex items-center gap-3">
-                  <span className="w-6 shrink-0 font-mono text-xs text-gb-slate-muted">{ordinal}</span>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-baseline justify-between gap-2 mb-1">
-                      <span className="font-medium text-sm text-gb-ink truncate">{depto.nombre}</span>
-                      <span className="shrink-0 font-mono text-sm text-gb-teal-700">
-                        +{formatNumber(depto.ventaja)}
-                      </span>
-                    </div>
-                    <div className="h-1.5 overflow-hidden rounded-full bg-gb-teal-100">
-                      <div
-                        className="h-full rounded-full bg-gb-teal-700"
-                        style={{ width: `${widthPercent}%` }}
-                      />
-                    </div>
+                <div
+                  key={depto.codigo}
+                  className="relative flex items-center justify-between gap-3 rounded-md px-3 py-2 overflow-hidden"
+                >
+                  {/* Barra de fondo */}
+                  <div
+                    className="absolute inset-y-0 left-0 bg-gb-teal-50"
+                    style={{ width: `${widthPercent}%` }}
+                  />
+                  <div className="relative flex items-center gap-2 min-w-0">
+                    <span className="font-mono text-xs text-gb-slate-muted">{ordinal}</span>
+                    <span className="font-medium text-sm text-gb-ink truncate">{depto.nombre}</span>
                   </div>
+                  <span className="relative shrink-0 font-mono text-sm font-medium text-gb-teal-700">
+                    +{formatNumber(depto.ventaja)}
+                  </span>
                 </div>
               );
             })}

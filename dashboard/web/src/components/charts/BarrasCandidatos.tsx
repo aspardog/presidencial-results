@@ -13,9 +13,8 @@ export default function BarrasCandidatos({
   candidatos,
   maxVisible = 6,
 }: BarrasCandidatosProps) {
-  // Tomar solo los primeros N candidatos
   const data = candidatos.slice(0, maxVisible).map((c) => ({
-    nombre: c.nombre.split(' ').slice(0, 2).join(' '), // Acortar nombre
+    nombre: c.nombre.split(' ').slice(0, 2).join(' '),
     votos: c.votos,
     porcentaje: c.porcentaje,
     color: c.color,
@@ -60,9 +59,9 @@ export default function BarrasCandidatos({
           axis: {
             ticks: {
               text: {
-                fontFamily: '"IBM Plex Sans", system-ui, sans-serif',
+                fontFamily: 'var(--gb-font-body)',
                 fontSize: 12,
-                fill: '#5E7074', // gb-slate-muted
+                fill: '#5E7074',
               },
             },
           },

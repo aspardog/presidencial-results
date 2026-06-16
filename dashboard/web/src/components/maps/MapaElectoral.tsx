@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { getColorGanador } from '@/lib/colors';
+import { getCodigoElectoralDesdeDane } from '@/lib/departamentos';
 import { formatNumber, formatPercent } from '@/lib/formatters';
 
 // Importar GeoJSON estáticamente
@@ -53,7 +54,8 @@ const PADDING = 24;
 const geojson = geojsonData as unknown as DepartamentoFeatureCollection;
 
 function getCodigo(properties: DepartamentoProperties): string {
-  return properties.dpto_ccdgo || properties.DPTO_CCDGO || '';
+  const codigoDane = properties.dpto_ccdgo || properties.DPTO_CCDGO || '';
+  return getCodigoElectoralDesdeDane(codigoDane);
 }
 
 function getNombre(properties: DepartamentoProperties): string {

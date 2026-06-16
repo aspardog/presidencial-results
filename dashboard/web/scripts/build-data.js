@@ -115,10 +115,15 @@ function buildResumenNacional() {
   const segundo = candidatos[1];
 
   // Métricas de participación
-  const votosValidos = metricas.find(m => m.TIPO_VOTO === 'CANDIDATO')?.TOTAL_VOTOS || 0;
-  const votosBlancos = metricas.find(m => m.TIPO_VOTO === 'BLANCO')?.TOTAL_VOTOS || 0;
-  const votosNulos = metricas.find(m => m.TIPO_VOTO === 'NULO')?.TOTAL_VOTOS || 0;
-  const votosNoMarcados = metricas.find(m => m.TIPO_VOTO === 'NO_MARCADO')?.TOTAL_VOTOS || 0;
+  const votosPorTipo = (tipo) => {
+    const row = metricas.find(m => m.TIPO_VOTO === tipo);
+    return row?.TOTAL_VOTOS || row?.TOTAL || 0;
+  };
+
+  const votosValidos = votosPorTipo('CANDIDATO') || candidatos.reduce((sum, row) => sum + row.TOTAL_VOTOS, 0);
+  const votosBlancos = votosPorTipo('BLANCO');
+  const votosNulos = votosPorTipo('NULO');
+  const votosNoMarcados = votosPorTipo('NO_MARCADO');
   const totalVotos = votosValidos + votosBlancos + votosNulos + votosNoMarcados;
 
   return {
@@ -374,11 +379,11 @@ function copyGeoJSON() {
     fs.mkdirSync(destDir, { recursive: true });
   }
 
-  // Copiar departamentos.geojson
+  // Copiar el GeoJSON simplificado con extensión .json, que es lo que importa el frontend.
   const deptosGeoJSON = path.join(srcDir, 'departamentos.geojson');
   if (fs.existsSync(deptosGeoJSON)) {
-    fs.copyFileSync(deptosGeoJSON, path.join(destDir, 'departamentos.geojson'));
-    console.log('  ✓ mapas/departamentos.geojson');
+    fs.copyFileSync(deptosGeoJSON, path.join(destDir, 'departamentos.json'));
+    console.log('  ✓ mapas/departamentos.json');
   }
 }
 

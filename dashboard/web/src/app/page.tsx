@@ -7,7 +7,6 @@ import CardGanador from '@/components/cards/CardGanador';
 import CardResumen from '@/components/cards/CardResumen';
 import BarrasCandidatos from '@/components/charts/BarrasCandidatos';
 import HallazgosClave from '@/components/analysis/HallazgosClave';
-import ClavesTerritoriales from '@/components/analysis/ClavesTerritoriales';
 import { formatNumber } from '@/lib/formatters';
 import { getColorPartido } from '@/lib/colors';
 import type {
@@ -32,16 +31,12 @@ export default function HomePage() {
     nombre: string;
   } | null>(null);
 
-  // Obtener datos del departamento seleccionado
   const departamento = departamentoSeleccionado
     ? departamentosDetalle[departamentoSeleccionado.codigo]
     : null;
 
-  // Determinar qué datos mostrar
   const mostrarNacional = !departamentoSeleccionado;
-  const datosActuales = mostrarNacional
-    ? { resumen, candidatos }
-    : { resumen: departamento, candidatos: departamento?.candidatos };
+  const candidatosActuales = mostrarNacional ? candidatos : departamento?.candidatos;
 
   const handleDepartamentoClick = (codigo: string, nombre: string) => {
     setDepartamentoSeleccionado({ codigo, nombre });
@@ -82,7 +77,6 @@ export default function HomePage() {
 
       <main className="p-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Columna izquierda: Mapa */}
           <div className="lg:col-span-2">
             <div className="gb-card p-4 h-[600px]">
               <MapaElectoral
@@ -92,9 +86,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Columna derecha: Información */}
           <div className="space-y-4">
-            {/* Card Ganador */}
             {ganador && (
               <CardGanador
                 nombre={ganador.ganador}
@@ -105,7 +97,6 @@ export default function HomePage() {
               />
             )}
 
-            {/* Card Segundo */}
             {segundo && (
               <CardGanador
                 nombre={segundo.nombre}
@@ -116,7 +107,6 @@ export default function HomePage() {
               />
             )}
 
-            {/* Diferencia */}
             {ganador && (
               <div className="gb-card">
                 <p className="gb-eyebrow">Diferencia</p>
@@ -126,14 +116,13 @@ export default function HomePage() {
               </div>
             )}
 
-            {/* Gráfico de barras */}
-            {datosActuales.candidatos && datosActuales.candidatos.length > 0 && (
+            {candidatosActuales && candidatosActuales.length > 0 && (
               <div className="gb-card p-4">
                 <h3 className="gb-eyebrow mb-3">
                   Votos por candidato
                 </h3>
                 <BarrasCandidatos
-                  candidatos={datosActuales.candidatos.map((c: CandidatoNacional | CandidatoDepartamento) => ({
+                  candidatos={candidatosActuales.map((c: CandidatoNacional | CandidatoDepartamento) => ({
                     ...c,
                     color: getColorPartido(c.partido),
                   }))}
@@ -144,7 +133,6 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Fila inferior: Métricas */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
           {metricasActuales.map((metrica) => (
             <CardResumen
@@ -155,10 +143,7 @@ export default function HomePage() {
           ))}
         </div>
 
-        {/* Hallazgos Clave - Solo en vista nacional */}
         {mostrarNacional && <HallazgosClave />}
-
-        <ClavesTerritoriales />
       </main>
     </div>
   );

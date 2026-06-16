@@ -38,9 +38,9 @@ module.exports = {
         'partido-ecologista': '#059669',
       },
       fontFamily: {
-        display: ['"Fraunces"', 'Georgia', 'serif'],
-        body: ['"IBM Plex Sans"', 'system-ui', 'sans-serif'],
-        mono: ['"IBM Plex Mono"', 'monospace'],
+        display: ['var(--gb-font-display)', 'Georgia', 'serif'],
+        body: ['var(--gb-font-body)', 'system-ui', 'sans-serif'],
+        mono: ['var(--gb-font-mono)', 'monospace'],
       },
       borderRadius: {
         'gb-sm': '6px',

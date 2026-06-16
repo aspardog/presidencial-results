@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tree:*)",
+      "Skill(global-bridge-brand)",
+      "Bash(npm run build:*)",
+      "Bash(npm run dev:*)",
+      "Bash(cat:*)",
+      "Bash(source .venv/bin/activate)",
+      "Bash(uvicorn:*)",
+      "Bash(git -C /Users/santiagopardo/Documents/GitHub/presidencial-results log --oneline --all)",
+      "Bash(find:*)",
+      "Bash(node scripts/build-data.js:*)",
+      "Bash(npm install:*)",
+      "Bash(npx serve out -l 3000)",
+      "Bash(vercel --version:*)",
+      "Bash(vercel deploy:*)",
+      "Bash(git -C /Users/santiagopardo/Documents/GitHub/presidencial-results add dashboard/web/public/api/)",
+      "Bash(git -C /Users/santiagopardo/Documents/GitHub/presidencial-results status:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(vercel ls:*)",
+      "Bash(vercel:*)",
+      "Bash(curl:*)",
+      "Bash(git -C /Users/santiagopardo/Documents/GitHub/presidencial-results ls-files:*)"
+    ]
+  }
+}
