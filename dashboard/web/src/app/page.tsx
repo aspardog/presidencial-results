@@ -43,6 +43,7 @@ export default function HomePage() {
   const municipiosActuales = departamentoSeleccionado
     ? municipiosPorDepartamento[departamentoSeleccionado.codigo] || []
     : [];
+  const municipiosVisibles = municipiosActuales.slice(0, 12);
   const opcionesDepartamento = useMemo(
     () => Object.values(departamentosDetalle).sort((a, b) => a.nombre.localeCompare(b.nombre, 'es')),
     []
@@ -104,7 +105,7 @@ export default function HomePage() {
 
       <main className="p-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
+          <div className="space-y-4 lg:col-span-2">
             <div className="gb-card flex h-[600px] flex-col gap-3 p-4">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex min-w-0 items-center gap-2 text-sm font-semibold text-gb-slate">
@@ -149,6 +150,63 @@ export default function HomePage() {
                 />
               </div>
             </div>
+
+            {departamentoSeleccionado && municipiosActuales.length > 0 && (
+              <section className="gb-card p-4">
+                <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
+                  <div>
+                    <p className="gb-eyebrow">Desagregacion municipal</p>
+                    <h2 className="mt-1 text-xl font-display font-semibold text-gb-ink">
+                      {departamentoSeleccionado.nombre}
+                    </h2>
+                  </div>
+                  <p className="font-mono text-xs text-gb-slate-muted">
+                    Top {municipiosVisibles.length} de {municipiosActuales.length} municipios por votos validos
+                  </p>
+                </div>
+
+                <div className="overflow-x-auto">
+                  <table className="w-full min-w-[680px] border-separate border-spacing-0 text-sm">
+                    <thead>
+                      <tr className="text-left font-mono text-xs uppercase text-gb-slate-muted">
+                        <th className="border-b border-gb-border px-3 py-2 font-medium">Municipio</th>
+                        <th className="border-b border-gb-border px-3 py-2 font-medium">Ganador</th>
+                        <th className="border-b border-gb-border px-3 py-2 text-right font-medium">%</th>
+                        <th className="border-b border-gb-border px-3 py-2 text-right font-medium">Votos</th>
+                        <th className="border-b border-gb-border px-3 py-2 text-right font-medium">Margen</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {municipiosVisibles.map((municipio, index) => (
+                        <tr key={municipio.codigo} className="border-b border-gb-border">
+                          <td className="border-b border-gb-border px-3 py-3">
+                            <div className="flex items-baseline gap-2">
+                              <span className="w-6 shrink-0 font-mono text-xs text-gb-slate-muted">
+                                {index + 1}.
+                              </span>
+                              <span className="font-semibold text-gb-ink">{municipio.nombre}</span>
+                            </div>
+                          </td>
+                          <td className="border-b border-gb-border px-3 py-3 text-gb-slate">
+                            <span className="block max-w-[260px] truncate">{municipio.ganador}</span>
+                            <span className="block text-xs text-gb-slate-muted">{municipio.segundo}</span>
+                          </td>
+                          <td className="border-b border-gb-border px-3 py-3 text-right font-mono font-semibold text-gb-teal-700">
+                            {municipio.porcentaje_ganador.toFixed(1)}%
+                          </td>
+                          <td className="border-b border-gb-border px-3 py-3 text-right font-mono text-gb-slate">
+                            {formatNumber(municipio.total_votos)}
+                          </td>
+                          <td className="border-b border-gb-border px-3 py-3 text-right font-mono text-gb-slate-muted">
+                            +{formatNumber(municipio.diferencia)}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            )}
           </div>
 
           <div className="space-y-4">
@@ -193,43 +251,6 @@ export default function HomePage() {
                   }))}
                   maxVisible={5}
                 />
-              </div>
-            )}
-
-            {departamentoSeleccionado && municipiosActuales.length > 0 && (
-              <div className="gb-card p-4">
-                <div className="mb-3 flex items-baseline justify-between gap-3">
-                  <h3 className="gb-eyebrow">Municipios</h3>
-                  <span className="font-mono text-xs text-gb-slate-muted">
-                    Top {Math.min(municipiosActuales.length, 8)} de {municipiosActuales.length}
-                  </span>
-                </div>
-                <div className="max-h-[360px] space-y-3 overflow-y-auto pr-1">
-                  {municipiosActuales.slice(0, 8).map((municipio, index) => (
-                    <div
-                      key={municipio.codigo}
-                      className="rounded-gb-md border border-gb-border bg-gb-bg p-3"
-                    >
-                      <div className="flex items-baseline justify-between gap-3">
-                        <div className="min-w-0">
-                          <p className="truncate text-sm font-semibold text-gb-ink">
-                            {index + 1}. {municipio.nombre}
-                          </p>
-                          <p className="truncate text-xs text-gb-slate-muted">
-                            {municipio.ganador}
-                          </p>
-                        </div>
-                        <span className="shrink-0 font-mono text-sm font-semibold text-gb-teal-700">
-                          {municipio.porcentaje_ganador.toFixed(1)}%
-                        </span>
-                      </div>
-                      <div className="mt-2 flex items-center justify-between gap-3 font-mono text-xs text-gb-slate-muted">
-                        <span>{formatNumber(municipio.total_votos)} votos</span>
-                        <span>+{formatNumber(municipio.diferencia)}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
               </div>
             )}
           </div>
