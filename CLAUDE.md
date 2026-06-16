@@ -28,7 +28,7 @@ npm run lint             # ESLint
 
 ```bash
 Rscript scripts/02_silver_to_gold/ejecutar_todas_agregaciones.R  # Generate Gold
-Rscript scripts/02_silver_to_gold/ejecutar_fase_4.R              # Generate dashboard JSON + GeoJSON
+Rscript scripts/02_silver_to_gold/ejecutar_fase_4.R              # Generate dashboard JSON + check GeoJSON prerequisites
 ```
 
 ## Architecture
@@ -56,6 +56,7 @@ Key static endpoints:
 - `departamentos/detalle.json` - Per-department candidates and metrics
 - `analisis/claves-territoriales.json` - Territorial analysis data
 - `mapas/departamentos.json` - Simplified GeoJSON for interactive map
+- `mapas/municipios.json` - Simplified municipal GeoJSON generated for map data coverage
 
 ### Validation System
 
@@ -74,11 +75,11 @@ Key static endpoints:
 
 ### Branding
 
-Uses Global Bridge Consultancy visual system - invoke the `global-bridge-brand` skill when creating or restyling dashboard elements.
+Uses Global Bridge Consultancy visual system. Keep dashboard styling consistent with the existing palette, card density, and compact hierarchy.
 
 ### TypeScript Types
 
-Electoral types are defined in `dashboard/web/src/types/electoral.ts`. Main interfaces: `ResumenNacional`, `CandidatoNacional`, `DepartamentoDetalle`, `ClavesTerritoriales`.
+Electoral types are defined in `dashboard/web/src/types/electoral.ts`. Main interfaces include `ResumenNacional`, `CandidatoNacional`, `DepartamentoDetalle`, and `ClavesTerritoriales`.
 
 ### Component Structure
 

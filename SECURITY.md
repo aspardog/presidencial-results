@@ -6,14 +6,15 @@ Este proyecto está en desarrollo activo. Solo la versión más reciente recibe 
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.0.x   | :white_check_mark: |
+| 1.2.x   | :white_check_mark: |
+| < 1.2   | :x: |
 
 ## Reporting a Vulnerability
 
 Si descubres una vulnerabilidad de seguridad en este proyecto, por favor repórtala de manera responsable:
 
 1. **NO** abras un issue público con detalles de la vulnerabilidad
-2. Envía un correo electrónico a: [tu email aquí]
+2. Contacta al mantenedor del repositorio por un canal privado antes de publicar detalles.
 3. Incluye una descripción detallada de la vulnerabilidad
 4. Proporciona pasos para reproducir el problema si es posible
 5. Indica el impacto potencial
@@ -33,7 +34,7 @@ Si descubres una vulnerabilidad de seguridad en este proyecto, por favor repórt
 
 2. **Revisa los datos de entrada**: Si trabajas con datos electorales de fuentes externas, verifica su integridad antes de procesarlos.
 
-3. **Mantén tus dependencias actualizadas**: Ejecuta regularmente `renv::update()` para actualizar paquetes de R.
+3. **Mantén tus dependencias sincronizadas**: usa `scripts/00_setup/install_packages.R`, `scripts/00_setup/verificar_dependencias.R` y, cuando corresponda, `scripts/00_setup/actualizar_lockfile.R` para trabajar con el estado registrado en `renv.lock`.
 
 ### Para Desarrolladores
 
@@ -66,7 +67,7 @@ Este proyecto procesa datos electorales públicos. Sin embargo:
 
 ## Dependencias y CVEs
 
-Monitoreamos las vulnerabilidades conocidas (CVEs) en nuestras dependencias de R y Python. Si descubres una vulnerabilidad en una dependencia, por favor:
+Monitoreamos las vulnerabilidades conocidas (CVEs) en nuestras dependencias de R, Python y Node.js. Si descubres una vulnerabilidad en una dependencia, por favor:
 
 1. Verifica si ya existe un issue en el repositorio de la dependencia
 2. Repórtala siguiendo este proceso si afecta a este proyecto
@@ -80,4 +81,4 @@ Monitoreamos las vulnerabilidades conocidas (CVEs) en nuestras dependencias de R
 
 ---
 
-Última actualización: 2026-06-15
+Última actualización: 2026-06-16

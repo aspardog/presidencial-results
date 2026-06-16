@@ -3,6 +3,7 @@ FUENTES GEOGRAFICAS RECOMENDADAS - DANE MGN 2025
 ================================================================================
 
 Fecha de verificacion: 2026-06-15
+Ultima actualizacion de este documento: 2026-06-16
 
 OBJETIVO
 --------------------------------------------------------------------------------
@@ -146,20 +147,24 @@ ESTADO
 - Homologacion Registraduria-DIVIPOLA completada:
   * data/silver/metadata/electoral/homologacion_deptos.csv (33 departamentos, 100%)
   * data/silver/metadata/electoral/homologacion_municipios.csv (1122 municipios, 100%)
-- GeoJSON electoral con datos de votos generados:
-  * data/gold/visualizaciones/mapas/geojson/departamentos_electoral.geojson (43 MB)
-  * data/gold/visualizaciones/mapas/geojson/municipios_electoral.geojson (244 MB)
+- GeoJSON electoral con datos de votos:
+  * Pendiente. El script actual `generar_geojson.py` verifica insumos y
+    geometria, pero todavia no une resultados electorales con las geometrias.
+  * Salidas previstas:
+    - data/gold/visualizaciones/mapas/geojson/colombia_deptos_votos.geojson
+    - data/gold/visualizaciones/mapas/geojson/colombia_municipios_votos.geojson
 
 ATRIBUTOS EN GEOJSON ELECTORAL
 --------------------------------------------------------------------------------
 
-Cada feature incluye:
-- Geometria original del DANE
-- total_votos: votos totales en la unidad geografica
-- ganador: nombre del candidato ganador
-- votos_ganador: votos del candidato ganador
-- porcentaje_ganador: porcentaje del ganador sobre el total
-- segundo: nombre del segundo lugar
-- diferencia: votos de diferencia entre primero y segundo
+Cuando la union electoral se implemente, cada feature debera incluir como
+minimo:
+- Geometria original del DANE.
+- total_votos: votos totales en la unidad geografica.
+- ganador: nombre del candidato ganador.
+- votos_ganador: votos del candidato ganador.
+- porcentaje_ganador: porcentaje del ganador sobre votos validos.
+- segundo: nombre del segundo lugar.
+- diferencia: votos de diferencia entre primero y segundo.
 
 ================================================================================

@@ -8,8 +8,9 @@ Este directorio contiene los scripts para transformar datos crudos (Bronze) en d
 Script principal que consolida y limpia los datos electorales.
 
 **Entrada:**
-- `data/bronze/raw/electoral/registraduria_2026-06-15/*.csv` (33 archivos CSV)
-- O `data/silver/electoral/datos_master.rds` (si Bronze no está disponible)
+- `data/bronze/raw/electoral/registraduria_2026-06-15/*.csv` (33 archivos CSV).
+- O `data/silver/electoral/datos_master.rds` si la ruta Bronze esperada no
+  existe o no contiene CSV.
 
 **Salida:**
 - `data/silver/electoral/datos_master.csv`
@@ -79,10 +80,10 @@ Rscript scripts/01_bronze_to_silver/validaciones.R
 
 ## 🔄 Flujo de Trabajo
 
-### Opción 1: Desde Bronze (Con archivos originales)
+### Opción 1: Desde Bronze (con archivos originales)
 
 ```bash
-# 1. Colocar archivos CSV originales en:
+# 1. Colocar o mover los CSV originales a:
 #    data/bronze/raw/electoral/registraduria_2026-06-15/
 
 # 2. Ejecutar limpieza
@@ -92,10 +93,10 @@ Rscript scripts/01_bronze_to_silver/limpieza_datos.R
 Rscript scripts/01_bronze_to_silver/validaciones.R
 ```
 
-### Opción 2: Desde Silver existente (Sin Bronze)
+### Opción 2: Desde Silver existente (sin Bronze en la ruta esperada)
 
 ```bash
-# 1. Si ya existen datos en Silver, el script puede regenerar outputs
+# 1. Si ya existen datos en Silver, el script puede regenerar outputs.
 
 Rscript scripts/01_bronze_to_silver/limpieza_datos.R
 
@@ -143,13 +144,13 @@ Rscript scripts/01_bronze_to_silver/validaciones.R
 
 ## 🔍 Calidad de Datos
 
-### Validaciones automáticas:
-- ✅ 0 valores nulos en columnas críticas
-- ✅ 0 votos negativos
-- ✅ 33 departamentos
-- ✅ 1,036 municipios
-- ✅ 118,313 mesas únicas
-- ✅ 11 candidatos
+### Validaciones automaticas:
+- 0 valores nulos en columnas criticas.
+- 0 votos negativos.
+- 33 departamentos.
+- 1.122 claves municipales `DEP + MUN`.
+- 118.313 mesas unicas.
+- 11 candidatos.
 
 ### Metadata generada:
 - **validaciones.txt**: Resultados de validaciones básicas
@@ -161,7 +162,9 @@ Rscript scripts/01_bronze_to_silver/validaciones.R
 
 ## ⚠️ Notas Importantes
 
-1. **Bronze vacío:** Si Bronze no tiene archivos CSV, el script puede trabajar desde datos existentes en Silver para regenerar outputs.
+1. **Bronze en ruta especifica:** el script lee
+   `data/bronze/raw/electoral/registraduria_2026-06-15/`. Si los CSV estan en
+   otra carpeta, no se usan como Bronze y el script cae al RDS de Silver.
 
 2. **Logging:** Todos los procesos generan logs en `logs/` con timestamp para trazabilidad.
 

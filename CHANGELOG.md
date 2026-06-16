@@ -2,6 +2,18 @@
 
 Los cambios relevantes del proyecto se documentan en este archivo.
 
+## [Unreleased] - 2026-06-16
+
+### Changed
+
+- Documentacion actualizada para reflejar el estado real del pipeline, el
+  dashboard estatico y las rutas vigentes de ejecucion.
+- Se aclaro que `generar_geojson.py` verifica prerrequisitos, pero aun no
+  genera GeoJSON electoral con votos.
+- Se actualizaron las instrucciones del dashboard para usar
+  `dashboard/web/` como raiz operativa.
+- Politica de seguridad alineada con la version soportada actual.
+
 ## [1.2.0] - 2026-06-15
 
 ### Added
@@ -34,8 +46,8 @@ Los cambios relevantes del proyecto se documentan en este archivo.
 - Conversion de shapefiles a GeoJSON con encoding UTF-8 correcto.
 - Tabla de homologacion departamental Registraduria-DANE (33/33, 100%).
 - Tabla de homologacion municipal Registraduria-DANE (1122/1122, 100%).
-- GeoJSON electoral departamental con votos y ganador por departamento.
-- GeoJSON electoral municipal con votos y ganador por municipio.
+- Geometrias DANE departamentales y municipales disponibles en Silver.
+- Verificador de prerrequisitos para GeoJSON electoral con geometrias DANE.
 - Archivo SECURITY.md con politicas de seguridad.
 - Archivo LICENSE con licencia MIT.
 - Configuracion Dependabot para alertas de seguridad.
@@ -43,8 +55,8 @@ Los cambios relevantes del proyecto se documentan en este archivo.
 
 ### Changed
 
-- README actualizado con estructura completa y productos GeoJSON.
-- Documentacion de fuentes geograficas actualizada con estado completado.
+- README actualizado con estructura completa y estado de geometrias DANE.
+- Documentacion de fuentes geograficas actualizada con homologacion completada.
 
 ### Removed
 
@@ -85,5 +97,6 @@ Los cambios relevantes del proyecto se documentan en este archivo.
 
 ### Known limitations
 
-- Los 33 CSV originales de Bronze no estan disponibles.
+- La reconstruccion desde Bronze requiere ubicar los CSV en la ruta que espera
+  `limpieza_datos.R`: `data/bronze/raw/electoral/registraduria_2026-06-15/`.
 - No hay suite automatizada de tests.

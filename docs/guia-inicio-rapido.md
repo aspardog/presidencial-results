@@ -44,7 +44,7 @@ Rscript scripts/02_silver_to_gold/ejecutar_fase_4.R
 
 ### Opcion B: reconstruccion completa
 
-Coloque los 33 CSV originales en:
+Coloque los 33 CSV originales en la ruta que lee `limpieza_datos.R`:
 
 ```text
 data/bronze/raw/electoral/registraduria_2026-06-15/
@@ -59,9 +59,9 @@ Rscript scripts/02_silver_to_gold/ejecutar_todas_agregaciones.R
 Rscript scripts/02_silver_to_gold/ejecutar_fase_4.R
 ```
 
-Si Bronze esta vacio, la limpieza reutiliza el RDS Silver existente. Esto
-regenera formatos y metadata, pero no constituye una reconstruccion desde la
-fuente original.
+Si esa ruta no existe o no contiene CSV, la limpieza reutiliza el RDS Silver
+existente. Esto regenera formatos y metadata, pero no constituye una
+reconstruccion desde la fuente original.
 
 ## 4. Verificar resultados
 
@@ -103,12 +103,20 @@ python3 scripts/02_silver_to_gold/visualizaciones/generar_geojson.py
 
 ## 6. GeoJSON
 
-La fase de dashboard funciona sin shapefiles. Para mapas se necesitan
-geometrías departamentales y municipales transformadas a GeoJSON en
+La fase de dashboard genera JSON nacionales y de participacion en
+`data/gold/visualizaciones/dashboard/`. Para la verificacion de mapas se
+requieren geometrias departamentales y municipales transformadas a GeoJSON en
 `data/silver/geograficos/`.
 
-Mientras falten, `generar_geojson.py` reporta el estado pendiente y finaliza
-sin producir archivos vacíos.
+El estado actual es:
+
+- `data/silver/geograficos/geometrias_deptos.geojson`: disponible.
+- `data/silver/geograficos/geometrias_municipios.geojson`: disponible.
+- GeoJSON electoral Gold con votos y ganador: pendiente.
+
+`generar_geojson.py` valida prerequisitos y finaliza sin producir archivos
+vacios. Si las geometrias existen, informa que la union espacial aun no esta
+implementada.
 
 ## 7. Solucion de problemas
 

@@ -1,1397 +1,325 @@
 ================================================================================
-ESTRUCTURA DEL PROYECTO - ANÁLISIS ELECTORAL COLOMBIA
+ESTRUCTURA DEL PROYECTO - ANALISIS ELECTORAL COLOMBIA
 ================================================================================
 
-Proyecto: Sistema de Análisis Electoral basado en Medallion Architecture
-Fecha: 2026-06-15
-Versión: 1.0
+Fecha de actualizacion: 2026-06-16
 
-NOTA DE ESTADO:
-  Este documento describe la arquitectura objetivo completa e incluye
-  componentes futuros. Para el inventario implementado y los comandos vigentes,
-  consultar README.md y docs/guia-inicio-rapido.md.
+Este documento describe la estructura vigente del repositorio y distingue los
+componentes implementados de las carpetas reservadas para trabajo futuro.
 
 
 ================================================================================
-ÍNDICE
+1. RESUMEN
 ================================================================================
 
-1. Visión General del Proyecto
-2. Árbol Completo de Directorios
-3. Descripción Detallada por Carpeta
-4. Convenciones de Nombres
-5. Datos Externos y Complementarios (Futuro)
-6. Qué va a Git y qué no
-7. Flujo de Trabajo
-8. Ejemplos de Uso
-9. Preguntas Frecuentes
+El proyecto tiene dos superficies principales:
 
+1. Pipeline R en la raiz del repositorio.
+   - Arquitectura Medallion: Bronze -> Silver -> Gold.
+   - Procesa resultados electorales de la Registraduria.
+   - Genera agregaciones nacionales, departamentales y municipales.
 
-================================================================================
-1. VISIÓN GENERAL DEL PROYECTO
-================================================================================
+2. Dashboard estatico en dashboard/web/.
+   - Next.js con export estatico.
+   - Consume JSON generados desde data/gold.
+   - Despliegue publico: https://voto-colombia-2026.vercel.app
 
-OBJETIVO:
-  Analizar resultados electorales presidenciales de Colombia utilizando
-  Medallion Architecture para garantizar gobernanza de datos, trazabilidad
-  y flexibilidad en múltiples niveles de análisis.
+Flujo de datos:
 
-ARQUITECTURA DE DATOS:
-  🥉 BRONZE  → Datos originales inmutables
-  🥈 SILVER  → Datos limpios y validados (nivel MESA)
-  🥇 GOLD    → Datos agregados para análisis específicos
-
-NIVELES DE AGREGACIÓN:
-  - Nacional    → Todo el país
-  - Departamental → 33 departamentos
-  - Municipal   → 1,036+ municipios
-  - Barrio      → Por definir (TBD)
-
-TECNOLOGÍAS:
-  - Limpieza y ETL: R
-  - Visualizaciones: Scheme/JavaScript
-  - Mapas: Python
-  - Storage: CSV, Parquet, RDS
-
-DATOS COMPLEMENTARIOS PLANEADOS (FUTURO):
-  - Población por municipio (para calcular tasas per cápita)
-  - Indicadores socioeconómicos departamentales
-  - Datos geográficos (polígonos, coordenadas)
-  - Histórico de elecciones anteriores (temporales)
+  data/bronze/  ->  data/silver/  ->  data/gold/  ->  dashboard/web/public/api/
 
 
 ================================================================================
-2. ÁRBOL COMPLETO DE DIRECTORIOS
+2. ESTRUCTURA PRINCIPAL
 ================================================================================
 
 presidencial-results/
-│
-├── 📁 data/                          ← TODOS LOS DATOS (no van a Git)
-│   │
-│   ├── 🥉 bronze/                    ← CAPA 1: Datos crudos originales
-│   │   │
-│   │   ├── raw/                      ← Datos sin procesar
-│   │   │   │
-│   │   │   ├── electoral/            ← Datos electorales oficiales
-│   │   │   │   └── registraduria_2026-06-15/
-│   │   │   │       ├── MMV_XXX_01_000_XXX_XX_XX_XXX_1000.csv
-│   │   │   │       ├── MMV_XXX_03_000_XXX_XX_XX_XXX_1001.csv
-│   │   │   │       └── ... (33 archivos)
-│   │   │   │
-│   │   │   ├── demograficos/         ← FUTURO: Datos demográficos
-│   │   │   │   ├── poblacion_dane_2024/
-│   │   │   │   │   ├── poblacion_municipios.csv
-│   │   │   │   │   └── proyecciones_poblacion.csv
-│   │   │   │   └── censo_2018/
-│   │   │   │       └── datos_censo.csv
-│   │   │   │
-│   │   │   ├── geograficos/          ← FUTURO: Datos geográficos
-│   │   │   │   ├── shapefiles/
-│   │   │   │   │   ├── departamentos.shp
-│   │   │   │   │   ├── municipios.shp
-│   │   │   │   │   └── barrios_capitales.shp
-│   │   │   │   └── coordenadas/
-│   │   │   │       └── centroides_municipios.csv
-│   │   │   │
-│   │   │   └── socioeconomicos/      ← FUTURO: Indicadores externos
-│   │   │       ├── dane_indicadores_2024/
-│   │   │       │   ├── nbi_municipal.csv
-│   │   │       │   ├── pib_departamental.csv
-│   │   │       │   └── educacion_departamental.csv
-│   │   │       └── dnp_indices/
-│   │   │           └── indice_pobreza_multidimensional.csv
-│   │   │
-│   │   └── metadata/                 ← Metadatos de carga
-│   │       ├── electoral/
-│   │       │   ├── ingesta_2026-06-15.json
-│   │       │   ├── checksums.md5
-│   │       │   └── source_info.txt
-│   │       ├── demograficos/
-│   │       │   └── fuentes_poblacion.txt
-│   │       └── socioeconomicos/
-│   │           └── fuentes_indicadores.txt
-│   │
-│   ├── 🥈 silver/                    ← CAPA 2: Datos limpios
-│   │   │
-│   │   ├── electoral/                ← Datos electorales procesados
-│   │   │   ├── datos_master.parquet           (PRINCIPAL - eficiente)
-│   │   │   ├── datos_master.rds               (para R)
-│   │   │   └── datos_master.csv               (para compatibilidad)
-│   │   │
-│   │   ├── demograficos/             ← FUTURO: Población limpia
-│   │   │   ├── poblacion_municipal.parquet
-│   │   │   ├── poblacion_departamental.parquet
-│   │   │   └── proyecciones_poblacion.parquet
-│   │   │
-│   │   ├── geograficos/              ← FUTURO: Geo data limpio
-│   │   │   ├── geometrias_deptos.geojson
-│   │   │   ├── geometrias_municipios.geojson
-│   │   │   └── coordenadas_limpias.parquet
-│   │   │
-│   │   ├── socioeconomicos/          ← FUTURO: Indicadores limpios
-│   │   │   ├── nbi_limpio.parquet
-│   │   │   ├── pib_limpio.parquet
-│   │   │   └── educacion_limpia.parquet
-│   │   │
-│   │   └── metadata/                 ← Metadatos de Silver
-│   │       ├── electoral/
-│   │       │   ├── diccionario_silver.md
-│   │       │   ├── schema_v1.json
-│   │       │   ├── transformaciones.log
-│   │       │   └── validaciones.txt
-│   │       ├── demograficos/
-│   │       │   └── diccionario_poblacion.md
-│   │       └── socioeconomicos/
-│   │           └── diccionario_indicadores.md
-│   │
-│   └── 🥇 gold/                      ← CAPA 3: Datos agregados listos
-│       │
-│       ├── nacional/                 ← Nivel PAÍS
-│       │   ├── votos_por_candidato.csv
-│       │   ├── votos_por_candidato.parquet
-│       │   ├── metricas_participacion.csv
-│       │   ├── votos_por_partido.csv
-│       │   ├── resumen_ejecutivo.csv
-│       │   │
-│       │   └── metadata/
-│       │       ├── diccionario_nacional.md
-│       │       └── logica_agregacion.txt
-│       │
-│       ├── departamental/            ← Nivel DEPARTAMENTO
-│       │   ├── votos_por_candidato_depto.csv
-│       │   ├── votos_por_candidato_depto.parquet
-│       │   ├── rankings_departamentales.csv
-│       │   ├── tasas_participacion_depto.csv
-│       │   ├── diferencias_primer_segundo.csv
-│       │   │
-│       │   ├── con_poblacion/        ← FUTURO: Cruce con demográficos
-│       │   │   ├── votos_per_capita_depto.csv
-│       │   │   └── participacion_vs_poblacion.csv
-│       │   │
-│       │   ├── con_indicadores/      ← FUTURO: Cruce con socioeconómicos
-│       │   │   ├── votos_vs_nbi.csv
-│       │   │   ├── votos_vs_pib.csv
-│       │   │   └── correlaciones_socioeconomicas.csv
-│       │   │
-│       │   └── metadata/
-│       │       ├── diccionario_departamental.md
-│       │       └── fuentes_cruce.txt
-│       │
-│       ├── municipal/                ← Nivel MUNICIPIO
-│       │   ├── votos_por_candidato_mun.csv
-│       │   ├── votos_por_candidato_mun.parquet
-│       │   ├── mapeo_mesas_municipios.csv
-│       │   ├── participacion_municipal.csv
-│       │   ├── urbano_vs_rural.csv   ← Si se puede derivar de zona
-│       │   │
-│       │   ├── con_poblacion/        ← FUTURO: Con datos demográficos
-│       │   │   ├── votos_per_capita_mun.csv
-│       │   │   ├── densidad_electoral.csv
-│       │   │   └── tasa_participacion_ajustada.csv
-│       │   │
-│       │   └── metadata/
-│       │       └── diccionario_municipal.md
-│       │
-│       ├── barrio/                   ← FUTURO: Nivel BARRIO
-│       │   ├── mapeo_mesas_barrios.csv
-│       │   ├── votos_por_candidato_barrio.csv
-│       │   ├── votos_por_candidato_barrio.parquet
-│       │   │
-│       │   ├── por_ciudad/           ← Separado por ciudad principal
-│       │   │   ├── bogota/
-│       │   │   │   ├── votos_barrios_bogota.csv
-│       │   │   │   └── mapa_calor_bogota.geojson
-│       │   │   ├── medellin/
-│       │   │   │   ├── votos_barrios_medellin.csv
-│       │   │   │   └── mapa_calor_medellin.geojson
-│       │   │   ├── cali/
-│       │   │   └── barranquilla/
-│       │   │
-│       │   └── metadata/
-│       │       ├── diccionario_barrio.md
-│       │       └── metodologia_mapeo.txt
-│       │
-│       ├── visualizaciones/          ← Data preparada para viz
-│       │   ├── dashboard/
-│       │   │   ├── summary_nacional.json
-│       │   │   ├── series_candidatos.json
-│       │   │   └── metricas_resumen.json
-│       │   │
-│       │   ├── mapas/
-│       │   │   ├── geojson/
-│       │   │   │   ├── colombia_deptos_votos.geojson
-│       │   │   │   ├── colombia_municipios_votos.geojson
-│       │   │   │   └── barrios_capitales_votos.geojson
-│       │   │   └── tiles/            ← FUTURO: Mapas pre-renderizados
-│       │   │       └── mapa_calor_departamental.mbtiles
-│       │   │
-│       │   └── graficos/
-│       │       ├── series_tiempo.csv  ← FUTURO: Cuando haya temporales
-│       │       └── comparativos.csv
-│       │
-│       ├── temporal/                 ← FUTURO: Análisis entre elecciones
-│       │   ├── comparativo_2022_2026/
-│       │   │   ├── cambio_votos_candidatos.csv
-│       │   │   ├── municipios_viraron.csv
-│       │   │   └── tendencias_departamentales.csv
-│       │   └── series_historicas/
-│       │       ├── votos_historicos_nacional.csv
-│       │       └── participacion_historica.csv
-│       │
-│       └── metadata/
-│           └── diccionarios/
-│               ├── diccionario_visualizaciones.md
-│               └── diccionario_temporal.md
-│
-├── 📁 scripts/                       ← CÓDIGO (SÍ va a Git)
-│   │
-│   ├── 00_setup/
-│   │   ├── install_packages.R
-│   │   ├── install_packages.py
-│   │   ├── verificar_estructura.R
-│   │   └── crear_directorios.R        ← Crea toda la estructura
-│   │
-│   ├── 01_bronze_to_silver/
-│   │   ├── limpieza_datos.R           ← Ya existe
-│   │   ├── validaciones.R
-│   │   ├── limpieza_poblacion.R       ← FUTURO
-│   │   ├── limpieza_geograficos.R     ← FUTURO
-│   │   ├── limpieza_indicadores.R     ← FUTURO
-│   │   └── README.md
-│   │
-│   ├── 02_silver_to_gold/
-│   │   │
-│   │   ├── electoral/
-│   │   │   ├── agregacion_nacional.R
-│   │   │   ├── agregacion_departamental.R
-│   │   │   ├── agregacion_municipal.R
-│   │   │   └── agregacion_barrio.R    ← FUTURO
-│   │   │
-│   │   ├── cruces/                    ← FUTURO: Cruce de datos
-│   │   │   ├── electoral_x_poblacion.R
-│   │   │   ├── electoral_x_indicadores.R
-│   │   │   └── calcular_per_capita.R
-│   │   │
-│   │   ├── visualizaciones/
-│   │   │   ├── preparar_dashboard.R
-│   │   │   ├── generar_geojson.py
-│   │   │   └── preparar_series_tiempo.R  ← FUTURO
-│   │   │
-│   │   └── README.md
-│   │
-│   ├── 03_visualizaciones/
-│   │   ├── dashboard/
-│   │   │   ├── app.js                 ← Scheme/JS
-│   │   │   └── preparar_datos.R
-│   │   │
-│   │   ├── mapas/
-│   │   │   ├── mapa_calor_departamental.py
-│   │   │   ├── mapa_municipios.py
-│   │   │   ├── mapa_barrios.py        ← FUTURO
-│   │   │   └── utils_mapas.py
-│   │   │
-│   │   └── reportes/
-│   │       ├── reporte_nacional.Rmd
-│   │       ├── reporte_departamental.Rmd
-│   │       └── reporte_comparativo.Rmd  ← FUTURO
-│   │
-│   ├── 04_analisis_avanzados/         ← FUTURO: Análisis complejos
-│   │   ├── clustering_municipios.R
-│   │   ├── analisis_correlaciones.R
-│   │   ├── prediccion_tendencias.py
-│   │   └── deteccion_anomalias.R
-│   │
-│   ├── 05_ingesta/                    ← FUTURO: Automatización
-│   │   ├── descargar_datos_dane.R
-│   │   ├── descargar_shapefiles.py
-│   │   └── ingestar_nuevas_elecciones.R
-│   │
-│   └── utils/
-│       ├── funciones_comunes.R
-│       ├── funciones_mapas.py
-│       ├── validadores.R
-│       ├── constantes.R               ← Códigos DANE, etc.
-│       └── helpers.R
-│
-├── 📁 docs/                           ← DOCUMENTACIÓN (SÍ va a Git)
-│   │
-│   ├── medallion-architecture-explicacion.txt  ← Ya existe
-│   ├── estructura-proyecto.txt                 ← Este archivo
-│   ├── guia-inicio-rapido.md
-│   ├── guia-contribucion.md
-│   ├── FAQ.md
-│   │
-│   ├── diccionarios/
-│   │   ├── diccionario_bronze.md
-│   │   ├── diccionario_silver.md
-│   │   └── diccionarios_gold/
-│   │       ├── nacional.md
-│   │       ├── departamental.md
-│   │       ├── municipal.md
-│   │       └── barrio.md              ← FUTURO
-│   │
-│   ├── metodologia/
-│   │   ├── limpieza.md
-│   │   ├── agregaciones.md
-│   │   ├── validaciones.md
-│   │   ├── cruces_datos.md            ← FUTURO
-│   │   └── calculo_indicadores.md     ← FUTURO
-│   │
-│   ├── arquitectura/
-│   │   ├── flujo_datos.md
-│   │   ├── diagrama_medallion.png
-│   │   └── esquemas_datos/
-│   │       ├── schema_electoral.json
-│   │       ├── schema_poblacion.json  ← FUTURO
-│   │       └── schema_indicadores.json ← FUTURO
-│   │
-│   └── fuentes_datos/
-│       ├── registraduria.md           ← Info de fuente electoral
-│       ├── dane.md                    ← FUTURO: Info fuente demográfica
-│       ├── dnp.md                     ← FUTURO: Info indicadores
-│       └── igac.md                    ← FUTURO: Info geográfica
-│
-├── 📁 notebooks/                      ← Exploración (opcionales en Git)
-│   ├── exploracion_datos.Rmd
-│   ├── analisis_tendencias.ipynb
-│   ├── prototipo_mapas.ipynb
-│   └── pruebas_cruces_datos.Rmd       ← FUTURO
-│
-├── 📁 tests/                          ← TESTS (SÍ van a Git)
-│   ├── test_limpieza.R
-│   ├── test_agregaciones.R
-│   ├── test_validaciones.R
-│   └── test_cruces.R                  ← FUTURO
-│
-├── 📁 output/                         ← TEMPORAL (NO va a Git)
-│   └── .gitignore
-│
-├── 📁 logs/                           ← Logs de ejecución (NO va a Git)
-│   ├── limpieza_2026-06-15.log
-│   ├── agregacion_2026-06-15.log
-│   └── errores.log
-│
-├── .gitignore
-├── README.md
-├── CHANGELOG.md
-├── LICENSE
-├── renv.lock                          ← Dependencias R
-└── requirements.txt                   ← Dependencias Python
+  README.md
+  CHANGELOG.md
+  SECURITY.md
+  LICENSE
+  DESCRIPTION
+  renv.lock
+  renv/
+  scripts/
+  docs/
+  dashboard/
+  tools/
+  data/        (ignorado por Git)
+  logs/        (ignorado por Git)
+  output/      (ignorado por Git)
 
 
 ================================================================================
-3. DESCRIPCIÓN DETALLADA POR CARPETA
+3. DATA
 ================================================================================
 
-┌─────────────────────────────────────────────────────────────────────────────┐
-│ 📁 data/ - CARPETA RAÍZ DE DATOS                                            │
-└─────────────────────────────────────────────────────────────────────────────┘
-
-PROPÓSITO:
-  Almacenar TODOS los datos del proyecto en las tres capas de Medallion.
-
-REGLA DE GIT:
-  ❌ NO va a Git (archivos grandes)
-  ✅ Se incluye en .gitignore
-  ✅ Se documenta cómo obtener/generar los datos
-
-SUBCARPETAS:
-  - bronze/  → Datos originales inmutables
-  - silver/  → Datos limpios y validados
-  - gold/    → Datos agregados para análisis
-
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│ 📁 data/bronze/ - DATOS ORIGINALES                                          │
-└─────────────────────────────────────────────────────────────────────────────┘
-
-PROPÓSITO:
-  Almacenar datos exactamente como se reciben de la fuente.
-  Es la "fuente de verdad" inmutable.
-
-ESTRUCTURA:
-  bronze/
-    ├── raw/                 ← Datos sin procesar
-    │   ├── electoral/       ← Datos electorales
-    │   ├── demograficos/    ← FUTURO: Población, censo
-    │   ├── geograficos/     ← FUTURO: Shapefiles, coordenadas
-    │   └── socioeconomicos/ ← FUTURO: NBI, PIB, educación
-    └── metadata/            ← Info sobre los datos
-
-REGLAS:
-  ❌ NUNCA modificar archivos aquí
-  ❌ NUNCA borrar archivos aquí
-  ✅ Solo escritura en ingesta
-  ✅ Solo lectura después
-
-CONVENCIÓN DE NOMBRES:
-  raw/[tipo]/[fuente]_[fecha]/
-
-  Ejemplo:
-    raw/electoral/registraduria_2026-06-15/
-    raw/demograficos/poblacion_dane_2024/
-    raw/socioeconomicos/dane_indicadores_2024/
-
-EJEMPLO DE METADATA (ingesta_2026-06-15.json):
-  {
-    "fecha_ingesta": "2026-06-15T10:30:00Z",
-    "fuente": "Registraduría Nacional del Estado Civil",
-    "url": "https://...",
-    "num_archivos": 33,
-    "total_registros": 922214,
-    "responsable": "Santiago Pardo",
-    "notas": "Primera carga completa"
-  }
-
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│ 📁 data/bronze/raw/electoral/ - DATOS ELECTORALES ORIGINALES                │
-└─────────────────────────────────────────────────────────────────────────────┘
-
-CONTENIDO ACTUAL:
-  - 33 archivos CSV de la Registraduría (uno por departamento)
-  - Nivel de granularidad: MESA
-  - Sin modificaciones
-
-ESTRUCTURA:
-  electoral/
-    └── registraduria_2026-06-15/
-        ├── MMV_XXX_01_000_XXX_XX_XX_XXX_1000.csv  (Antioquia)
-        ├── MMV_XXX_03_000_XXX_XX_XX_XXX_1001.csv  (Atlántico)
-        ├── ...
-        └── MMV_XXX_72_000_XXX_XX_XX_XXX_1032.csv  (Vichada)
-
-FUTURO:
-  Si hay datos de elecciones pasadas:
-    electoral/
-      ├── registraduria_2022-05-29/  (Elecciones 2022)
-      ├── registraduria_2026-06-15/  (Elecciones 2026)
-      └── registraduria_2030-XX-XX/  (Elecciones futuras)
-
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│ 📁 data/bronze/raw/demograficos/ - FUTURO: DATOS DEMOGRÁFICOS               │
-└─────────────────────────────────────────────────────────────────────────────┘
-
-CONTENIDO PLANEADO:
-  - Población por municipio (DANE)
-  - Proyecciones de población
-  - Datos del censo
-  - Densidad poblacional
-
-ESTRUCTURA SUGERIDA:
-  demograficos/
-    ├── poblacion_dane_2024/
-    │   ├── poblacion_municipios.csv
-    │   ├── proyecciones_2024_2030.csv
-    │   └── metadata.json
-    └── censo_2018/
-        ├── datos_censo_completo.csv
-        └── metadata.json
-
-COLUMNAS ESPERADAS (poblacion_municipios.csv):
-  - codigo_departamento
-  - codigo_municipio
-  - nombre_municipio
-  - poblacion_total
-  - poblacion_urbana
-  - poblacion_rural
-  - año
-
-USO:
-  Para calcular métricas per cápita:
-    - Votos per cápita
-    - Tasa de participación ajustada
-    - Densidad electoral
-
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│ 📁 data/bronze/raw/geograficos/ - FUTURO: DATOS GEOGRÁFICOS                 │
-└─────────────────────────────────────────────────────────────────────────────┘
-
-CONTENIDO PLANEADO:
-  - Shapefiles de departamentos, municipios, barrios
-  - Coordenadas de centroides
-  - Límites administrativos
-
-ESTRUCTURA SUGERIDA:
-  geograficos/
-    ├── shapefiles/
-    │   ├── departamentos.shp/.shx/.dbf/.prj
-    │   ├── municipios.shp/.shx/.dbf/.prj
-    │   └── barrios_capitales.shp/.shx/.dbf/.prj
-    └── coordenadas/
-        ├── centroides_municipios.csv
-        └── centroides_departamentos.csv
-
-COLUMNAS ESPERADAS (centroides_municipios.csv):
-  - codigo_departamento
-  - codigo_municipio
-  - nombre_municipio
-  - latitud
-  - longitud
-
-FUENTE:
-  - IGAC (Instituto Geográfico Agustín Codazzi)
-  - DANE (División Político Administrativa)
-
-USO:
-  - Generar mapas interactivos
-  - Geolocalizar mesas de votación
-  - Mapeo de barrios
-
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│ 📁 data/bronze/raw/socioeconomicos/ - FUTURO: INDICADORES EXTERNOS          │
-└─────────────────────────────────────────────────────────────────────────────┘
-
-CONTENIDO PLANEADO:
-  - Necesidades Básicas Insatisfechas (NBI)
-  - PIB departamental
-  - Índice de Pobreza Multidimensional (IPM)
-  - Indicadores de educación
-  - Indicadores de salud
-
-ESTRUCTURA SUGERIDA:
-  socioeconomicos/
-    ├── dane_indicadores_2024/
-    │   ├── nbi_municipal.csv
-    │   ├── pib_departamental.csv
-    │   ├── educacion_departamental.csv
-    │   └── metadata.json
-    └── dnp_indices/
-        ├── ipm_municipal.csv
-        └── metadata.json
-
-COLUMNAS ESPERADAS (nbi_municipal.csv):
-  - codigo_departamento
-  - codigo_municipio
-  - nombre_municipio
-  - nbi_porcentaje
-  - nbi_personas
-  - año
-
-USO:
-  Análisis correlacionales:
-    - ¿Municipios con mayor NBI votan diferente?
-    - ¿Relación entre PIB departamental y preferencia electoral?
-    - ¿Nivel educativo influye en la votación?
-
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│ 📁 data/silver/ - DATOS LIMPIOS Y VALIDADOS                                 │
-└─────────────────────────────────────────────────────────────────────────────┘
-
-PROPÓSITO:
-  Datos procesados, limpios, validados y estandarizados.
-  Mantienen la MÁXIMA GRANULARIDAD original (nivel MESA para electorales).
-
-CARACTERÍSTICAS:
-  ✅ Tipos de datos correctos
-  ✅ Valores nulos manejados
-  ✅ Nombres estandarizados
-  ✅ Duplicados eliminados
-  ✅ IDs únicos generados
-  ✅ Reproducible desde Bronze
-
-ESTRUCTURA:
-  silver/
-    ├── electoral/        ← Datos electorales limpios
-    ├── demograficos/     ← FUTURO: Población limpia
-    ├── geograficos/      ← FUTURO: Geo data limpio
-    ├── socioeconomicos/  ← FUTURO: Indicadores limpios
-    └── metadata/         ← Diccionarios y schemas
-
-FORMATOS:
-  - .parquet  (PRINCIPAL - comprimido, eficiente, columnar)
-  - .rds      (para trabajar en R)
-  - .csv      (para compatibilidad/inspección manual)
-
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│ 📁 data/silver/electoral/ - DATOS ELECTORALES LIMPIOS                       │
-└─────────────────────────────────────────────────────────────────────────────┘
-
-CONTENIDO:
-  - Base master consolidada (922,214 registros)
-  - Nivel MESA (sin agregar)
-  - 22 columnas (19 originales + 3 derivadas)
-
-ARCHIVOS:
-  - datos_master.parquet  ← USAR ESTE (más eficiente)
-  - datos_master.rds      ← Para R
-  - datos_master.csv      ← Para inspección/compatibilidad
-
-COLUMNAS CLAVE AGREGADAS:
-  - DEPNOMBRE_COMPLETO  (normalizado)
-  - TIPO_VOTO  (CANDIDATO, BLANCO, NULO, NO_MARCADO)
-  - MESA_ID  (ID único de mesa)
-
-TRANSFORMACIONES APLICADAS:
-  1. Consolidación de 33 archivos en uno
-  2. Normalización de nombres de departamentos
-  3. Estandarización de códigos DANE
-  4. Validación de tipos de dato
-  5. Eliminación de espacios en blanco
-  6. Verificación de valores nulos/negativos
-
-GENERADO POR:
-  scripts/01_bronze_to_silver/limpieza_datos.R
-
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│ 📁 data/silver/demograficos/ - FUTURO: POBLACIÓN LIMPIA                     │
-└─────────────────────────────────────────────────────────────────────────────┘
-
-CONTENIDO PLANEADO:
-  - Población por municipio estandarizada
-  - Códigos DANE validados
-  - Proyecciones de población procesadas
-
-ARCHIVOS ESPERADOS:
-  - poblacion_municipal.parquet
-  - poblacion_departamental.parquet
-  - proyecciones_poblacion.parquet
-
-TRANSFORMACIONES A APLICAR:
-  1. Validar códigos DANE (match con electoral)
-  2. Estandarizar nombres de municipios
-  3. Verificar consistencia de totales
-  4. Calcular tasas de crecimiento
-  5. Interpolar años faltantes
-
-COLUMNAS FINALES:
-  - codigo_departamento  (estandarizado, 2 dígitos)
-  - codigo_municipio  (estandarizado, 3 dígitos)
-  - nombre_departamento
-  - nombre_municipio
-  - poblacion_total
-  - poblacion_urbana
-  - poblacion_rural
-  - año
-  - fuente
-
-GENERADO POR:
-  scripts/01_bronze_to_silver/limpieza_poblacion.R
-
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│ 📁 data/gold/ - DATOS AGREGADOS PARA ANÁLISIS                               │
-└─────────────────────────────────────────────────────────────────────────────┘
-
-PROPÓSITO:
-  Datos agregados, resumidos y optimizados para casos de uso específicos.
-  Listos para visualización, reportes y dashboards.
-
-CARACTERÍSTICAS:
-  ✅ Agregaciones pre-calculadas
-  ✅ Métricas de negocio
-  ✅ Optimizado para lectura rápida
-  ✅ Múltiples niveles de granularidad
-  ✅ Joins pre-computados
-
-ESTRUCTURA:
-  gold/
-    ├── nacional/          ← Agregación nivel país
-    ├── departamental/     ← Agregación nivel departamento
-    ├── municipal/         ← Agregación nivel municipio
-    ├── barrio/            ← FUTURO: Nivel barrio
-    ├── visualizaciones/   ← Data para dashboards/mapas
-    └── temporal/          ← FUTURO: Análisis entre elecciones
-
-FORMATOS:
-  - .parquet  (para procesamiento)
-  - .csv      (para inspección/compartir)
-  - .json     (para dashboards web)
-  - .geojson  (para mapas)
-
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│ 📁 data/gold/nacional/ - AGREGACIÓN NACIONAL                                │
-└─────────────────────────────────────────────────────────────────────────────┘
-
-PROPÓSITO:
-  Resultados a nivel nacional (todo el país).
-
-ARCHIVOS:
-  - votos_por_candidato.csv
-    Columnas: CANNOMBRE, PARNOMBRE, TOTAL_VOTOS, PORCENTAJE
-
-  - votos_por_partido.csv
-    Columnas: PARNOMBRE, TOTAL_VOTOS, PORCENTAJE
-
-  - metricas_participacion.csv
-    Columnas: TIPO_VOTO, TOTAL, PORCENTAJE
-
-  - resumen_ejecutivo.csv
-    Columnas: METRICA, VALOR
-    Métricas: Total votos, Total mesas, Participación, Ganador, etc.
-
-GENERADO POR:
-  scripts/02_silver_to_gold/electoral/agregacion_nacional.R
-
-EJEMPLO (votos_por_candidato.csv):
-  CANNOMBRE,PARNOMBRE,TOTAL_VOTOS,PORCENTAJE
-  ABELARDO DE LA ESPRIELLA,DEFENSORES DE LA PATRIA,10045330,42.93
-  IVÁN CEPEDA CASTRO,MOVIMIENTO POLÍTICO PACTO HISTÓRICO,9536162,40.76
-  ...
-
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│ 📁 data/gold/departamental/ - AGREGACIÓN DEPARTAMENTAL                      │
-└─────────────────────────────────────────────────────────────────────────────┘
-
-PROPÓSITO:
-  Resultados por departamento (33 departamentos).
-
-ARCHIVOS PRINCIPALES:
-  - votos_por_candidato_depto.csv
-    Columnas: DEPNOMBRE, CODIGO_DEPTO, CANNOMBRE, VOTOS, PORCENTAJE_DEPTO
-
-  - rankings_departamentales.csv
-    Columnas: DEPNOMBRE, RANK, CANNOMBRE, VOTOS
-
-  - tasas_participacion_depto.csv
-    Columnas: DEPNOMBRE, TOTAL_VOTOS, VOTOS_BLANCOS, VOTOS_NULOS,
-              TASA_BLANCOS, TASA_NULOS
-
-  - diferencias_primer_segundo.csv
-    Columnas: DEPNOMBRE, PRIMERO, SEGUNDO, DIFERENCIA, DIFERENCIA_PCT
-
-FUTURO (con datos demográficos):
-  con_poblacion/
-    - votos_per_capita_depto.csv
-      Columnas: DEPNOMBRE, POBLACION, VOTOS, VOTOS_PER_CAPITA
-
-    - participacion_vs_poblacion.csv
-      Columnas: DEPNOMBRE, POBLACION, PARTICIPACION, TASA_PARTICIPACION
-
-FUTURO (con indicadores socioeconómicos):
-  con_indicadores/
-    - votos_vs_nbi.csv
-      Columnas: DEPNOMBRE, CANDIDATO, VOTOS, NBI, CORRELACION
-
-    - votos_vs_pib.csv
-      Columnas: DEPNOMBRE, PIB_PERCAPITA, CANDIDATO_GANADOR, VOTOS
-
-GENERADO POR:
-  scripts/02_silver_to_gold/electoral/agregacion_departamental.R
-  scripts/02_silver_to_gold/cruces/electoral_x_poblacion.R  (FUTURO)
-  scripts/02_silver_to_gold/cruces/electoral_x_indicadores.R  (FUTURO)
-
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│ 📁 data/gold/municipal/ - AGREGACIÓN MUNICIPAL                              │
-└─────────────────────────────────────────────────────────────────────────────┘
-
-PROPÓSITO:
-  Resultados por municipio (1,036+ municipios).
-
-ARCHIVOS PRINCIPALES:
-  - votos_por_candidato_mun.csv
-    Columnas: CODIGO_DEPTO, CODIGO_MUN, MUNNOMBRE, DEPNOMBRE,
-              CANNOMBRE, VOTOS, PORCENTAJE_MUN
-
-  - mapeo_mesas_municipios.csv
-    Columnas: MESA_ID, CODIGO_DEPTO, CODIGO_MUN, MUNNOMBRE
-
-  - participacion_municipal.csv
-    Columnas: CODIGO_MUN, MUNNOMBRE, TOTAL_VOTOS, MESAS,
-              TASA_BLANCOS, TASA_NULOS
-
-  - urbano_vs_rural.csv  (si se puede derivar de ZONA)
-    Columnas: CODIGO_MUN, MUNNOMBRE, VOTOS_URBANOS, VOTOS_RURALES,
-              CANDIDATO_URBANO, CANDIDATO_RURAL
-
-FUTURO (con datos demográficos):
-  con_poblacion/
-    - votos_per_capita_mun.csv
-    - densidad_electoral.csv
-    - tasa_participacion_ajustada.csv
-
-GENERADO POR:
-  scripts/02_silver_to_gold/electoral/agregacion_municipal.R
-  scripts/02_silver_to_gold/cruces/electoral_x_poblacion.R  (FUTURO)
-
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│ 📁 data/gold/barrio/ - FUTURO: AGREGACIÓN POR BARRIO                        │
-└─────────────────────────────────────────────────────────────────────────────┘
-
-PROPÓSITO:
-  Resultados a nivel barrio para ciudades principales.
-  Permite mapas de calor intra-ciudad.
-
-PRERREQUISITO:
-  Necesitas mapeo de MESA → BARRIO (puede estar en puesto de votación).
-
-ESTRUCTURA:
-  barrio/
-    ├── mapeo_mesas_barrios.csv
-    ├── votos_por_candidato_barrio.csv
-    └── por_ciudad/
-        ├── bogota/
-        ├── medellin/
-        ├── cali/
-        └── barranquilla/
-
-ARCHIVOS:
-  - mapeo_mesas_barrios.csv
-    Columnas: MESA_ID, CODIGO_MUN, CODIGO_BARRIO, NOMBRE_BARRIO,
-              FUENTE_MAPEO, CONFIABILIDAD
-
-  - votos_por_candidato_barrio.csv
-    Columnas: CODIGO_MUN, NOMBRE_CIUDAD, CODIGO_BARRIO, NOMBRE_BARRIO,
-              CANNOMBRE, VOTOS, PORCENTAJE_BARRIO
-
-POR CIUDAD (ejemplo bogota/):
-  - votos_barrios_bogota.csv
-  - mapa_calor_bogota.geojson
-  - top_barrios_por_candidato.csv
-
-USO:
-  - Mapas de calor por barrio
-  - Identificar bastiones electorales
-  - Análisis de polarización intra-ciudad
-
-GENERADO POR:
-  scripts/02_silver_to_gold/electoral/agregacion_barrio.R  (FUTURO)
-
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│ 📁 data/gold/visualizaciones/ - DATA PARA VIZ                               │
-└─────────────────────────────────────────────────────────────────────────────┘
-
-PROPÓSITO:
-  Datos optimizados específicamente para dashboards, mapas y gráficos.
-  Formatos JSON, GeoJSON para consumo web.
-
-ESTRUCTURA:
-  visualizaciones/
-    ├── dashboard/        ← JSON para dashboards web
-    ├── mapas/            ← GeoJSON para mapas interactivos
-    └── graficos/         ← Data para gráficos específicos
-
-ARCHIVOS (dashboard/):
-  - summary_nacional.json
-    {
-      "total_votos": 23399401,
-      "ganador": "ABELARDO DE LA ESPRIELLA",
-      "votos_ganador": 10045330,
-      "porcentaje_ganador": 42.93,
-      "segundo": "IVÁN CEPEDA CASTRO",
-      "diferencia": 509168
-    }
-
-  - series_candidatos.json
-    [
-      {"candidato": "...", "partido": "...", "votos": ..., "porcentaje": ...},
-      ...
-    ]
-
-ARCHIVOS (mapas/geojson/):
-  - colombia_deptos_votos.geojson
-    GeoJSON con geometrías de departamentos + atributos electorales
-    Propiedades: nombre_depto, candidato_ganador, votos, porcentaje
-
-  - colombia_municipios_votos.geojson
-    GeoJSON de municipios con resultados
-
-  - barrios_capitales_votos.geojson  (FUTURO)
-
-GENERADO POR:
-  scripts/02_silver_to_gold/visualizaciones/preparar_dashboard.R
-  scripts/02_silver_to_gold/visualizaciones/generar_geojson.py
-
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│ 📁 data/gold/temporal/ - FUTURO: ANÁLISIS TEMPORAL                          │
-└─────────────────────────────────────────────────────────────────────────────┘
-
-PROPÓSITO:
-  Cuando haya datos de múltiples elecciones, comparar evolución temporal.
-
-CONTENIDO PLANEADO:
-  - Comparativos entre elecciones (2022 vs 2026)
-  - Series históricas de participación
-  - Municipios que "viraron" (cambiaron preferencia)
-  - Tendencias por departamento
-
-ESTRUCTURA:
-  temporal/
-    ├── comparativo_2022_2026/
-    │   ├── cambio_votos_candidatos.csv
-    │   ├── municipios_viraron.csv
-    │   └── tendencias_departamentales.csv
-    └── series_historicas/
-        ├── votos_historicos_nacional.csv
-        └── participacion_historica.csv
-
-ARCHIVOS (comparativo_2022_2026/):
-  - cambio_votos_candidatos.csv
-    Columnas: CANDIDATO_2022, CANDIDATO_2026, VOTOS_2022, VOTOS_2026,
-              CAMBIO_ABSOLUTO, CAMBIO_PORCENTUAL
-
-  - municipios_viraron.csv
-    Columnas: CODIGO_MUN, MUNNOMBRE, GANADOR_2022, GANADOR_2026,
-              CAMBIO, MAGNITUD_CAMBIO
-
-GENERADO POR:
-  scripts/02_silver_to_gold/visualizaciones/preparar_series_tiempo.R  (FUTURO)
+data/ esta excluida de Git porque contiene archivos grandes o derivados. La
+estructura se puede crear o reparar con:
+
+  Rscript scripts/00_setup/crear_estructura.R
+
+CAPA BRONZE
+--------------------------------------------------------------------------------
+
+Proposito:
+  Conservar datos crudos y metadata de ingesta.
+
+Rutas principales:
+  data/bronze/raw/electoral/
+  data/bronze/raw/geograficos/
+  data/bronze/metadata/electoral/
+
+Ruta que lee el script Bronze -> Silver:
+  data/bronze/raw/electoral/registraduria_2026-06-15/
+
+Nota:
+  Si los CSV existen en otra ruta, `limpieza_datos.R` no los usa como Bronze.
+  En ese caso reutiliza `data/silver/electoral/datos_master.rds` si existe.
+
+CAPA SILVER
+--------------------------------------------------------------------------------
+
+Proposito:
+  Datos limpios y validados a maxima granularidad.
+
+Archivos electorales:
+  data/silver/electoral/datos_master.csv
+  data/silver/electoral/datos_master.parquet
+  data/silver/electoral/datos_master.rds
+
+Geometrias:
+  data/silver/geograficos/geometrias_deptos.geojson
+  data/silver/geograficos/geometrias_municipios.geojson
+
+Metadata electoral:
+  data/silver/metadata/electoral/schema.json
+  data/silver/metadata/electoral/validaciones.txt
+  data/silver/metadata/electoral/transformaciones.log
+  data/silver/metadata/electoral/catalogo_departamentos.csv
+  data/silver/metadata/electoral/catalogo_municipios_completo.csv
+  data/silver/metadata/electoral/catalogo_candidatos.csv
+  data/silver/metadata/electoral/catalogo_partidos.csv
+  data/silver/metadata/electoral/catalogo_tipo_voto.csv
+  data/silver/metadata/electoral/homologacion_deptos.csv
+  data/silver/metadata/electoral/homologacion_municipios.csv
+
+CAPA GOLD
+--------------------------------------------------------------------------------
+
+Proposito:
+  Datos agregados para analisis, visualizaciones y dashboard.
+
+Nacional:
+  data/gold/nacional/votos_por_candidato.csv
+  data/gold/nacional/votos_por_candidato.parquet
+  data/gold/nacional/votos_por_partido.csv
+  data/gold/nacional/metricas_participacion.csv
+  data/gold/nacional/resumen_ejecutivo.csv
+
+Departamental:
+  data/gold/departamental/votos_por_candidato_depto.csv
+  data/gold/departamental/votos_por_candidato_depto.parquet
+  data/gold/departamental/rankings_departamentales.csv
+  data/gold/departamental/tasas_participacion_depto.csv
+  data/gold/departamental/diferencias_primer_segundo.csv
+
+Municipal:
+  data/gold/municipal/votos_por_candidato_mun.csv
+  data/gold/municipal/votos_por_candidato_mun.parquet
+  data/gold/municipal/mapeo_mesas_municipios.csv
+  data/gold/municipal/participacion_municipal.csv
+
+Visualizaciones:
+  data/gold/visualizaciones/dashboard/summary_nacional.json
+  data/gold/visualizaciones/dashboard/series_candidatos.json
+  data/gold/visualizaciones/dashboard/metricas_resumen.json
+
+Pendiente:
+  data/gold/visualizaciones/mapas/geojson/ esta reservada para GeoJSON
+  electoral con votos. El script actual verifica insumos, pero no genera la
+  union espacial.
 
 
 ================================================================================
-4. CONVENCIONES DE NOMBRES
+4. SCRIPTS
 ================================================================================
 
-ARCHIVOS:
-  - Todo en minúsculas
-  - Palabras separadas por guion bajo (_)
-  - Sin espacios, sin tildes, sin caracteres especiales
+scripts/00_setup/
+  crear_estructura.R
+  install_packages.R
+  verificar_dependencias.R
+  actualizar_lockfile.R
 
-  ✅ Correcto:   votos_por_candidato_depto.csv
-  ❌ Incorrecto: Votos por Candidato - Depto.csv
+scripts/01_bronze_to_silver/
+  limpieza_datos.R
+  validaciones.R
+  README.md
 
-CARPETAS:
-  - Todo en minúsculas
-  - Sin espacios
-  - Plural para contenedores de múltiples items
+scripts/02_silver_to_gold/
+  ejecutar_todas_agregaciones.R
+  ejecutar_fase_4.R
+  README.md
 
-  ✅ Correcto:   scripts/, demograficos/, mapas/
-  ❌ Incorrecto: Scripts/, Demografico/, Mapa/
+scripts/02_silver_to_gold/electoral/
+  agregacion_nacional.R
+  agregacion_departamental.R
+  agregacion_municipal.R
 
-CÓDIGOS GEOGRÁFICOS:
-  - Departamento: 2 dígitos (01, 05, 11)
-  - Municipio: 3 dígitos (001, 045, 123)
-  - Código completo: DDDMMM (05001 = Medellín)
+scripts/02_silver_to_gold/visualizaciones/
+  preparar_dashboard.R
+  generar_geojson.py
+  README.md
 
-FECHAS:
-  - Formato ISO: YYYY-MM-DD
-  - Ejemplo: 2026-06-15
+scripts/utils/
+  Utilidades historicas. Revisar rutas antes de usarlas; algunos scripts pueden
+  apuntar a `output/` y no al flujo Medallion vigente.
 
-TIMESTAMPS:
-  - archivos: YYYY-MM-DD_HHMMSS
-  - Ejemplo: 2026-06-15_103045
-
-VERSIONES DE DATOS:
-  - [fuente]_[fecha]/
-  - Ejemplo: registraduria_2026-06-15/
-
-COLUMNAS EN DATASETS:
-  - MAYÚSCULAS para columnas originales de fuente oficial
-  - snake_case para columnas derivadas/calculadas
-  - Prefijos para identificar tipo:
-    * codigo_  → códigos oficiales
-    * nombre_  → nombres descriptivos
-    * total_   → totales agregados
-    * tasa_    → tasas/porcentajes
-    * num_     → conteos
+Carpetas reservadas para trabajo futuro:
+  scripts/02_silver_to_gold/cruces/
+  scripts/03_visualizaciones/
+  scripts/04_analisis_avanzados/
+  scripts/05_ingesta/
 
 
 ================================================================================
-5. DATOS EXTERNOS Y COMPLEMENTARIOS (FUTURO)
+5. DASHBOARD
 ================================================================================
 
-┌─────────────────────────────────────────────────────────────────────────────┐
-│ DATOS DEMOGRÁFICOS                                                          │
-└─────────────────────────────────────────────────────────────────────────────┘
+dashboard/
+  README.md
+  web/
 
-FUENTE: DANE (Departamento Administrativo Nacional de Estadística)
+dashboard/web/
+  package.json
+  package-lock.json
+  next.config.js
+  vercel.json
+  src/
+  public/api/
+  scripts/
 
-DATASETS REQUERIDOS:
-  1. Población por municipio (proyecciones actualizadas)
-  2. Censo 2018 (datos base)
-  3. Proyecciones de población 2024-2030
+Comandos principales desde dashboard/web/:
 
-UBICACIÓN EN PROYECTO:
-  Bronze:  data/bronze/raw/demograficos/poblacion_dane_2024/
-  Silver:  data/silver/demograficos/poblacion_municipal.parquet
-  Gold:    data/gold/departamental/con_poblacion/
-           data/gold/municipal/con_poblacion/
+  npm install
+  npm run dev
+  npm run build:data
+  npm run validate
+  npm run build
+  npm run build:full
+  npm run deploy:prod
+  npm run verify:prod
+  npm run lint
 
-URL DANE:
-  https://www.dane.gov.co/index.php/estadisticas-por-tema/demografia-y-poblacion
+Datos publicos del dashboard:
+  dashboard/web/public/api/nacional/resumen.json
+  dashboard/web/public/api/nacional/candidatos.json
+  dashboard/web/public/api/departamentos/lista.json
+  dashboard/web/public/api/departamentos/detalle.json
+  dashboard/web/public/api/analisis/claves-territoriales.json
+  dashboard/web/public/api/mapas/departamentos.json
+  dashboard/web/public/api/mapas/municipios.json
 
-PROCESO DE INGESTA:
-  1. Descargar CSV de DANE
-  2. Colocar en bronze/raw/demograficos/
-  3. Ejecutar scripts/01_bronze_to_silver/limpieza_poblacion.R
-  4. Ejecutar scripts/02_silver_to_gold/cruces/electoral_x_poblacion.R
-
-ANÁLISIS POSIBLES:
-  - Votos per cápita por municipio
-  - Tasa de participación ajustada por población
-  - Densidad electoral (votos/km²)
-  - Comparar municipios de tamaño similar
-
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│ DATOS GEOGRÁFICOS                                                           │
-└─────────────────────────────────────────────────────────────────────────────┘
-
-FUENTE: IGAC / DANE División Político Administrativa
-
-DATASETS REQUERIDOS:
-  1. Shapefiles de departamentos (polígonos)
-  2. Shapefiles de municipios (polígonos)
-  3. Shapefiles de barrios de ciudades principales
-  4. Coordenadas de centroides
-
-UBICACIÓN EN PROYECTO:
-  Bronze:  data/bronze/raw/geograficos/shapefiles/
-  Silver:  data/silver/geograficos/geometrias_municipios.geojson
-  Gold:    data/gold/visualizaciones/mapas/geojson/
-
-URL IGAC:
-  https://geoportal.igac.gov.co/
-
-FORMATOS:
-  - Shapefiles (.shp + .shx + .dbf + .prj)
-  - GeoJSON (para web)
-  - TopoJSON (optimizado)
-
-PROCESO:
-  1. Descargar shapefiles oficiales
-  2. Convertir a GeoJSON en Silver
-  3. Hacer JOIN con datos electorales en Gold
-  4. Generar mapas de calor
-
-ANÁLISIS POSIBLES:
-  - Mapas coropléticos de resultados
-  - Mapas de calor por municipio
-  - Identificar patrones geográficos
-  - Análisis de vecindad (municipios frontera)
-
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│ DATOS SOCIOECONÓMICOS                                                       │
-└─────────────────────────────────────────────────────────────────────────────┘
-
-FUENTE: DANE, DNP (Departamento Nacional de Planeación)
-
-DATASETS REQUERIDOS:
-  1. Necesidades Básicas Insatisfechas (NBI)
-  2. PIB departamental
-  3. Índice de Pobreza Multidimensional (IPM)
-  4. Indicadores de educación
-  5. Cobertura en salud
-
-UBICACIÓN EN PROYECTO:
-  Bronze:  data/bronze/raw/socioeconomicos/dane_indicadores_2024/
-  Silver:  data/silver/socioeconomicos/nbi_limpio.parquet
-  Gold:    data/gold/departamental/con_indicadores/
-
-VARIABLES CLAVE:
-  - NBI municipal (porcentaje)
-  - PIB per cápita departamental
-  - IPM (Índice Pobreza Multidimensional)
-  - Tasa de analfabetismo
-  - Años promedio de educación
-
-PROCESO:
-  1. Descargar indicadores de DANE/DNP
-  2. Limpiar y estandarizar en Silver
-  3. Hacer JOIN con electoral en Gold
-  4. Calcular correlaciones
-
-ANÁLISIS POSIBLES:
-  - ¿Municipios con mayor NBI votan diferente?
-  - ¿Relación entre PIB y preferencia electoral?
-  - ¿Educación influye en elección?
-  - Clustering de municipios por perfil socioeconómico + electoral
-
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│ INTEGRACIÓN DE DATOS EXTERNOS                                               │
-└─────────────────────────────────────────────────────────────────────────────┘
-
-ESTRATEGIA DE INTEGRACIÓN:
-
-1. PREPARACIÓN EN SILVER:
-   - Cada dataset externo se limpia independientemente
-   - Se validan códigos DANE (match con electoral)
-   - Se estandarizan nombres de municipios/departamentos
-
-2. CRUCE EN GOLD:
-   - Scripts específicos en scripts/02_silver_to_gold/cruces/
-   - Se hacen JOINs por código DANE
-   - Se validan completitud de cruces
-   - Se documentan municipios sin match
-
-3. VALIDACIÓN:
-   - Verificar que códigos DANE coincidan
-   - Documentar años de referencia de cada dataset
-   - Anotar fuentes y metodologías
-
-EJEMPLO DE CRUCE:
-
-  # En R
-  library(dplyr)
-
-  electoral_mun <- read_parquet("data/gold/municipal/votos_por_candidato_mun.parquet")
-  poblacion <- read_parquet("data/silver/demograficos/poblacion_municipal.parquet")
-
-  electoral_con_poblacion <- electoral_mun %>%
-    left_join(poblacion,
-              by = c("CODIGO_DEPTO" = "codigo_departamento",
-                     "CODIGO_MUN" = "codigo_municipio")) %>%
-    mutate(votos_per_capita = VOTOS / poblacion_total)
-
-  write_parquet(electoral_con_poblacion,
-                "data/gold/municipal/con_poblacion/votos_per_capita_mun.parquet")
+El dashboard publicado no usa backend dinamico. Los JSON se importan de forma
+estatica durante el build de Next.js.
 
 
 ================================================================================
-6. QUÉ VA A GIT Y QUÉ NO
+6. DOCUMENTACION
 ================================================================================
 
-✅ SÍ VA A GIT (archivos pequeños, código, docs):
-  - 📁 scripts/          → Todo el código
-  - 📁 docs/             → Toda la documentación
-  - 📁 tests/            → Tests
-  - 📁 notebooks/        → Notebooks de exploración (opcional)
-  - README.md
-  - CHANGELOG.md
-  - LICENSE
-  - .gitignore
-  - renv.lock / requirements.txt
+docs/
+  guia-inicio-rapido.md
+  gestion_dependencias_renv.md
+  fuentes_geograficas_dane.txt
+  medallion-architecture-explicacion.txt
+  estructura-proyecto.txt
+  diccionarios/
 
-❌ NO VA A GIT (archivos grandes, datos, outputs):
-  - 📁 data/             → TODOS los datos (Bronze, Silver, Gold)
-  - 📁 output/           → Outputs temporales
-  - 📁 logs/             → Logs de ejecución
-  - Archivos grandes (>100MB)
+Diccionarios:
+  docs/diccionarios/diccionario_bronze.md
+  docs/diccionarios/diccionario_silver.md
+  docs/diccionarios/diccionarios_gold/nacional.md
+  docs/diccionarios/diccionarios_gold/departamental.md
+  docs/diccionarios/diccionarios_gold/municipal.md
 
-CONFIGURACIÓN DE .gitignore:
-
-  # Datos
-  data/
-
-  # Outputs temporales
-  output/
-
-  # Logs
-  logs/
-  *.log
-
-  # R
-  .Rproj.user
-  .Rhistory
-  .RData
-  .Ruserdata
-
-  # Python
-  __pycache__/
-  *.pyc
-  .ipynb_checkpoints/
-
-  # Sistema
-  .DS_Store
-  Thumbs.db
-
-EXCEPCIÓN:
-  Si quieres versionar datos muy pequeños (ej: catálogos de códigos DANE),
-  puedes crear:
-
-    data/referencias/
-      ├── codigos_dane_departamentos.csv
-      └── codigos_dane_municipios.csv
-
-  Y excluir esta carpeta del .gitignore:
-    # En .gitignore
-    data/*
-    !data/referencias/
+Carpetas reservadas:
+  docs/arquitectura/
+  docs/arquitectura/esquemas_datos/
+  docs/fuentes_datos/
+  docs/metodologia/
 
 
 ================================================================================
-7. FLUJO DE TRABAJO
+7. DEPENDENCIAS
 ================================================================================
 
-FLUJO COMPLETO (Bronze → Silver → Gold):
+R:
+  - Dependencias directas declaradas en DESCRIPTION.
+  - Versiones reproducibles en renv.lock.
+  - Flujo recomendado:
 
-  1️⃣ INGESTA A BRONZE
-     ├─ Descargar datos de fuente oficial
-     ├─ Colocar en data/bronze/raw/[tipo]/[fuente]_[fecha]/
-     ├─ Crear metadata (checksums, source_info)
-     └─ NO modificar archivos
+      Rscript --vanilla scripts/00_setup/install_packages.R
+      Rscript --vanilla scripts/00_setup/verificar_dependencias.R
 
-  2️⃣ LIMPIEZA (Bronze → Silver)
-     ├─ Ejecutar scripts/01_bronze_to_silver/limpieza_datos.R
-     ├─ Generar data/silver/electoral/datos_master.parquet
-     ├─ Validar calidad (scripts/01_bronze_to_silver/validaciones.R)
-     └─ Documentar transformaciones en metadata/
+Node:
+  - Dependencias del dashboard en dashboard/web/package.json.
+  - Lockfile en dashboard/web/package-lock.json.
+  - Node 20.9 o superior para Next.js 16.
 
-  3️⃣ AGREGACIÓN (Silver → Gold)
-     ├─ scripts/02_silver_to_gold/electoral/agregacion_nacional.R
-     ├─ scripts/02_silver_to_gold/electoral/agregacion_departamental.R
-     ├─ scripts/02_silver_to_gold/electoral/agregacion_municipal.R
-     └─ Generar múltiples productos en gold/
+Python:
+  - Python 3 para scripts geograficos y verificacion GeoJSON.
+  - tools/geo/requirements.txt contiene dependencias auxiliares para trabajo
+    geoespacial.
 
-  4️⃣ CRUCES (Silver → Gold)  [FUTURO]
-     ├─ scripts/02_silver_to_gold/cruces/electoral_x_poblacion.R
-     ├─ scripts/02_silver_to_gold/cruces/electoral_x_indicadores.R
-     └─ Generar gold/departamental/con_poblacion/, etc.
 
-  5️⃣ VISUALIZACIÓN (Gold → Frontend)
-     ├─ scripts/03_visualizaciones/preparar_datos_dashboard.R
-     ├─ scripts/03_visualizaciones/mapas/generar_geojson.py
-     └─ Consumir desde aplicaciones web/dashboards
+================================================================================
+8. GIT
+================================================================================
 
-COMANDOS TÍPICOS:
+Se versiona:
+  - Codigo R, Python, TypeScript y JavaScript.
+  - Documentacion.
+  - Manifiestos de dependencias.
+  - Configuracion del dashboard.
 
-  # Setup inicial
-  Rscript scripts/00_setup/crear_directorios.R
-  Rscript scripts/00_setup/install_packages.R
+No se versiona:
+  - data/
+  - logs/
+  - output/
+  - renv/library/
+  - node_modules/
+  - .next/
+  - out/
+  - archivos CSV, Parquet y RDS grandes.
 
-  # Limpieza (Bronze → Silver)
+
+================================================================================
+9. COMANDOS DE REFERENCIA
+================================================================================
+
+Pipeline completo desde datos Silver existentes:
+
+  Rscript scripts/02_silver_to_gold/ejecutar_todas_agregaciones.R
+  Rscript scripts/02_silver_to_gold/ejecutar_fase_4.R
+
+Reconstruccion desde Bronze:
+
   Rscript scripts/01_bronze_to_silver/limpieza_datos.R
+  Rscript scripts/01_bronze_to_silver/validaciones.R
+  Rscript scripts/02_silver_to_gold/ejecutar_todas_agregaciones.R
+  Rscript scripts/02_silver_to_gold/ejecutar_fase_4.R
 
-  # Agregaciones (Silver → Gold)
-  Rscript scripts/02_silver_to_gold/electoral/agregacion_nacional.R
-  Rscript scripts/02_silver_to_gold/electoral/agregacion_departamental.R
-  Rscript scripts/02_silver_to_gold/electoral/agregacion_municipal.R
+Dashboard local:
 
-  # Preparar visualizaciones
-  Rscript scripts/02_silver_to_gold/visualizaciones/preparar_dashboard.R
-  python scripts/02_silver_to_gold/visualizaciones/generar_geojson.py
+  cd dashboard/web
+  npm install
+  npm run dev
 
+Dashboard produccion:
 
-================================================================================
-8. EJEMPLOS DE USO
-================================================================================
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│ EJEMPLO 1: Agregar Datos de Población                                      │
-└─────────────────────────────────────────────────────────────────────────────┘
-
-PASO 1: Descargar datos del DANE
-  → Ir a https://www.dane.gov.co/
-  → Descargar poblacion_municipios_2024.csv
-
-PASO 2: Colocar en Bronze
-  → Crear carpeta: data/bronze/raw/demograficos/poblacion_dane_2024/
-  → Copiar archivo: poblacion_municipios_2024.csv
-  → Crear metadata: ingesta_poblacion.json
-
-PASO 3: Limpiar a Silver
-  → Ejecutar: Rscript scripts/01_bronze_to_silver/limpieza_poblacion.R
-  → Genera: data/silver/demograficos/poblacion_municipal.parquet
-
-PASO 4: Cruzar con Electoral en Gold
-  → Ejecutar: Rscript scripts/02_silver_to_gold/cruces/electoral_x_poblacion.R
-  → Genera: data/gold/municipal/con_poblacion/votos_per_capita_mun.csv
-
-PASO 5: Visualizar
-  → Leer data/gold/municipal/con_poblacion/votos_per_capita_mun.csv
-  → Crear mapa de votos per cápita
-
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│ EJEMPLO 2: Agregar Datos de Elección Anterior (2022)                       │
-└─────────────────────────────────────────────────────────────────────────────┘
-
-PASO 1: Obtener datos de elecciones 2022
-  → Descargar CSVs de Registraduría 2022
-
-PASO 2: Colocar en Bronze
-  → Crear: data/bronze/raw/electoral/registraduria_2022-05-29/
-  → Copiar archivos CSV de 2022
-
-PASO 3: Limpiar a Silver
-  → Modificar limpieza_datos.R para procesar ambas elecciones
-  → O crear limpieza_datos_2022.R específico
-  → Genera: data/silver/electoral/datos_master_2022.parquet
-           data/silver/electoral/datos_master_2026.parquet
-
-PASO 4: Crear análisis temporal en Gold
-  → Ejecutar: Rscript scripts/02_silver_to_gold/temporal/comparativo_elecciones.R
-  → Genera: data/gold/temporal/comparativo_2022_2026/cambio_votos.csv
-
-PASO 5: Dashboard temporal
-  → Crear gráficos de evolución
-  → Mapa de municipios que cambiaron preferencia
-
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│ EJEMPLO 3: Mapeo de Barrios                                                │
-└─────────────────────────────────────────────────────────────────────────────┘
-
-PASO 1: Obtener mapeo MESA → BARRIO
-  → Puede estar en PUESNOMBRE (dirección del puesto)
-  → O necesitas shapefile de barrios + geocodificación
-
-PASO 2: Crear mapeo en Silver
-  → Manual o mediante geocoding
-  → Genera: data/silver/electoral/mapeo_mesas_barrios.csv
-  → Columnas: MESA_ID, CODIGO_MUN, CODIGO_BARRIO, NOMBRE_BARRIO
-
-PASO 3: Agregar a nivel barrio en Gold
-  → Ejecutar: Rscript scripts/02_silver_to_gold/electoral/agregacion_barrio.R
-  → Genera: data/gold/barrio/votos_por_candidato_barrio.csv
-
-PASO 4: Crear mapa de calor por ciudad
-  → python scripts/03_visualizaciones/mapas/mapa_barrios.py
-  → Genera: data/gold/barrio/por_ciudad/bogota/mapa_calor_bogota.geojson
+  cd dashboard/web
+  npm run deploy:prod
 
 
 ================================================================================
-9. PREGUNTAS FRECUENTES (FAQ)
-================================================================================
-
-Q: ¿Qué hago si necesito agregar un nuevo tipo de datos?
-A: 1. Crear subcarpeta en bronze/raw/[nuevo_tipo]/
-   2. Crear script de limpieza en scripts/01_bronze_to_silver/
-   3. Generar dataset limpio en silver/[nuevo_tipo]/
-   4. Documentar en docs/diccionarios/
-
-Q: ¿Puedo modificar datos en Bronze?
-A: NO. Bronze es inmutable. Si hay error en origen, documentarlo pero
-   aplicar corrección en transformación Silver.
-
-Q: ¿Cómo regenero Silver si cambio la lógica de limpieza?
-A: Modificar script en scripts/01_bronze_to_silver/
-   Re-ejecutar script (lee Bronze, regenera Silver)
-   Documentar cambio en CHANGELOG.md
-
-Q: ¿Qué formato usar en Gold: CSV o Parquet?
-A: Depende del uso:
-   - Parquet: Para procesamiento (más rápido, comprimido)
-   - CSV: Para inspección manual, compatibilidad
-   - JSON: Para dashboards web
-   Recomendación: Generar Parquet + CSV
-
-Q: ¿Dónde va el código de visualización web (JS/Scheme)?
-A: scripts/03_visualizaciones/dashboard/
-   Aunque el frontend final puede estar en repo separado.
-
-Q: ¿Cómo manejo datos muy grandes (>1GB)?
-A: - Usar Parquet (compresión columnar)
-   - Considerar particionado por año/departamento
-   - Usar DuckDB para queries sin cargar todo en memoria
-
-Q: ¿Qué hago con datos que cambian frecuentemente?
-A: Si son actualizaciones oficiales:
-   - Nueva carpeta en Bronze con timestamp
-   - Regenerar Silver y Gold
-   Si son correcciones:
-   - Documentar corrección
-   - Aplicar en transformación Silver
-
-Q: ¿Cómo colaborar en el proyecto?
-A: 1. Clonar repositorio
-   2. Instalar dependencias (renv.lock, requirements.txt)
-   3. Ejecutar scripts/00_setup/crear_directorios.R
-   4. Descargar datos (o regenerar desde Bronze si está compartido)
-   5. Seguir convenciones de este documento
-
-
-================================================================================
-FIN DEL DOCUMENTO
-================================================================================
-
-Última actualización: 2026-06-15
-
-Para más información:
-  - Medallion Architecture: docs/medallion-architecture-explicacion.txt
-  - Guía de inicio rápido: docs/guia-inicio-rapido.md
-  - Preguntas: Revisar README.md

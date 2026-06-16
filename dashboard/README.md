@@ -8,9 +8,8 @@ Dashboard interactivo para visualizar resultados electorales presidenciales de C
 
 ```
 dashboard/
-├── api/          # Backend FastAPI opcional para desarrollo
-├── web/          # Frontend Next.js con export estatico
-└── docker-compose.yml
+├── README.md
+└── web/          # Frontend Next.js con export estatico
 ```
 
 El frontend no consulta una API dinamica en produccion. Los datos se generan como JSON estaticos en `web/public/api/` y se importan durante el build de Next.js. Esto hace que Vercel sirva una version cerrada y verificable del dashboard.
@@ -43,7 +42,7 @@ El frontend no consulta una API dinamica en produccion. Los datos se generan com
 El comando correcto para publicar cambios es:
 
 ```bash
-cd web
+cd dashboard/web
 npm run deploy:prod
 ```
 
@@ -83,13 +82,14 @@ La idea es que no se publique una version si los datos no cuadran, si el mapa no
 
 ### Requisitos
 
-- Node.js 24 recomendado, compatible con la configuracion actual de Vercel.
+- Node.js 20.9 o superior. El Dockerfile usa Node 20; Next.js 16 tambien es
+  compatible con versiones modernas posteriores.
 - npm.
 
 ### Instalar y correr
 
 ```bash
-cd web
+cd dashboard/web
 npm install
 npm run dev
 ```
@@ -121,6 +121,7 @@ Los archivos consumidos por el dashboard viven en `web/public/api/`:
 | `departamentos/detalle.json` | Candidatos y metricas por departamento. |
 | `analisis/claves-territoriales.json` | Insumos territoriales usados dentro de `Hallazgos clave`. |
 | `mapas/departamentos.json` | GeoJSON simplificado de departamentos. |
+| `mapas/municipios.json` | GeoJSON simplificado de municipios para uso futuro o analisis. |
 
 Aunque el archivo de analisis conserva el nombre `claves-territoriales.json`, ya no existe una seccion visual separada con ese nombre. Es una fuente de datos interna para la seccion unificada `Hallazgos clave`.
 
@@ -177,17 +178,9 @@ El dashboard usa el sistema visual Global Bridge Consultancy:
 - Cards con bordes sutiles y jerarquia compacta.
 - Hallazgos integrados en una sola lectura nacional-territorial.
 
-## Backend Opcional
+## Backend
 
-El backend FastAPI puede usarse para exploracion local, pero no es requerido por el dashboard publicado:
-
-```bash
-cd api
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8000
-```
-
-API local: http://localhost:8000
-Documentacion local: http://localhost:8000/docs
+No hay backend operativo en esta copia del proyecto. El dashboard publicado es
+un sitio estatico: `npm run build:data` genera `web/public/api/` desde
+`data/gold`, Next.js importa esos JSON en build time y Vercel sirve el
+resultado exportado.

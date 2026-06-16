@@ -14,10 +14,11 @@ Bronze (origen) -> Silver (datos limpios) -> Gold (productos analiticos)
 ## Estado
 
 - Setup de carpetas: completado.
-- Bronze a Silver: implementado; los CSV originales no estan disponibles.
+- Bronze a Silver: implementado.
 - Silver a Gold: implementado para nivel nacional, departamental y municipal.
 - JSON para dashboard: implementado.
-- GeoJSON electoral: implementado con geometrias DANE MGN 2025.
+- Geometrias DANE MGN 2025 en Silver: disponibles.
+- GeoJSON electoral con votos: pendiente; `generar_geojson.py` solo verifica prerrequisitos.
 - Homologacion Registraduria-DANE: completada (100% departamentos y municipios).
 - Tests automatizados: pendientes.
 
@@ -32,7 +33,7 @@ Bronze (origen) -> Silver (datos limpios) -> Gold (productos analiticos)
 
 ## Requisitos
 
-- R 4.6.0 recomendado; la version utilizada se registra en `renv.lock`.
+- R compatible con la version registrada en `renv.lock`.
 - Python 3 para verificar los prerrequisitos GeoJSON.
 
 Las dependencias R se administran con `renv`. Desde la raiz del proyecto:
@@ -53,7 +54,8 @@ Desde la raiz del proyecto:
 Rscript scripts/00_setup/crear_estructura.R
 
 # Regenerar Silver
-# Actualmente reutiliza datos_master.rds porque Bronze no contiene los CSV.
+# Requiere los CSV en data/bronze/raw/electoral/registraduria_2026-06-15/.
+# Si esa ruta no existe, reutiliza data/silver/electoral/datos_master.rds.
 Rscript scripts/01_bronze_to_silver/limpieza_datos.R
 
 # Ejecutar validaciones Silver
@@ -62,7 +64,7 @@ Rscript scripts/01_bronze_to_silver/validaciones.R
 # Generar Gold nacional, departamental y municipal
 Rscript scripts/02_silver_to_gold/ejecutar_todas_agregaciones.R
 
-# Generar JSON para dashboard y verificar GeoJSON
+# Generar JSON para dashboard y verificar prerrequisitos GeoJSON
 Rscript scripts/02_silver_to_gold/ejecutar_fase_4.R
 ```
 
@@ -84,7 +86,7 @@ data/
     municipal/              Agregaciones por municipio
     visualizaciones/
       dashboard/            JSON para dashboards web
-      mapas/geojson/        GeoJSON electoral con votos
+      mapas/geojson/        Salida futura para GeoJSON electoral
 scripts/
   00_setup/
   01_bronze_to_silver/
@@ -102,18 +104,20 @@ La descripcion extensa esta en
 - `data/gold/departamental/`: resultados, rankings y diferencias.
 - `data/gold/municipal/`: resultados, participacion y mapeo de mesas.
 - `data/gold/visualizaciones/dashboard/`: JSON para consumo web.
-- `data/gold/visualizaciones/mapas/geojson/`: GeoJSON electoral para mapas interactivos.
+- `data/gold/visualizaciones/mapas/geojson/`: salida prevista para GeoJSON electoral.
 
 ### GeoJSON Electoral
 
-Los archivos GeoJSON incluyen geometrias oficiales del DANE con datos de votos:
+La capa Silver ya contiene geometrias oficiales del DANE:
 
 | Archivo | Contenido |
 |---------|-----------|
-| `departamentos_electoral.geojson` | 33 departamentos con votos y ganador |
-| `municipios_electoral.geojson` | 1122 municipios con votos y ganador |
+| `data/silver/geograficos/geometrias_deptos.geojson` | 33 departamentos |
+| `data/silver/geograficos/geometrias_municipios.geojson` | 1.122 municipios |
 
-Atributos por feature: `total_votos`, `ganador`, `votos_ganador`, `porcentaje_ganador`, `segundo`, `diferencia`.
+`scripts/02_silver_to_gold/visualizaciones/generar_geojson.py` verifica que
+existan las geometrias y los insumos electorales. La union espacial para
+generar GeoJSON con votos y ganador sigue pendiente de implementacion.
 
 ## Documentacion
 
@@ -128,27 +132,31 @@ Atributos por feature: `total_votos`, `ganador`, `votos_ganador`, `porcentaje_ga
 
 ## Bronze y reproducibilidad
 
-Para reconstruir Silver desde cero se requieren los 33 CSV originales en:
+Para reconstruir Silver desde cero, `limpieza_datos.R` requiere los 33 CSV
+originales en:
 
 ```text
 data/bronze/raw/electoral/registraduria_2026-06-15/
 ```
 
-Sin esos archivos, `limpieza_datos.R` reutiliza
-`data/silver/electoral/datos_master.rds`.
+Si esa ruta no existe o no contiene CSV, `limpieza_datos.R` reutiliza
+`data/silver/electoral/datos_master.rds` para regenerar formatos y metadata.
 
 ## Mapas
 
-Los mapas electorales usan geometrias oficiales del Marco Geoestadistico
-Nacional (MGN) 2025 del DANE. Los shapefiles se descargan automaticamente
-desde el geoportal del DANE y se convierten a GeoJSON.
+Los mapas del dashboard publicado consumen JSON estatico en
+`dashboard/web/public/api/mapas/`. Las geometrias fuente provienen del Marco
+Geoestadistico Nacional (MGN) 2025 del DANE y fueron convertidas a GeoJSON en
+Silver.
 
 Fuentes:
 - Departamentos: `MGN2025_DPTO_POLITICO.zip` (12 MB)
 - Municipios: `MGN2025_MPIO_GRAFICO.zip` (68 MB)
 
 La homologacion entre codigos electorales (Registraduria) y codigos DANE
-(DIVIPOLA) esta documentada en `data/silver/metadata/electoral/`.
+(DIVIPOLA) esta documentada en `data/silver/metadata/electoral/`. La union de
+esas geometrias con resultados electorales para Gold todavia no esta
+implementada en `generar_geojson.py`.
 
 ## Versionamiento
 

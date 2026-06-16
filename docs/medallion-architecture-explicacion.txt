@@ -149,7 +149,7 @@ EJEMPLO EN NUESTRO PROYECTO:
   - Votos por candidato a nivel MUNICIPIO
   - Votos por candidato a nivel DEPARTAMENTO
   - Votos por candidato a nivel NACIONAL
-  - Votos por candidato por BARRIO (TBD)
+  - Votos por candidato por barrio (posible extension futura)
   - Tasas de participación por región
   - Rankings de candidatos por zona
   - Mapas de calor electoral
@@ -234,8 +234,8 @@ BENEFICIO 6: AUDITORÍA Y CUMPLIMIENTO
                                 ▼
     ┌─────────────────────────────────────────────────────────────┐
     │                    CONSUMO                                  │
-    │  • Dashboards (Scheme/JS)                                   │
-    │  • Mapas (Python/Folium/Leaflet)                            │
+    │  • Dashboard estatico (Next.js/TypeScript)                   │
+    │  • Mapas SVG/GeoJSON                                        │
     │  • Reportes (R Markdown)                                    │
     │  • APIs                                                     │
     └─────────────────────────────────────────────────────────────┘
@@ -474,7 +474,7 @@ CASO 4: Error Detectado en Datos Originales
 ✅ FLEXIBILIDAD TECNOLÓGICA:
    - Bronze: Simple storage (CSVs)
    - Silver: Procesamiento en R
-   - Gold: Consumo desde múltiples lenguajes (R, Python, JS, Scheme)
+   - Gold: Consumo desde multiples lenguajes (R, Python, JavaScript/TypeScript)
 
 ✅ PREPARADO PARA TEMPORALES:
    - Cuando lleguen datos de elecciones anteriores/futuras:

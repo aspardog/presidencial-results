@@ -18,6 +18,17 @@ Los archivos se guardan en `data/gold/visualizaciones/dashboard/`.
 
 ## Mapas
 
-`generar_geojson.py` verifica las agregaciones electorales y busca geometrías
-oficiales en `data/silver/geograficos/`. Mientras esas geometrías no existan,
-el script informa el estado pendiente y no genera GeoJSON vacíos.
+`generar_geojson.py` verifica las agregaciones electorales y busca geometrias
+oficiales en `data/silver/geograficos/`:
+
+- `data/silver/geograficos/geometrias_deptos.geojson`
+- `data/silver/geograficos/geometrias_municipios.geojson`
+
+Si faltan insumos electorales, termina con error. Si faltan geometrias,
+informa el estado pendiente y no genera GeoJSON vacios. Si todos los insumos
+existen, informa que la union espacial aun no esta implementada.
+
+Las salidas previstas, todavia no generadas por este script, son:
+
+- `data/gold/visualizaciones/mapas/geojson/colombia_deptos_votos.geojson`
+- `data/gold/visualizaciones/mapas/geojson/colombia_municipios_votos.geojson`

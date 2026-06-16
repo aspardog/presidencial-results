@@ -20,3 +20,16 @@ Rscript scripts/02_silver_to_gold/ejecutar_todas_agregaciones.R
 
 Los porcentajes y rankings electorales usan solamente votos a candidatos.
 Blancos, nulos y no marcados se conservan en las tablas de participacion.
+
+## Fase de visualizaciones
+
+Despues de las agregaciones electorales puede ejecutarse:
+
+```bash
+Rscript scripts/02_silver_to_gold/ejecutar_fase_4.R
+```
+
+Ese comando genera JSON nacionales para
+`data/gold/visualizaciones/dashboard/` y ejecuta la verificacion GeoJSON. La
+union espacial para producir GeoJSON electoral con votos sigue pendiente en
+`scripts/02_silver_to_gold/visualizaciones/generar_geojson.py`.

@@ -7,10 +7,11 @@ transformaciones. Es la fuente de trazabilidad para regenerar Silver.
 
 ## Estado actual
 
-Los 33 CSV electorales originales no estan presentes en el proyecto. Solo se
-conservan la metadata de ingesta y una copia procesada en Silver. Por este
-motivo, el pipeline puede regenerar productos desde Silver, pero no reconstruir
-Silver desde cero hasta recuperar los archivos originales.
+Los CSV de Bronze no se versionan en Git. Para que `limpieza_datos.R`
+reconstruya Silver desde la fuente original, los 33 CSV deben existir en la
+ruta esperada por el script. Si esa ruta no existe o no contiene CSV, el
+pipeline reutiliza `data/silver/electoral/datos_master.rds` para regenerar
+formatos y metadata.
 
 ## Ubicacion esperada
 
