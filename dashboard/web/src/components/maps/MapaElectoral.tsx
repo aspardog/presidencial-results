@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { getColorGanador } from '@/lib/colors';
 import { getCodigoElectoralDesdeDane } from '@/lib/departamentos';
 import { formatNumber, formatPercent } from '@/lib/formatters';
@@ -14,11 +14,15 @@ type MultiPolygonCoordinates = PolygonCoordinates[];
 type FeatureProperties = {
   dpto_ccdgo?: string;
   dpto_cnmbr?: string;
+  mpio_ccdgo?: string;
+  mpio_cnmbr?: string;
+  mpio_cdpmp?: string;
   DPTO_CCDGO?: string;
   DPTO_CNMBR?: string;
   ganador?: string;
   votos_ganador?: number;
   porcentaje_ganador?: number;
+  total_votos?: number;
   segundo?: string;
   votos_segundo?: number;
   diferencia?: number;
@@ -42,6 +46,7 @@ type TooltipState = {
   x: number;
   y: number;
   properties: FeatureProperties;
+  isMunicipio: boolean;
 };
 
 interface MapaElectoralProps {
@@ -64,6 +69,19 @@ function getCodigoDepartamento(properties: FeatureProperties): string {
 
 function getNombreDepartamento(properties: FeatureProperties): string {
   return properties.dpto_cnmbr || properties.DPTO_CNMBR || 'Departamento';
+}
+
+function getCodigoFeature(properties: FeatureProperties, isMunicipio: boolean): string {
+  if (!isMunicipio) return getCodigoDepartamento(properties);
+  if (properties.mpio_cdpmp) return properties.mpio_cdpmp;
+  if (properties.dpto_ccdgo && properties.mpio_ccdgo) return `${properties.dpto_ccdgo}${properties.mpio_ccdgo}`;
+  return '';
+}
+
+function getNombreFeature(properties: FeatureProperties, isMunicipio: boolean): string {
+  return isMunicipio
+    ? properties.mpio_cnmbr || 'Municipio'
+    : getNombreDepartamento(properties);
 }
 
 function forEachPosition(feature: GeoFeature, callback: (position: Position) => void) {
@@ -149,14 +167,40 @@ export default function MapaElectoral({
 }: MapaElectoralProps) {
   const [hoveredCode, setHoveredCode] = useState<string | null>(null);
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
+  const [municipiosGeoJSON, setMunicipiosGeoJSON] = useState<FeatureCollection | null>(null);
+  const [municipiosError, setMunicipiosError] = useState<string | null>(null);
+  const municipiosRequestRef = useRef(false);
+
+  useEffect(() => {
+    if (!departamentoSeleccionado || municipiosGeoJSON || municipiosRequestRef.current) return;
+
+    municipiosRequestRef.current = true;
+    fetch('/api/mapas/municipios.json')
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then((data) => {
+        setMunicipiosGeoJSON(data as FeatureCollection);
+        setMunicipiosError(null);
+      })
+      .catch((err) => {
+        console.error('Error cargando municipios:', err);
+        municipiosRequestRef.current = false;
+        setMunicipiosError('No se pudo cargar la desagregacion municipal.');
+      });
+  }, [departamentoSeleccionado, municipiosGeoJSON]);
+
+  const isMunicipioView = Boolean(departamentoSeleccionado);
 
   const visibleFeatures = useMemo(() => {
     if (!departamentoSeleccionado) return departamentosGeoJSON.features;
+    if (!municipiosGeoJSON) return [];
 
-    return departamentosGeoJSON.features.filter(
+    return municipiosGeoJSON.features.filter(
       (feature) => getCodigoDepartamento(feature.properties) === departamentoSeleccionado
     );
-  }, [departamentoSeleccionado]);
+  }, [departamentoSeleccionado, municipiosGeoJSON]);
 
   const paths = useMemo(() => {
     if (!visibleFeatures.length) return [];
@@ -165,22 +209,24 @@ export default function MapaElectoral({
     return visibleFeatures.map((feature) => ({
       d: featureToPath(feature, project),
       properties: feature.properties,
-      codigo: getCodigoDepartamento(feature.properties),
-      nombre: getNombreDepartamento(feature.properties),
+      codigo: getCodigoFeature(feature.properties, isMunicipioView),
+      nombre: getNombreFeature(feature.properties, isMunicipioView),
       color: getColorGanador(feature.properties.ganador || ''),
     }));
-  }, [visibleFeatures]);
+  }, [isMunicipioView, visibleFeatures]);
 
   const isZoomed = Boolean(departamentoSeleccionado);
   const mapTitle = isZoomed && departamentoSeleccionadoNombre
-    ? departamentoSeleccionadoNombre
+    ? `Municipios de ${departamentoSeleccionadoNombre}`
     : 'Colombia por departamentos';
+  const loadingMunicipios = isMunicipioView && !municipiosGeoJSON && !municipiosError;
+  const emptyMunicipios = isMunicipioView && !loadingMunicipios && visibleFeatures.length === 0;
 
   return (
     <div className="relative h-full min-h-[400px] w-full overflow-hidden rounded-gb-lg bg-gb-teal-50">
       <div className="absolute left-4 top-4 z-10 flex max-w-[calc(100%-2rem)] flex-wrap items-center gap-2">
         <div className="rounded-gb-md border border-gb-border bg-white px-3 py-2 shadow-gb-sm">
-          <p className="gb-eyebrow leading-none">{isZoomed ? 'Zoom departamental' : 'Vista departamental'}</p>
+          <p className="gb-eyebrow leading-none">{isZoomed ? 'Vista municipal' : 'Vista departamental'}</p>
           <p className="mt-1 max-w-[220px] truncate text-sm font-semibold text-gb-ink sm:max-w-[320px]">
             {mapTitle}
           </p>
@@ -196,8 +242,27 @@ export default function MapaElectoral({
         )}
       </div>
 
+      {loadingMunicipios && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-gb-teal-50/80">
+          <div className="text-center">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-gb-teal-200 border-t-gb-teal-700"></div>
+            <p className="mt-2 text-sm text-gb-slate-muted">Cargando municipios...</p>
+          </div>
+        </div>
+      )}
+      {municipiosError && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-gb-teal-50/90 px-6 text-center">
+          <p className="text-sm font-medium text-gb-slate">{municipiosError}</p>
+        </div>
+      )}
+      {emptyMunicipios && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-gb-teal-50/90 px-6 text-center">
+          <p className="text-sm font-medium text-gb-slate">No hay geometria municipal disponible para este departamento.</p>
+        </div>
+      )}
+
       <svg
-        aria-label="Mapa electoral de Colombia por departamento"
+        aria-label={`Mapa electoral de Colombia por ${isMunicipioView ? 'municipio' : 'departamento'}`}
         className="h-full w-full"
         preserveAspectRatio="xMidYMid meet"
         role="img"
@@ -209,7 +274,7 @@ export default function MapaElectoral({
       >
         <rect width={VIEWBOX_WIDTH} height={VIEWBOX_HEIGHT} fill="#F1F8F9" />
         {paths.map(({ d, properties, codigo, nombre, color }) => {
-          const isActive = departamentoSeleccionado === codigo;
+          const isActive = !isMunicipioView && departamentoSeleccionado === codigo;
           const isHovered = hoveredCode === codigo;
 
           return (
@@ -217,15 +282,15 @@ export default function MapaElectoral({
               key={codigo || nombre}
               d={d}
               fill={color}
-              fillOpacity={isActive || isHovered ? 0.92 : 0.74}
+              fillOpacity={isActive || isHovered ? 0.92 : isMunicipioView ? 0.8 : 0.74}
               stroke={isHovered || isActive ? '#15252A' : '#ffffff'}
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeWidth={isHovered ? 2 : isActive ? 3 : 1.2}
-              className="cursor-pointer transition-opacity duration-150 outline-none focus-visible:stroke-gb-ink"
+              strokeWidth={isHovered ? 1.5 : isMunicipioView ? 0.7 : isActive ? 3 : 1.2}
+              className={`${isMunicipioView ? 'cursor-default' : 'cursor-pointer'} transition-opacity duration-150 outline-none focus-visible:stroke-gb-ink`}
               tabIndex={0}
               onClick={() => {
-                if (codigo) onDepartamentoClick?.(codigo, nombre);
+                if (!isMunicipioView && codigo) onDepartamentoClick?.(codigo, nombre);
               }}
               onFocus={(event) => {
                 setHoveredCode(codigo);
@@ -233,10 +298,11 @@ export default function MapaElectoral({
                   x: event.currentTarget.getBoundingClientRect().left,
                   y: event.currentTarget.getBoundingClientRect().top,
                   properties,
+                  isMunicipio: isMunicipioView,
                 });
               }}
               onKeyDown={(event) => {
-                if ((event.key === 'Enter' || event.key === ' ') && codigo) {
+                if (!isMunicipioView && (event.key === 'Enter' || event.key === ' ') && codigo) {
                   event.preventDefault();
                   onDepartamentoClick?.(codigo, nombre);
                 }
@@ -247,6 +313,7 @@ export default function MapaElectoral({
                   x: event.clientX,
                   y: event.clientY,
                   properties,
+                  isMunicipio: isMunicipioView,
                 });
               }}
             >
@@ -262,8 +329,11 @@ export default function MapaElectoral({
           style={{ left: tooltip.x + 12, top: tooltip.y + 12 }}
         >
           <p className="font-display font-semibold text-gb-ink">
-            {getNombreDepartamento(tooltip.properties)}
+            {getNombreFeature(tooltip.properties, tooltip.isMunicipio)}
           </p>
+          {tooltip.isMunicipio && tooltip.properties.dpto_cnmbr && (
+            <p className="text-xs text-gb-slate-muted">{tooltip.properties.dpto_cnmbr}</p>
+          )}
           <p className="mt-1 text-gb-slate">
             Ganador: <span className="font-medium">{tooltip.properties.ganador || 'N/A'}</span>
           </p>
@@ -276,14 +346,20 @@ export default function MapaElectoral({
               Segundo: <span className="font-medium">{tooltip.properties.segundo}</span>
             </p>
           )}
-          <p className="font-mono text-gb-slate-muted">
-            Margen: {formatNumber(tooltip.properties.diferencia || 0)} votos
-          </p>
+          {tooltip.properties.diferencia !== undefined ? (
+            <p className="font-mono text-gb-slate-muted">
+              Margen: {formatNumber(tooltip.properties.diferencia || 0)} votos
+            </p>
+          ) : (
+            <p className="font-mono text-gb-slate-muted">
+              Total: {formatNumber(tooltip.properties.total_votos || 0)} votos
+            </p>
+          )}
         </div>
       )}
 
       <div className="absolute bottom-4 left-4 gb-card p-3 text-xs shadow-gb-sm">
-        <p className="gb-eyebrow mb-2">Ganador por departamento</p>
+        <p className="gb-eyebrow mb-2">Ganador por {isMunicipioView ? 'municipio' : 'departamento'}</p>
         <div className="space-y-1.5">
           <div className="flex items-center gap-2">
             <div className="h-3 w-3 rounded-gb-sm" style={{ backgroundColor: '#1D4ED8' }} />
