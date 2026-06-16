@@ -14,6 +14,8 @@ const resumen = resumenData as ResumenNacional;
 export default function HallazgosClave() {
   const margenVictoria = resumen.votos_ganador - resumen.votos_segundo;
   const maxVentaja = Math.max(...claves.ventajas_decisivas.map((depto) => depto.ventaja), 1);
+  const porcentajeSegundo = (resumen.votos_segundo / resumen.votos_validos) * 100;
+  const diferenciaPorcentual = resumen.porcentaje_ganador - porcentajeSegundo;
 
   return (
     <section className="mt-10">
@@ -32,7 +34,7 @@ export default function HallazgosClave() {
           <div>
             <p className="gb-eyebrow">Resultado nacional</p>
             <p className="mt-2 font-display text-5xl font-semibold tabular-nums text-gb-ink">
-              {formatPercent(resumen.porcentaje_ganador)}
+              {formatPercent(resumen.porcentaje_ganador)}<span className="text-gb-teal-700">*</span>
             </p>
             <p className="mt-2 text-gb-slate">
               {resumen.ganador}
@@ -47,10 +49,31 @@ export default function HallazgosClave() {
             </p>
           </div>
         </div>
+        <p className="mt-4 pt-4 border-t border-gb-border text-xs text-gb-slate-muted">
+          <span className="text-gb-teal-700 font-medium">*</span> Porcentaje calculado sobre votos válidos en territorio nacional. No incluye votos de consulados en el exterior.
+        </p>
       </div>
 
       {/* Síntesis electoral - highlight cards */}
-      <div className="mt-4 grid gap-3 sm:grid-cols-3">
+      <div className="mt-4 grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
+        <div className="rounded-lg border border-gb-border bg-white p-4">
+          <p className="text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Votos netos</p>
+          <p className="mt-2 font-display text-xl font-semibold text-gb-teal-700">
+            +{formatNumber(margenVictoria)}
+          </p>
+          <p className="mt-1 text-sm text-gb-slate">
+            Diferencia absoluta
+          </p>
+        </div>
+        <div className="rounded-lg border border-gb-border bg-white p-4">
+          <p className="text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Diferencia %</p>
+          <p className="mt-2 font-display text-xl font-semibold text-gb-teal-700">
+            +{formatPercent(diferenciaPorcentual)}
+          </p>
+          <p className="mt-1 text-sm text-gb-slate">
+            Puntos porcentuales
+          </p>
+        </div>
         <div className="rounded-lg border border-gb-border bg-white p-4">
           <p className="text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Más reñido</p>
           <p className="mt-2 font-display text-xl font-semibold text-gb-ink">
@@ -69,7 +92,7 @@ export default function HallazgosClave() {
             +{formatNumber(claves.ventajas_decisivas[0].ventaja)} votos netos
           </p>
         </div>
-        <div className="rounded-lg border border-gb-border bg-white p-4">
+        <div className="col-span-2 sm:col-span-1 rounded-lg border border-gb-border bg-white p-4">
           <p className="text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Territorios</p>
           <p className="mt-2 font-display text-xl font-semibold text-gb-ink">
             15 — 18
