@@ -6,6 +6,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { simplifyMunicipios } = require('./simplify-municipios');
 
 // Rutas
 const DATA_DIR = path.resolve(__dirname, '../../../data/gold');
@@ -379,11 +380,22 @@ function copyGeoJSON() {
     fs.mkdirSync(destDir, { recursive: true });
   }
 
-  // Copiar el GeoJSON simplificado con extensión .json, que es lo que importa el frontend.
   const deptosGeoJSON = path.join(srcDir, 'departamentos.geojson');
   if (fs.existsSync(deptosGeoJSON)) {
     fs.copyFileSync(deptosGeoJSON, path.join(destDir, 'departamentos.json'));
     console.log('  ✓ mapas/departamentos.json');
+  }
+
+  console.log('  ⏳ Simplificando municipios...');
+  const municipiosResult = simplifyMunicipios({
+    destination: path.join(destDir, 'municipios.json'),
+  });
+  if (municipiosResult) {
+    const originalSize = municipiosResult.originalSize / (1024 * 1024);
+    const newSize = municipiosResult.newSize / (1024 * 1024);
+    console.log(
+      `  ✓ mapas/municipios.json (${originalSize.toFixed(1)} MB → ${newSize.toFixed(1)} MB)`
+    );
   }
 }
 

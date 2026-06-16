@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Header from '@/components/layout/Header';
 import MapaElectoral from '@/components/maps/MapaElectoral';
+import type { NivelMapa } from '@/components/maps/MapaElectoral';
 import CardGanador from '@/components/cards/CardGanador';
 import CardResumen from '@/components/cards/CardResumen';
 import BarrasCandidatos from '@/components/charts/BarrasCandidatos';
@@ -30,6 +31,7 @@ export default function HomePage() {
     codigo: string;
     nombre: string;
   } | null>(null);
+  const [nivelMapa, setNivelMapa] = useState<NivelMapa>('departamentos');
 
   const departamento = departamentoSeleccionado
     ? departamentosDetalle[departamentoSeleccionado.codigo]
@@ -78,11 +80,39 @@ export default function HomePage() {
       <main className="p-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
-            <div className="gb-card p-4 h-[600px]">
+            <div className="gb-card flex h-[600px] flex-col gap-3 p-4">
+              <div
+                aria-label="Nivel territorial del mapa"
+                className="inline-flex w-fit rounded-gb-md border border-gb-border-strong bg-white p-1 text-sm font-semibold"
+                role="tablist"
+              >
+                {(['departamentos', 'municipios'] as const).map((nivel) => {
+                  const isSelected = nivelMapa === nivel;
+                  return (
+                    <button
+                      key={nivel}
+                      aria-selected={isSelected}
+                      className={`rounded-gb-sm px-4 py-2 transition ${
+                        isSelected
+                          ? 'bg-gb-teal-700 text-white'
+                          : 'text-gb-slate hover:bg-gb-teal-50 hover:text-gb-teal-700'
+                      }`}
+                      role="tab"
+                      type="button"
+                      onClick={() => setNivelMapa(nivel)}
+                    >
+                      {nivel === 'departamentos' ? 'Departamentos' : 'Municipios'}
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="min-h-0 flex-1">
               <MapaElectoral
+                nivel={nivelMapa}
                 onDepartamentoClick={handleDepartamentoClick}
                 departamentoSeleccionado={departamentoSeleccionado?.codigo}
               />
+              </div>
             </div>
           </div>
 
