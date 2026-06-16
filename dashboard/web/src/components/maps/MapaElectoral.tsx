@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { getColorGanador } from '@/lib/colors';
 import { getCodigoElectoralDesdeDane } from '@/lib/departamentos';
 import { formatNumber, formatPercent } from '@/lib/formatters';
@@ -14,15 +14,11 @@ type MultiPolygonCoordinates = PolygonCoordinates[];
 type FeatureProperties = {
   dpto_ccdgo?: string;
   dpto_cnmbr?: string;
-  mpio_ccdgo?: string;
-  mpio_cnmbr?: string;
-  mpio_cdpmp?: string;
   DPTO_CCDGO?: string;
   DPTO_CNMBR?: string;
   ganador?: string;
   votos_ganador?: number;
   porcentaje_ganador?: number;
-  total_votos?: number;
 };
 
 type GeoFeature = {
@@ -43,13 +39,9 @@ type TooltipState = {
   x: number;
   y: number;
   properties: FeatureProperties;
-  isMunicipio: boolean;
 };
 
-export type NivelMapa = 'departamentos' | 'municipios';
-
 interface MapaElectoralProps {
-  nivel?: NivelMapa;
   onDepartamentoClick?: (codigo: string, nombre: string) => void;
   onReset?: () => void;
   departamentoSeleccionado?: string | null;
@@ -62,27 +54,9 @@ const PADDING = 24;
 
 const departamentosGeoJSON = departamentosData as unknown as FeatureCollection;
 
-function getCodigo(properties: FeatureProperties, isMunicipio: boolean): string {
-  if (isMunicipio) {
-    if (properties.mpio_cdpmp) return properties.mpio_cdpmp;
-    if (properties.dpto_ccdgo && properties.mpio_ccdgo) {
-      return `${properties.dpto_ccdgo}${properties.mpio_ccdgo}`;
-    }
-    return '';
-  }
-  return getCodigoDepartamento(properties);
-}
-
 function getCodigoDepartamento(properties: FeatureProperties): string {
   const codigoDane = properties.dpto_ccdgo || properties.DPTO_CCDGO || '';
   return getCodigoElectoralDesdeDane(codigoDane);
-}
-
-function getNombre(properties: FeatureProperties, isMunicipio: boolean): string {
-  if (isMunicipio) {
-    return properties.mpio_cnmbr || 'Municipio';
-  }
-  return properties.dpto_cnmbr || properties.DPTO_CNMBR || 'Departamento';
 }
 
 function getNombreDepartamento(properties: FeatureProperties): string {
@@ -165,7 +139,6 @@ function featureToPath(feature: GeoFeature, project: (position: Position) => Pos
 }
 
 export default function MapaElectoral({
-  nivel = 'departamentos',
   onDepartamentoClick,
   onReset,
   departamentoSeleccionado,
@@ -173,76 +146,43 @@ export default function MapaElectoral({
 }: MapaElectoralProps) {
   const [hoveredCode, setHoveredCode] = useState<string | null>(null);
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
-  const [municipiosGeoJSON, setMunicipiosGeoJSON] = useState<FeatureCollection | null>(null);
-  const [municipiosError, setMunicipiosError] = useState<string | null>(null);
-  const municipiosRequestRef = useRef(false);
 
-  useEffect(() => {
-    if (nivel === 'municipios' && !municipiosGeoJSON && !municipiosRequestRef.current) {
-      municipiosRequestRef.current = true;
-      fetch('/api/mapas/municipios.json')
-        .then((res) => {
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          return res.json();
-        })
-        .then((data) => {
-          setMunicipiosGeoJSON(data as FeatureCollection);
-          setMunicipiosError(null);
-        })
-        .catch((err) => {
-          console.error('Error cargando municipios:', err);
-          municipiosRequestRef.current = false;
-          setMunicipiosError('No se pudo cargar el mapa municipal.');
-        });
-    }
-  }, [nivel, municipiosGeoJSON]);
+  const visibleFeatures = useMemo(() => {
+    if (!departamentoSeleccionado) return departamentosGeoJSON.features;
 
-  const isMunicipio = nivel === 'municipios';
-  const currentGeoJSON = useMemo(() => {
-    if (!isMunicipio) return departamentosGeoJSON;
-    if (!municipiosGeoJSON) return null;
-    if (!departamentoSeleccionado) return municipiosGeoJSON;
-
-    return {
-      ...municipiosGeoJSON,
-      features: municipiosGeoJSON.features.filter(
-        (feature) => getCodigoDepartamento(feature.properties) === departamentoSeleccionado
-      ),
-    };
-  }, [departamentoSeleccionado, isMunicipio, municipiosGeoJSON]);
-  const loadingMunicipios = nivel === 'municipios' && !municipiosGeoJSON && !municipiosError;
-  const emptyMunicipios = nivel === 'municipios' && !loadingMunicipios && currentGeoJSON?.features.length === 0;
+    return departamentosGeoJSON.features.filter(
+      (feature) => getCodigoDepartamento(feature.properties) === departamentoSeleccionado
+    );
+  }, [departamentoSeleccionado]);
 
   const paths = useMemo(() => {
-    if (!currentGeoJSON?.features.length) return [];
+    if (!visibleFeatures.length) return [];
 
-    const project = createProjection(currentGeoJSON.features);
-    return currentGeoJSON.features.map((feature) => ({
+    const project = createProjection(visibleFeatures);
+    return visibleFeatures.map((feature) => ({
       d: featureToPath(feature, project),
       properties: feature.properties,
-      codigo: getCodigo(feature.properties, isMunicipio),
-      codigoDepartamento: getCodigoDepartamento(feature.properties),
-      nombreDepartamento: getNombreDepartamento(feature.properties),
-      nombre: getNombre(feature.properties, isMunicipio),
+      codigo: getCodigoDepartamento(feature.properties),
+      nombre: getNombreDepartamento(feature.properties),
       color: getColorGanador(feature.properties.ganador || ''),
     }));
-  }, [currentGeoJSON, isMunicipio]);
+  }, [visibleFeatures]);
 
-  const labelText = isMunicipio ? 'municipio' : 'departamento';
-  const mapTitle = isMunicipio && departamentoSeleccionadoNombre
-    ? `Municipios de ${departamentoSeleccionadoNombre}`
+  const isZoomed = Boolean(departamentoSeleccionado);
+  const mapTitle = isZoomed && departamentoSeleccionadoNombre
+    ? departamentoSeleccionadoNombre
     : 'Colombia por departamentos';
 
   return (
     <div className="relative h-full min-h-[400px] w-full overflow-hidden rounded-gb-lg bg-gb-teal-50">
       <div className="absolute left-4 top-4 z-10 flex max-w-[calc(100%-2rem)] flex-wrap items-center gap-2">
         <div className="rounded-gb-md border border-gb-border bg-white px-3 py-2 shadow-gb-sm">
-          <p className="gb-eyebrow leading-none">{isMunicipio ? 'Vista municipal' : 'Vista departamental'}</p>
+          <p className="gb-eyebrow leading-none">{isZoomed ? 'Zoom departamental' : 'Vista departamental'}</p>
           <p className="mt-1 max-w-[220px] truncate text-sm font-semibold text-gb-ink sm:max-w-[320px]">
             {mapTitle}
           </p>
         </div>
-        {isMunicipio && onReset && (
+        {isZoomed && onReset && (
           <button
             className="rounded-gb-md border border-gb-border-strong bg-white px-3 py-2 text-sm font-semibold text-gb-slate shadow-gb-sm transition hover:border-gb-teal-600 hover:text-gb-teal-700"
             type="button"
@@ -253,27 +193,8 @@ export default function MapaElectoral({
         )}
       </div>
 
-      {nivel === 'municipios' && loadingMunicipios && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gb-teal-50/80 z-10">
-          <div className="text-center">
-            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-gb-teal-200 border-t-gb-teal-700"></div>
-            <p className="mt-2 text-sm text-gb-slate-muted">Cargando municipios...</p>
-          </div>
-        </div>
-      )}
-      {nivel === 'municipios' && municipiosError && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center bg-gb-teal-50/90 px-6 text-center">
-          <p className="text-sm font-medium text-gb-slate">{municipiosError}</p>
-        </div>
-      )}
-      {emptyMunicipios && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center bg-gb-teal-50/90 px-6 text-center">
-          <p className="text-sm font-medium text-gb-slate">No hay municipios disponibles para este departamento.</p>
-        </div>
-      )}
-
       <svg
-        aria-label={`Mapa electoral de Colombia por ${labelText}`}
+        aria-label="Mapa electoral de Colombia por departamento"
         className="h-full w-full"
         preserveAspectRatio="xMidYMid meet"
         role="img"
@@ -284,8 +205,8 @@ export default function MapaElectoral({
         }}
       >
         <rect width={VIEWBOX_WIDTH} height={VIEWBOX_HEIGHT} fill="#F1F8F9" />
-        {paths.map(({ d, properties, codigo, codigoDepartamento, nombreDepartamento, nombre, color }) => {
-          const isActive = !isMunicipio && departamentoSeleccionado === codigo;
+        {paths.map(({ d, properties, codigo, nombre, color }) => {
+          const isActive = departamentoSeleccionado === codigo;
           const isHovered = hoveredCode === codigo;
 
           return (
@@ -293,17 +214,15 @@ export default function MapaElectoral({
               key={codigo || nombre}
               d={d}
               fill={color}
-              fillOpacity={isActive || isHovered ? 0.92 : isMunicipio ? 0.8 : 0.74}
-              stroke={isHovered || isActive ? '#15252A' : isMunicipio ? '#ffffff66' : '#ffffff'}
+              fillOpacity={isActive || isHovered ? 0.92 : 0.74}
+              stroke={isHovered || isActive ? '#15252A' : '#ffffff'}
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeWidth={isHovered ? 1.5 : isMunicipio ? 0.7 : isActive ? 3 : 1.2}
+              strokeWidth={isHovered ? 2 : isActive ? 3 : 1.2}
               className="cursor-pointer transition-opacity duration-150 outline-none focus-visible:stroke-gb-ink"
               tabIndex={0}
               onClick={() => {
-                const selectedCode = isMunicipio ? codigoDepartamento : codigo;
-                const selectedName = isMunicipio ? nombreDepartamento : nombre;
-                if (selectedCode) onDepartamentoClick?.(selectedCode, selectedName);
+                if (codigo) onDepartamentoClick?.(codigo, nombre);
               }}
               onFocus={(event) => {
                 setHoveredCode(codigo);
@@ -311,15 +230,12 @@ export default function MapaElectoral({
                   x: event.currentTarget.getBoundingClientRect().left,
                   y: event.currentTarget.getBoundingClientRect().top,
                   properties,
-                  isMunicipio,
                 });
               }}
               onKeyDown={(event) => {
-                const selectedCode = isMunicipio ? codigoDepartamento : codigo;
-                const selectedName = isMunicipio ? nombreDepartamento : nombre;
-                if ((event.key === 'Enter' || event.key === ' ') && selectedCode) {
+                if ((event.key === 'Enter' || event.key === ' ') && codigo) {
                   event.preventDefault();
-                  onDepartamentoClick?.(selectedCode, selectedName);
+                  onDepartamentoClick?.(codigo, nombre);
                 }
               }}
               onMouseMove={(event) => {
@@ -328,7 +244,6 @@ export default function MapaElectoral({
                   x: event.clientX,
                   y: event.clientY,
                   properties,
-                  isMunicipio,
                 });
               }}
             >
@@ -344,11 +259,8 @@ export default function MapaElectoral({
           style={{ left: tooltip.x + 12, top: tooltip.y + 12 }}
         >
           <p className="font-display font-semibold text-gb-ink">
-            {getNombre(tooltip.properties, tooltip.isMunicipio)}
+            {getNombreDepartamento(tooltip.properties)}
           </p>
-          {tooltip.isMunicipio && tooltip.properties.dpto_cnmbr && (
-            <p className="text-xs text-gb-slate-muted">{tooltip.properties.dpto_cnmbr}</p>
-          )}
           <p className="mt-1 text-gb-slate">
             Ganador: <span className="font-medium">{tooltip.properties.ganador || 'N/A'}</span>
           </p>
@@ -360,7 +272,7 @@ export default function MapaElectoral({
       )}
 
       <div className="absolute bottom-4 left-4 gb-card p-3 text-xs shadow-gb-sm">
-        <p className="gb-eyebrow mb-2">Ganador por {labelText}</p>
+        <p className="gb-eyebrow mb-2">Ganador por departamento</p>
         <div className="space-y-1.5">
           <div className="flex items-center gap-2">
             <div className="h-3 w-3 rounded-gb-sm" style={{ backgroundColor: '#1D4ED8' }} />
