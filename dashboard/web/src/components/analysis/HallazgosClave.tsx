@@ -13,154 +13,140 @@ const resumen = resumenData as ResumenNacional;
 
 export default function HallazgosClave() {
   const margenVictoria = resumen.votos_ganador - resumen.votos_segundo;
-  const deptoMasCompetido = claves.departamentos_competidos[0];
-  const mayorVentaja = claves.ventajas_decisivas[0];
+  const maxVentaja = Math.max(...claves.ventajas_decisivas.map((depto) => depto.ventaja), 1);
 
   return (
     <section className="mt-10">
-      {/* Encabezado */}
       <header className="mb-6">
         <h2 className="font-display text-lg font-semibold text-gb-ink">
           Hallazgos clave
         </h2>
         <p className="mt-1 text-sm text-gb-slate-muted">
-          Análisis de los resultados electorales
+          Lectura nacional y territorial de los resultados electorales
         </p>
       </header>
 
-      {/* Lecturas principales - diseño editorial */}
-      <div className="gb-card mb-6">
-        <div className="grid gap-6 md:grid-cols-3 md:divide-x md:divide-gb-border">
-          {claves.lectura.map((texto, index) => (
-            <article key={index} className="md:px-6 first:md:pl-0 last:md:pr-0">
-              <p className="text-sm leading-relaxed text-gb-slate">
-                {texto}
-              </p>
-            </article>
-          ))}
-        </div>
-      </div>
-
-      {/* Métricas clave - estilo sobrio */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-6">
-        <div className="gb-card">
-          <p className="gb-eyebrow">Resultado nacional</p>
-          <p className="mt-2 font-display text-3xl font-semibold tabular-nums text-gb-ink">
-            {formatPercent(resumen.porcentaje_ganador)}
-          </p>
-          <p className="mt-1 text-sm text-gb-slate">
-            {resumen.ganador.split(' ').slice(-2).join(' ')}
-          </p>
-          <p className="mt-3 border-t border-gb-border pt-3 text-xs font-mono text-gb-slate-muted">
-            Ventaja de {formatNumber(margenVictoria)} votos
-          </p>
-        </div>
-
-        <div className="gb-card">
-          <p className="gb-eyebrow">Departamento más reñido</p>
-          <p className="mt-2 font-display text-3xl font-semibold text-gb-ink">
-            {deptoMasCompetido.nombre}
-          </p>
-          <p className="mt-1 text-sm text-gb-slate">
-            Diferencia mínima
-          </p>
-          <p className="mt-3 border-t border-gb-border pt-3 text-xs font-mono text-gb-slate-muted">
-            {formatNumber(deptoMasCompetido.diferencia)} votos ({formatPercent(deptoMasCompetido.margen_porcentual)})
-          </p>
-        </div>
-
-        <div className="gb-card">
-          <p className="gb-eyebrow">Mayor ventaja neta</p>
-          <p className="mt-2 font-display text-3xl font-semibold text-gb-ink">
-            {mayorVentaja.nombre}
-          </p>
-          <p className="mt-1 text-sm text-gb-slate">
-            Definió la elección
-          </p>
-          <p className="mt-3 border-t border-gb-border pt-3 text-xs font-mono text-gb-slate-muted">
-            +{formatNumber(mayorVentaja.ventaja)} votos netos
-          </p>
-        </div>
-
-        <div className="gb-card">
-          <p className="gb-eyebrow">Distribución territorial</p>
-          <div className="mt-2 space-y-2">
-            <div className="flex items-baseline justify-between">
-              <span className="text-sm text-gb-slate">De la Espriella</span>
-              <span className="font-display text-xl font-semibold tabular-nums text-gb-ink">15</span>
-            </div>
-            <div className="flex items-baseline justify-between">
-              <span className="text-sm text-gb-slate">Cepeda</span>
-              <span className="font-display text-xl font-semibold tabular-nums text-gb-ink">18</span>
-            </div>
+      {/* Hero: Resultado Nacional */}
+      <div className="gb-card">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+          <div>
+            <p className="gb-eyebrow">Resultado nacional</p>
+            <p className="mt-2 font-display text-5xl font-semibold tabular-nums text-gb-ink">
+              {formatPercent(resumen.porcentaje_ganador)}
+            </p>
+            <p className="mt-2 text-gb-slate">
+              {resumen.ganador}
+            </p>
           </div>
-          <p className="mt-3 border-t border-gb-border pt-3 text-xs text-gb-slate-muted">
-            Departamentos ganados
-          </p>
+          <div className="md:text-right">
+            <p className="font-mono text-2xl font-semibold text-gb-teal-700">
+              +{formatNumber(margenVictoria)}
+            </p>
+            <p className="mt-1 text-sm text-gb-slate-muted">
+              votos de ventaja
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* Análisis territorial */}
-      <div className="grid gap-6 lg:grid-cols-2">
-        {/* Ventajas decisivas */}
+      {/* Síntesis electoral */}
+      <div className="gb-card mt-4">
+        <p className="gb-eyebrow">Síntesis electoral</p>
+        <ul className="mt-4 space-y-3">
+          {claves.lectura.map((texto) => (
+            <li key={texto} className="flex gap-3 text-sm leading-relaxed text-gb-slate">
+              <span className="shrink-0 text-gb-teal-700 font-medium">—</span>
+              <span>{texto}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="mt-4 grid gap-4 lg:grid-cols-2">
         <div className="gb-card">
-          <h3 className="gb-eyebrow mb-4">Donde se concentró la ventaja</h3>
+          <div className="mb-5 flex items-start justify-between gap-4">
+            <div>
+              <h3 className="gb-eyebrow">Dónde se concentró la ventaja</h3>
+              <p className="mt-2 text-sm text-gb-slate-muted">
+                Departamentos que más ampliaron la diferencia nacional.
+              </p>
+            </div>
+            <span className="gb-tag shrink-0">Top 5</span>
+          </div>
           <div className="space-y-4">
-            {claves.ventajas_decisivas.slice(0, 5).map((depto) => {
-              const maxVentaja = claves.ventajas_decisivas[0].ventaja;
-              const widthPercent = (depto.ventaja / maxVentaja) * 100;
+            {claves.ventajas_decisivas.slice(0, 5).map((depto, index) => {
+              const widthPercent = Math.max((depto.ventaja / maxVentaja) * 100, 4);
+              const isFirst = index === 0;
 
               return (
-                <div key={depto.codigo}>
-                  <div className="flex items-baseline justify-between text-sm mb-2">
-                    <span className="font-medium text-gb-ink">{depto.nombre}</span>
-                    <span className="font-mono text-gb-slate-muted">
+                <div key={depto.codigo} className={isFirst ? 'pb-4 border-b border-gb-border' : ''}>
+                  <div className="mb-2 flex items-baseline justify-between gap-3 text-sm">
+                    <span className={`font-medium ${isFirst ? 'text-lg text-gb-ink' : 'text-gb-ink'}`}>
+                      {isFirst && <span className="text-gb-teal-700 mr-2">1°</span>}
+                      {depto.nombre}
+                    </span>
+                    <span className={`shrink-0 font-mono ${isFirst ? 'text-lg text-gb-teal-700' : 'text-gb-teal-700'}`}>
                       +{formatNumber(depto.ventaja)}
                     </span>
                   </div>
-                  <div className="h-1.5 overflow-hidden rounded-full bg-gb-teal-100">
+                  <div className={`overflow-hidden rounded-full bg-gb-teal-100 ${isFirst ? 'h-3' : 'h-2'}`}>
                     <div
                       className="h-full rounded-full bg-gb-teal-700"
                       style={{ width: `${widthPercent}%` }}
                     />
                   </div>
+                  <p className="mt-1 text-xs text-gb-slate-muted">
+                    {formatPercent(depto.margen_porcentual)} de margen sobre el segundo nacional
+                  </p>
                 </div>
               );
             })}
           </div>
         </div>
 
-        {/* Más competidos */}
         <div className="gb-card">
-          <h3 className="gb-eyebrow mb-4">Elecciones más cerradas</h3>
+          <div className="mb-5 flex items-start justify-between gap-4">
+            <div>
+              <h3 className="gb-eyebrow">Departamentos más competidos</h3>
+              <p className="mt-2 text-sm text-gb-slate-muted">
+                Territorios donde la elección tuvo menor margen.
+              </p>
+            </div>
+            <span className="gb-tag shrink-0">Top 5</span>
+          </div>
           <div className="divide-y divide-gb-border">
-            {claves.departamentos_competidos.slice(0, 5).map((depto) => (
-              <div
-                key={depto.codigo}
-                className="flex items-baseline justify-between py-3 first:pt-0 last:pb-0"
-              >
-                <div>
-                  <p className="font-medium text-gb-ink">{depto.nombre}</p>
-                  <p className="text-xs text-gb-slate-muted">
-                    {depto.ganador.split(' ').pop()} / {depto.segundo.split(' ').pop()}
-                  </p>
+            {claves.departamentos_competidos.slice(0, 5).map((depto, index) => {
+              const isFirst = index === 0;
+              return (
+                <div
+                  key={depto.codigo}
+                  className={`flex items-start justify-between gap-4 py-3 first:pt-0 last:pb-0 ${isFirst ? 'pb-4' : ''}`}
+                >
+                  <div className="min-w-0">
+                    <p className={`font-medium text-gb-ink ${isFirst ? 'text-lg' : ''}`}>
+                      {isFirst && <span className="text-gb-teal-700 mr-2">1°</span>}
+                      {depto.nombre}
+                    </p>
+                    <p className="mt-1 text-xs leading-5 text-gb-slate-muted">
+                      {depto.ganador} sobre {depto.segundo}
+                    </p>
+                  </div>
+                  <div className="shrink-0 text-right">
+                    <p className={`font-mono text-gb-ink ${isFirst ? 'text-lg' : 'text-sm'}`}>
+                      {formatPercent(depto.margen_porcentual)}
+                    </p>
+                    <p className="mt-1 text-xs font-mono text-gb-slate-muted">
+                      {formatNumber(depto.diferencia)} votos
+                    </p>
+                  </div>
                 </div>
-                <div className="text-right">
-                  <p className="font-mono text-sm text-gb-ink">
-                    {formatNumber(depto.diferencia)}
-                  </p>
-                  <p className="text-xs text-gb-slate-muted">
-                    {formatPercent(depto.margen_porcentual)}
-                  </p>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
 
-      {/* Fortalezas por candidato */}
-      <div className="mt-6">
+      <div className="mt-4">
         <h3 className="gb-eyebrow mb-4">Bastiones electorales</h3>
         <div className="grid gap-4 lg:grid-cols-3">
           {claves.fortalezas.map((candidato) => {
@@ -186,10 +172,15 @@ export default function HallazgosClave() {
                   {candidato.departamentos.map((depto) => (
                     <div
                       key={depto.codigo}
-                      className="flex items-baseline justify-between text-sm"
+                      className="flex items-center justify-between gap-3 text-sm"
                     >
-                      <span className="text-gb-slate">{depto.nombre}</span>
-                      <span className="font-mono text-gb-ink">
+                      <div className="min-w-0">
+                        <p className="truncate text-gb-slate">{depto.nombre}</p>
+                        <p className="text-xs font-mono text-gb-slate-muted">
+                          {formatNumber(depto.votos)} votos
+                        </p>
+                      </div>
+                      <span className="shrink-0 rounded-gb-sm bg-gb-teal-50 px-2 py-1 font-mono text-xs font-medium text-gb-teal-700">
                         {formatPercent(depto.porcentaje)}
                       </span>
                     </div>
