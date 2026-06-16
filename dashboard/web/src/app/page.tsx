@@ -6,7 +6,7 @@ import MapaElectoral from '@/components/maps/MapaElectoral';
 import CardGanador from '@/components/cards/CardGanador';
 import CardResumen from '@/components/cards/CardResumen';
 import BarrasCandidatos from '@/components/charts/BarrasCandidatos';
-import DonutParticipacion from '@/components/charts/DonutParticipacion';
+import ClavesTerritoriales from '@/components/analysis/ClavesTerritoriales';
 import {
   useResumenNacional,
   useCandidatosNacional,
@@ -57,8 +57,8 @@ export default function HomePage() {
 
   if (loadingResumen || loadingCandidatos) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" />
+      <div className="min-h-screen flex items-center justify-center bg-gb-bg">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gb-teal-700" />
       </div>
     );
   }
@@ -66,15 +66,15 @@ export default function HomePage() {
   const errorCarga = errorResumen || errorCandidatos || errorDepartamento;
   if (errorCarga) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gb-bg">
         <Header
           departamentoActual={departamentoSeleccionado?.nombre}
           onReset={departamentoSeleccionado ? handleReset : undefined}
         />
         <main className="p-6">
-          <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-800">
-            <p className="font-semibold">No se pudieron cargar los datos electorales.</p>
-            <p className="mt-1 text-sm">
+          <div className="gb-card border-l-4 border-l-red-500">
+            <p className="font-display font-semibold text-gb-ink">No se pudieron cargar los datos electorales.</p>
+            <p className="mt-1 text-sm text-gb-slate-muted">
               Verifica que la API esté corriendo en {process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}.
             </p>
           </div>
@@ -106,7 +106,7 @@ export default function HomePage() {
       ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gb-bg">
       <Header
         departamentoActual={departamentoSeleccionado?.nombre}
         onReset={departamentoSeleccionado ? handleReset : undefined}
@@ -116,7 +116,7 @@ export default function HomePage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Columna izquierda: Mapa */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-xl shadow-sm p-4 h-[600px]">
+            <div className="gb-card p-4 h-[600px]">
               <MapaElectoral
                 onDepartamentoClick={handleDepartamentoClick}
                 departamentoSeleccionado={departamentoSeleccionado?.codigo}
@@ -150,9 +150,9 @@ export default function HomePage() {
 
             {/* Diferencia */}
             {ganador && !loadingDepartamento && (
-              <div className="bg-white rounded-xl p-4 shadow-sm">
-                <p className="text-xs font-medium text-gray-500 uppercase">Diferencia</p>
-                <p className="text-2xl font-bold text-gray-900">
+              <div className="gb-card">
+                <p className="gb-eyebrow">Diferencia</p>
+                <p className="font-display text-2xl font-semibold text-gb-teal-700 mt-1">
                   {formatNumber(ganador.diferencia)} votos
                 </p>
               </div>
@@ -160,23 +160,23 @@ export default function HomePage() {
 
             {/* Gráfico de barras */}
             {loadingDepartamento && departamentoSeleccionado && (
-              <div className="bg-white rounded-xl p-6 shadow-sm">
+              <div className="gb-card p-6">
                 <div className="animate-pulse space-y-3">
-                  <div className="h-4 w-1/2 rounded bg-gray-200" />
-                  <div className="h-40 rounded bg-gray-100" />
+                  <div className="h-4 w-1/2 rounded bg-gb-teal-100" />
+                  <div className="h-40 rounded bg-gb-teal-50" />
                 </div>
               </div>
             )}
 
             {!loadingDepartamento && datosActuales.candidatos && datosActuales.candidatos.length > 0 && (
-              <div className="bg-white rounded-xl p-4 shadow-sm">
-                <h3 className="text-sm font-semibold text-gray-700 mb-2">
-                  Votos por Candidato
+              <div className="gb-card p-4">
+                <h3 className="gb-eyebrow mb-3">
+                  Votos por candidato
                 </h3>
                 <BarrasCandidatos
                   candidatos={datosActuales.candidatos.map((c: CandidatoNacional | CandidatoDepartamento) => ({
                     ...c,
-                    color: c.color || getColorPartido(c.partido),
+                    color: getColorPartido(c.partido),
                   }))}
                   maxVisible={5}
                 />
@@ -196,22 +196,7 @@ export default function HomePage() {
           ))}
         </div>
 
-        {/* Participación */}
-        {resumen && (
-          <div className="mt-6 bg-white rounded-xl p-6 shadow-sm">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              Distribución de Votos
-            </h3>
-            <div className="max-w-md mx-auto">
-              <DonutParticipacion
-                validos={resumen.votos_validos}
-                blancos={resumen.votos_blancos}
-                nulos={resumen.votos_nulos}
-                noMarcados={resumen.votos_no_marcados}
-              />
-            </div>
-          </div>
-        )}
+        <ClavesTerritoriales />
       </main>
     </div>
   );

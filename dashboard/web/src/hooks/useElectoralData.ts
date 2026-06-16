@@ -7,8 +7,8 @@ import type {
   CandidatoNacional,
   DepartamentoResumen,
   DepartamentoDetalle,
-  MunicipioResumen,
   GeoJSONFeatureCollection,
+  ClavesTerritoriales,
 } from '@/types/electoral';
 
 /**
@@ -26,6 +26,13 @@ export function useCandidatosNacional() {
 }
 
 /**
+ * Hook para obtener claves territoriales de la elección.
+ */
+export function useClavesTerritoriales() {
+  return useSWR<ClavesTerritoriales>(API.clavesTerritoriales, fetcher);
+}
+
+/**
  * Hook para obtener todos los departamentos.
  */
 export function useDepartamentos() {
@@ -34,22 +41,25 @@ export function useDepartamentos() {
 
 /**
  * Hook para obtener el detalle de un departamento.
+ * Carga el archivo con todos los detalles y extrae el departamento solicitado.
  */
 export function useDepartamento(codigo: string | null) {
-  return useSWR<DepartamentoDetalle>(
-    codigo ? API.departamento(codigo) : null,
-    fetcher
+  const { data, error, isLoading } = useSWR<Record<string, DepartamentoDetalle>>(
+    codigo ? API.departamentosDetalle : null,
+    fetcher,
+    {
+      revalidateOnFocus: false,
+    }
   );
-}
 
-/**
- * Hook para obtener los municipios de un departamento.
- */
-export function useMunicipiosDepartamento(codigo: string | null) {
-  return useSWR<MunicipioResumen[]>(
-    codigo ? API.municipiosDepartamento(codigo) : null,
-    fetcher
-  );
+  // Extraer el departamento específico
+  const departamento = codigo && data ? data[codigo] : undefined;
+
+  return {
+    data: departamento,
+    error,
+    isLoading,
+  };
 }
 
 /**
@@ -60,18 +70,4 @@ export function useGeoJSONDepartamentos() {
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
   });
-}
-
-/**
- * Hook para obtener el GeoJSON de municipios de un departamento.
- */
-export function useGeoJSONMunicipios(codigo: string | null) {
-  return useSWR<GeoJSONFeatureCollection>(
-    codigo ? API.geojsonMunicipios(codigo) : null,
-    fetcher,
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
-  );
 }

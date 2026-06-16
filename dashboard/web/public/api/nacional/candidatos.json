@@ -1,0 +1,101 @@
+[
+  {
+    "nombre": "ABELARDO DE LA ESPRIELLA",
+    "partido": "DEFENSORES DE LA PATRIA",
+    "cedula": "11004242",
+    "votos": 10045330,
+    "porcentaje": 44.28,
+    "posicion": 1,
+    "color": "#1D4ED8"
+  },
+  {
+    "nombre": "IVÁN CEPEDA CASTRO",
+    "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+    "cedula": "79262397",
+    "votos": 9536162,
+    "porcentaje": 42.04,
+    "posicion": 2,
+    "color": "#C2410C"
+  },
+  {
+    "nombre": "PALOMA VALENCIA LASERNA",
+    "partido": "PARTIDO CENTRO DEMOCRÁTICO",
+    "cedula": "25280205",
+    "votos": 1586296,
+    "porcentaje": 6.99,
+    "posicion": 3,
+    "color": "#7C3AED"
+  },
+  {
+    "nombre": "SERGIO FAJARDO VALDERRAMA",
+    "partido": "PARTIDO POLÍTICO DIGNIDAD & COMPROMISO",
+    "cedula": "70546658",
+    "votos": 977641,
+    "porcentaje": 4.31,
+    "posicion": 4,
+    "color": "#0F766E"
+  },
+  {
+    "nombre": "CLAUDIA LÓPEZ",
+    "partido": "CON CLAUDIA IMPARABLES",
+    "cedula": "51992648",
+    "votos": 217842,
+    "porcentaje": 0.96,
+    "posicion": 5,
+    "color": "#CA8A04"
+  },
+  {
+    "nombre": "RAÚL SANTIAGO BOTERO JARAMILLO",
+    "partido": "ROMPER EL SISTEMA",
+    "cedula": "98567762",
+    "votos": 202954,
+    "porcentaje": 0.89,
+    "posicion": 6,
+    "color": "#BE185D"
+  },
+  {
+    "nombre": "ÓSCAR MAURICIO LIZCANO ARANGO",
+    "partido": "COALICIÓN F.A.M.I.L.I.A",
+    "cedula": "79960663",
+    "votos": 52383,
+    "porcentaje": 0.23,
+    "posicion": 7,
+    "color": "#0891B2"
+  },
+  {
+    "nombre": "MIGUEL URIBE LONDOÑO",
+    "partido": "PARTIDO DEMÓCRATA COLOMBIANO",
+    "cedula": "8319134",
+    "votos": 27818,
+    "porcentaje": 0.12,
+    "posicion": 8,
+    "color": "#4F46E5"
+  },
+  {
+    "nombre": "SONDRA MACOLLINS GARVIN PINTO",
+    "partido": "SONDRA MACOLLINS, LA ABOGADA DE HIERRO",
+    "cedula": "66921526",
+    "votos": 19035,
+    "porcentaje": 0.08,
+    "posicion": 9,
+    "color": "#65A30D"
+  },
+  {
+    "nombre": "ROY LEONARDO BARRERAS MONTEALEGRE",
+    "partido": "PARTIDO POLÍTICO LA FUERZA",
+    "cedula": "79289575",
+    "votos": 13566,
+    "porcentaje": 0.06,
+    "posicion": 10,
+    "color": "#EA580C"
+  },
+  {
+    "nombre": "GUSTAVO MATAMOROS CAMACHO",
+    "partido": "PARTIDO ECOLOGISTA COLOMBIANO",
+    "cedula": "79140442",
+    "votos": 4814,
+    "porcentaje": 0.02,
+    "posicion": 11,
+    "color": "#059669"
+  }
+]

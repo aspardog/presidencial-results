@@ -7,25 +7,24 @@ interface HeaderProps {
 
 export default function Header({ onReset, departamentoActual }: HeaderProps) {
   return (
-    <header className="border-b border-gray-200 bg-white px-4 py-4 sm:px-6">
+    <header className="border-b border-gb-border bg-gb-surface px-4 py-4 sm:px-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0">
-          <h1 className="text-xl font-bold leading-tight text-gray-900 sm:text-2xl">
-            Elecciones Presidenciales Colombia 2026
+          <p className="gb-eyebrow mb-1">Elecciones · Colombia 2026</p>
+          <h1 className="break-words text-xl font-display font-semibold leading-tight text-gb-ink sm:text-2xl">
+            {departamentoActual || 'Resultados Presidenciales'}
           </h1>
-          <p className="mt-1 break-words text-sm text-gray-500">
-            {departamentoActual
-              ? `Viendo: ${departamentoActual}`
-              : 'Vista Nacional'}
+          <p className="mt-1 break-words text-sm text-gb-slate-muted font-mono">
+            {departamentoActual ? 'Vista departamental' : 'Vista nacional'}
           </p>
         </div>
 
         {departamentoActual && onReset && (
           <button
             onClick={onReset}
-            className="w-fit rounded-lg bg-blue-50 px-4 py-2 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            className="gb-btn gb-btn--secondary w-fit"
           >
-            Volver a Nacional
+            ← Volver a Nacional
           </button>
         )}
       </div>

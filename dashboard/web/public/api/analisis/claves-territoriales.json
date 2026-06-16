@@ -1,0 +1,226 @@
+{
+  "lectura": [
+    "CESAR fue el departamento más competido: 1.012 votos de diferencia (0.21 puntos).",
+    "La mayor ventaja neta del ganador nacional salió de ANTIOQUIA: +918.338 votos frente al segundo nacional.",
+    "ABELARDO DE LA ESPRIELLA ganó 15 de 33 departamentos; IVÁN CEPEDA CASTRO ganó 18."
+  ],
+  "departamentos_competidos": [
+    {
+      "codigo": "12",
+      "nombre": "CESAR",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 475985,
+      "diferencia": 1012,
+      "margen_porcentual": 0.21
+    },
+    {
+      "codigo": "56",
+      "nombre": "SAN ANDRES Y PROVIDENCIA",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 17303,
+      "diferencia": 143,
+      "margen_porcentual": 0.83
+    },
+    {
+      "codigo": "72",
+      "nombre": "VICHADA",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 20968,
+      "diferencia": 477,
+      "margen_porcentual": 2.27
+    },
+    {
+      "codigo": "16",
+      "nombre": "BOGOTA D.C.",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 4019154,
+      "diferencia": 162173,
+      "margen_porcentual": 4.04
+    },
+    {
+      "codigo": "15",
+      "nombre": "CUNDINAMARCA",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "total_votos": 1568926,
+      "diferencia": 125201,
+      "margen_porcentual": 7.98
+    },
+    {
+      "codigo": "24",
+      "nombre": "RISARALDA",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "total_votos": 494811,
+      "diferencia": 44066,
+      "margen_porcentual": 8.91
+    }
+  ],
+  "ventajas_decisivas": [
+    {
+      "codigo": "01",
+      "nombre": "ANTIOQUIA",
+      "ganador_nacional": "ABELARDO DE LA ESPRIELLA",
+      "segundo_nacional": "IVÁN CEPEDA CASTRO",
+      "votos_ganador_nacional": 1725297,
+      "votos_segundo_nacional": 806959,
+      "ventaja": 918338,
+      "margen_porcentual": 29.54
+    },
+    {
+      "codigo": "25",
+      "nombre": "NORTE DE SANTANDER",
+      "ganador_nacional": "ABELARDO DE LA ESPRIELLA",
+      "segundo_nacional": "IVÁN CEPEDA CASTRO",
+      "votos_ganador_nacional": 519225,
+      "votos_segundo_nacional": 128110,
+      "ventaja": 391115,
+      "margen_porcentual": 53.87
+    },
+    {
+      "codigo": "27",
+      "nombre": "SANTANDER",
+      "ganador_nacional": "ABELARDO DE LA ESPRIELLA",
+      "segundo_nacional": "IVÁN CEPEDA CASTRO",
+      "votos_ganador_nacional": 684621,
+      "votos_segundo_nacional": 344546,
+      "ventaja": 340075,
+      "margen_porcentual": 28.8
+    },
+    {
+      "codigo": "15",
+      "nombre": "CUNDINAMARCA",
+      "ganador_nacional": "ABELARDO DE LA ESPRIELLA",
+      "segundo_nacional": "IVÁN CEPEDA CASTRO",
+      "votos_ganador_nacional": 724462,
+      "votos_segundo_nacional": 599261,
+      "ventaja": 125201,
+      "margen_porcentual": 7.98
+    },
+    {
+      "codigo": "07",
+      "nombre": "BOYACA",
+      "ganador_nacional": "ABELARDO DE LA ESPRIELLA",
+      "segundo_nacional": "IVÁN CEPEDA CASTRO",
+      "votos_ganador_nacional": 337263,
+      "votos_segundo_nacional": 215942,
+      "ventaja": 121321,
+      "margen_porcentual": 18.47
+    },
+    {
+      "codigo": "19",
+      "nombre": "HUILA",
+      "ganador_nacional": "ABELARDO DE LA ESPRIELLA",
+      "segundo_nacional": "IVÁN CEPEDA CASTRO",
+      "votos_ganador_nacional": 297615,
+      "votos_segundo_nacional": 176630,
+      "ventaja": 120985,
+      "margen_porcentual": 22.5
+    }
+  ],
+  "fortalezas": [
+    {
+      "nombre": "ABELARDO DE LA ESPRIELLA",
+      "partido": "DEFENSORES DE LA PATRIA",
+      "color": "#1D4ED8",
+      "total_votos": 10045330,
+      "porcentaje_nacional": 44.28,
+      "departamentos": [
+        {
+          "codigo": "25",
+          "nombre": "NORTE DE SANTANDER",
+          "votos": 519225,
+          "porcentaje": 71.51
+        },
+        {
+          "codigo": "46",
+          "nombre": "CASANARE",
+          "votos": 134484,
+          "porcentaje": 62.5
+        },
+        {
+          "codigo": "27",
+          "nombre": "SANTANDER",
+          "votos": 684621,
+          "porcentaje": 57.99
+        },
+        {
+          "codigo": "01",
+          "nombre": "ANTIOQUIA",
+          "votos": 1725297,
+          "porcentaje": 55.49
+        }
+      ]
+    },
+    {
+      "nombre": "IVÁN CEPEDA CASTRO",
+      "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+      "color": "#C2410C",
+      "total_votos": 9536162,
+      "porcentaje_nacional": 42.04,
+      "departamentos": [
+        {
+          "codigo": "17",
+          "nombre": "CHOCO",
+          "votos": 109841,
+          "porcentaje": 77.17
+        },
+        {
+          "codigo": "68",
+          "nombre": "VAUPES",
+          "votos": 6932,
+          "porcentaje": 76.77
+        },
+        {
+          "codigo": "64",
+          "nombre": "PUTUMAYO",
+          "votos": 94395,
+          "porcentaje": 73.04
+        },
+        {
+          "codigo": "11",
+          "nombre": "CAUCA",
+          "votos": 463068,
+          "porcentaje": 70.17
+        }
+      ]
+    },
+    {
+      "nombre": "PALOMA VALENCIA LASERNA",
+      "partido": "PARTIDO CENTRO DEMOCRÁTICO",
+      "color": "#7C3AED",
+      "total_votos": 1586296,
+      "porcentaje_nacional": 6.99,
+      "departamentos": [
+        {
+          "codigo": "09",
+          "nombre": "CALDAS",
+          "votos": 61920,
+          "porcentaje": 12.88
+        },
+        {
+          "codigo": "29",
+          "nombre": "TOLIMA",
+          "votos": 70984,
+          "porcentaje": 10.76
+        },
+        {
+          "codigo": "26",
+          "nombre": "QUINDIO",
+          "votos": 27586,
+          "porcentaje": 9.58
+        },
+        {
+          "codigo": "01",
+          "nombre": "ANTIOQUIA",
+          "votos": 294557,
+          "porcentaje": 9.47
+        }
+      ]
+    }
+  ]
+}

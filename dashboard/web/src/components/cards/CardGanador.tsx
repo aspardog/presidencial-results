@@ -22,24 +22,24 @@ export default function CardGanador({
 
   return (
     <div
-      className="bg-white rounded-xl p-5 shadow-sm border-l-4"
+      className="gb-card border-l-4"
       style={{ borderLeftColor: color }}
     >
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
-          <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">
-            {esGanador ? 'Ganador' : 'Segundo Lugar'}
+          <span className="gb-eyebrow">
+            {esGanador ? 'Ganador' : 'Segundo lugar'}
           </span>
-          <h3 className="mt-1 break-words text-lg font-bold leading-tight text-gray-900">
+          <h3 className="mt-1 break-words text-lg font-display font-semibold leading-tight text-gb-ink">
             {nombre}
           </h3>
-          <p className="mt-1 break-words text-sm text-gray-500">{partido}</p>
+          <p className="mt-1 break-words text-sm text-gb-slate-muted">{partido}</p>
         </div>
         <div className="shrink-0 text-left sm:text-right">
-          <p className="text-2xl font-bold" style={{ color }}>
+          <p className="font-display text-2xl font-semibold" style={{ color }}>
             {formatPercent(porcentaje)}
           </p>
-          <p className="text-sm text-gray-500">{formatNumber(votos)} votos</p>
+          <p className="text-sm font-mono text-gb-slate-muted">{formatNumber(votos)} votos</p>
         </div>
       </div>
     </div>

@@ -13,19 +13,19 @@ export default function CardResumen({ label, value, subtext, icon }: CardResumen
   const displayValue = typeof value === 'number' ? formatNumber(value) : value;
 
   return (
-    <div className="bg-white rounded-xl p-4 shadow-sm">
+    <div className="gb-card gb-stat">
       <div className="flex items-center gap-3">
         {icon && (
-          <div className="p-2 bg-gray-100 rounded-lg text-gray-600">
+          <div className="p-2 bg-gb-teal-100 rounded-gb-md text-gb-teal-700">
             {icon}
           </div>
         )}
         <div className="min-w-0">
-          <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <p className="gb-eyebrow">
             {label}
           </p>
-          <p className="break-words text-xl font-bold text-gray-900">{displayValue}</p>
-          {subtext && <p className="text-xs text-gray-500">{subtext}</p>}
+          <p className="n break-words">{displayValue}</p>
+          {subtext && <p className="l">{subtext}</p>}
         </div>
       </div>
     </div>

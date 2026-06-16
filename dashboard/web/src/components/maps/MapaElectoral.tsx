@@ -169,20 +169,20 @@ export default function MapaElectoral({
 
   if (error) {
     return (
-      <div className="flex h-full min-h-[400px] items-center justify-center rounded-xl bg-white p-6 text-center">
+      <div className="flex h-full min-h-[400px] items-center justify-center rounded-gb-lg bg-gb-surface p-6 text-center">
         <div>
-          <p className="text-sm font-semibold text-gray-900">Mapa no disponible</p>
-          <p className="mt-1 text-sm text-gray-500">{error}</p>
+          <p className="font-display font-semibold text-gb-ink">Mapa no disponible</p>
+          <p className="mt-1 text-sm text-gb-slate-muted">{error}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="relative h-full min-h-[400px] w-full overflow-hidden rounded-xl bg-slate-50">
+    <div className="relative h-full min-h-[400px] w-full overflow-hidden rounded-gb-lg bg-gb-teal-50">
       {!geojson && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-          <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600" />
+        <div className="absolute inset-0 flex items-center justify-center bg-gb-teal-50">
+          <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-gb-teal-700" />
         </div>
       )}
 
@@ -198,7 +198,7 @@ export default function MapaElectoral({
             setTooltip(null);
           }}
         >
-          <rect width={VIEWBOX_WIDTH} height={VIEWBOX_HEIGHT} fill="#f8fafc" />
+          <rect width={VIEWBOX_WIDTH} height={VIEWBOX_HEIGHT} fill="#F1F8F9" />
           {paths.map(({ d, properties, codigo, nombre, color }) => {
             const isActive = departamentoSeleccionado === codigo;
             const isHovered = hoveredCode === codigo;
@@ -209,11 +209,11 @@ export default function MapaElectoral({
                 d={d}
                 fill={color}
                 fillOpacity={isActive || isHovered ? 0.92 : 0.74}
-                stroke={isActive ? '#111827' : '#ffffff'}
+                stroke={isActive ? '#15252A' : '#ffffff'}
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={isActive ? 3 : 1.2}
-                className="cursor-pointer transition-opacity duration-150 outline-none focus-visible:stroke-gray-900"
+                className="cursor-pointer transition-opacity duration-150 outline-none focus-visible:stroke-gb-ink"
                 tabIndex={0}
                 onClick={() => {
                   if (codigo) onDepartamentoClick?.(codigo, nombre);
@@ -250,34 +250,34 @@ export default function MapaElectoral({
 
       {tooltip && (
         <div
-          className="pointer-events-none fixed z-50 max-w-[260px] rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm shadow-lg"
+          className="pointer-events-none fixed z-50 max-w-[260px] gb-card px-3 py-2 text-sm shadow-gb-sm"
           style={{ left: tooltip.x + 12, top: tooltip.y + 12 }}
         >
-          <p className="font-bold text-gray-900">{getNombre(tooltip.properties)}</p>
-          <p className="mt-1 text-gray-600">
+          <p className="font-display font-semibold text-gb-ink">{getNombre(tooltip.properties)}</p>
+          <p className="mt-1 text-gb-slate">
             Ganador: <span className="font-medium">{tooltip.properties.ganador || 'N/A'}</span>
           </p>
-          <p className="text-gray-600">
+          <p className="font-mono text-gb-teal-700">
             {formatNumber(tooltip.properties.votos_ganador || 0)} votos (
             {formatPercent(tooltip.properties.porcentaje_ganador || 0)})
           </p>
         </div>
       )}
 
-      <div className="absolute bottom-4 left-4 rounded-lg bg-white p-3 text-xs shadow-lg">
-        <p className="mb-2 font-semibold text-gray-700">Ganador por departamento</p>
-        <div className="space-y-1">
+      <div className="absolute bottom-4 left-4 gb-card p-3 text-xs shadow-gb-sm">
+        <p className="gb-eyebrow mb-2">Ganador por departamento</p>
+        <div className="space-y-1.5">
           <div className="flex items-center gap-2">
-            <div className="h-3 w-3 rounded" style={{ backgroundColor: '#1E40AF' }} />
-            <span>De La Espriella</span>
+            <div className="h-3 w-3 rounded-gb-sm" style={{ backgroundColor: '#1D4ED8' }} />
+            <span className="text-gb-slate">De La Espriella</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="h-3 w-3 rounded" style={{ backgroundColor: '#DC2626' }} />
-            <span>Cepeda</span>
+            <div className="h-3 w-3 rounded-gb-sm" style={{ backgroundColor: '#C2410C' }} />
+            <span className="text-gb-slate">Cepeda</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="h-3 w-3 rounded" style={{ backgroundColor: '#7C3AED' }} />
-            <span>Valencia</span>
+            <div className="h-3 w-3 rounded-gb-sm" style={{ backgroundColor: '#7C3AED' }} />
+            <span className="text-gb-slate">Valencia</span>
           </div>
         </div>
       </div>

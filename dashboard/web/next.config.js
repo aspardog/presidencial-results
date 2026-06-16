@@ -1,11 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  agentRules: false,
-  // Variables de entorno públicas
-  env: {
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
-  },
+  // Optimización para archivos estáticos
+  output: 'export',
 }
 
 module.exports = nextConfig

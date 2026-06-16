@@ -1,1 +1,0 @@
-# Dashboard Electoral API

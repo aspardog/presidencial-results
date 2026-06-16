@@ -48,10 +48,10 @@ export default function BarrasCandidatos({
           tickPadding: 10,
         }}
         tooltip={({ data }) => (
-          <div className="bg-white px-3 py-2 rounded shadow-lg border text-sm">
-            <p className="font-semibold">{data.nombreCompleto as string}</p>
-            <p className="text-gray-500 text-xs">{data.partido as string}</p>
-            <p className="mt-1">
+          <div className="gb-card px-3 py-2 text-sm shadow-gb-sm">
+            <p className="font-display font-semibold text-gb-ink">{data.nombreCompleto as string}</p>
+            <p className="text-gb-slate-muted text-xs">{data.partido as string}</p>
+            <p className="mt-1 font-mono text-gb-teal-700">
               {formatNumber(data.votos as number)} votos ({formatPercent(data.porcentaje as number)})
             </p>
           </div>
@@ -60,8 +60,9 @@ export default function BarrasCandidatos({
           axis: {
             ticks: {
               text: {
+                fontFamily: '"IBM Plex Sans", system-ui, sans-serif',
                 fontSize: 12,
-                fill: '#6B7280',
+                fill: '#5E7074', // gb-slate-muted
               },
             },
           },

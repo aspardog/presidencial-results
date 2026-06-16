@@ -2,15 +2,196 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+   Global Bridge — Design Tokens
+   ============================================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* — Tinta y slate (anclados en el wordmark del logo) — */
+  --gb-ink: #15252A;          /* titulares y texto fuerte (reemplaza al negro) */
+  --gb-slate: #3D5255;        /* texto UI / párrafo fuerte */
+  --gb-slate-muted: #5E7074;  /* texto secundario, etiquetas */
+
+  /* — Teal — */
+  --gb-teal-400: #3FB6C2;     /* acento brillante: gráficos / texto grande sobre oscuro */
+  --gb-teal-600: #2A8C99;     /* hover / estados */
+  --gb-teal-700: #15616D;     /* accesible (AAA): enlaces, rellenos con texto blanco, cifras */
+  --gb-teal-50: #F1F8F9;
+  --gb-teal-100: #E4EFF1;
+  --gb-teal-200: #CBE6EA;
+
+  /* — Neutros — */
+  --gb-bg: #F7F8F8;
+  --gb-surface: #FFFFFF;
+  --gb-border: #E4E9EA;
+  --gb-border-strong: #D2DADB;
+
+  /* — Tipografía — */
+  --gb-font-display: "Fraunces", Georgia, serif;
+  --gb-font-body: "IBM Plex Sans", system-ui, sans-serif;
+  --gb-font-mono: "IBM Plex Mono", monospace;
+
+  /* — Radios — */
+  --gb-r-sm: 6px;
+  --gb-r-md: 10px;   /* controles */
+  --gb-r-lg: 14px;   /* tarjetas */
+
+  /* — Espaciado (base 4 / 8) — */
+  --gb-space-1: 4px;
+  --gb-space-2: 8px;
+  --gb-space-3: 16px;
+  --gb-space-4: 24px;
+  --gb-space-5: 32px;
+  --gb-space-6: 48px;
+
+  /* — Sombras (suaves; úsalas con moderación) — */
+  --gb-shadow-sm: 0 1px 2px rgba(21,37,42,.05), 0 1px 1px rgba(21,37,42,.03);
 }
 
+/* ---------- Base ---------- */
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Inter, system-ui, sans-serif;
+  background: var(--gb-bg);
+  color: var(--gb-ink);
+  font-family: var(--gb-font-body);
+  font-size: 17px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--gb-font-display);
+  font-weight: 600;
+  line-height: 1.06;
+  letter-spacing: -0.015em;
+  color: var(--gb-ink);
+}
+
+h1 {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  line-height: 1.0;
+  letter-spacing: -0.02em;
+}
+
+p {
+  color: var(--gb-slate);
+}
+
+a {
+  color: var(--gb-teal-700);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+a:hover {
+  color: var(--gb-teal-600);
+}
+
+:focus-visible {
+  outline: 2.5px solid var(--gb-teal-600);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* ---------- Utilidades de marca ---------- */
+.gb-eyebrow {
+  font-family: var(--gb-font-mono);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  color: var(--gb-teal-700);
+}
+
+.gb-cite {
+  font-family: var(--gb-font-mono);
+  color: var(--gb-teal-700);
+  font-weight: 500;
+}
+
+.gb-tag {
+  display: inline-block;
+  font-family: var(--gb-font-mono);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.7rem;
+  background: var(--gb-teal-100);
+  color: var(--gb-teal-700);
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+
+/* Botones */
+.gb-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--gb-font-body);
+  font-weight: 600;
+  font-size: 0.96rem;
+  padding: 13px 22px;
+  border-radius: var(--gb-r-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: 0.18s;
+}
+
+.gb-btn--primary {
+  background: var(--gb-teal-700);
+  color: #fff;
+}
+
+.gb-btn--primary:hover {
+  background: var(--gb-teal-600);
+  color: #fff;
+}
+
+.gb-btn--secondary {
+  background: var(--gb-surface);
+  color: var(--gb-ink);
+  border-color: var(--gb-border-strong);
+}
+
+.gb-btn--secondary:hover {
+  border-color: var(--gb-teal-600);
+  color: var(--gb-teal-700);
+}
+
+.gb-btn--ghost {
+  background: transparent;
+  color: var(--gb-teal-700);
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.gb-btn--ghost:hover {
+  color: var(--gb-teal-600);
+}
+
+/* Tarjeta (un solo tratamiento en todo el producto) */
+.gb-card {
+  background: var(--gb-surface);
+  border: 1px solid var(--gb-border);
+  border-radius: var(--gb-r-lg);
+  padding: 26px;
+}
+
+/* Bloque de cifras */
+.gb-stat .n {
+  font-family: var(--gb-font-display);
+  font-weight: 600;
+  font-size: 2.2rem;
+  line-height: 1;
+  color: var(--gb-teal-700);
+  letter-spacing: -0.02em;
+}
+
+.gb-stat .l {
+  font-family: var(--gb-font-body);
+  font-size: 0.86rem;
+  color: var(--gb-slate-muted);
+  margin-top: 6px;
 }
 
 /* Animaciones */
@@ -36,15 +217,22 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--gb-teal-50);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
+  background: var(--gb-border-strong);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #a1a1a1;
+  background: var(--gb-slate-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
 }

@@ -1,0 +1,16 @@
+{
+  "total_votos": 0,
+  "votos_validos": 0,
+  "votos_blancos": 0,
+  "votos_nulos": 0,
+  "votos_no_marcados": 0,
+  "total_mesas": 118313,
+  "total_departamentos": 33,
+  "ganador": "ABELARDO DE LA ESPRIELLA",
+  "partido_ganador": "DEFENSORES DE LA PATRIA",
+  "votos_ganador": 10045330,
+  "porcentaje_ganador": 44.28,
+  "segundo": "IVÁN CEPEDA CASTRO",
+  "votos_segundo": 9536162,
+  "diferencia": 509168
+}
