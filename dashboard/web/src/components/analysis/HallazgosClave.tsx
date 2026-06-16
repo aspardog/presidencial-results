@@ -91,7 +91,6 @@ export default function HallazgosClave() {
           <div className="space-y-3">
             {claves.ventajas_decisivas.slice(0, 5).map((depto, index) => {
               const ordinal = `${index + 1}°`;
-              // Color del ganador nacional (quien obtuvo la ventaja)
               const colorGanador = getColorPartido(
                 depto.ganador_nacional.includes('ESPRIELLA') ? 'FIRMAS' :
                 depto.ganador_nacional.includes('CEPEDA') ? 'PACTO' : ''
@@ -107,12 +106,12 @@ export default function HallazgosClave() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-baseline justify-between gap-2">
                       <span className="font-medium text-sm text-gb-ink truncate">{depto.nombre}</span>
-                      <span className="shrink-0 font-mono text-sm text-gb-teal-700">
-                        +{formatNumber(depto.ventaja)}
+                      <span className="shrink-0 font-mono text-sm text-gb-ink">
+                        {formatPercent(depto.margen_porcentual)}
                       </span>
                     </div>
                     <p className="text-xs text-gb-slate-muted">
-                      {formatPercent(depto.margen_porcentual)} de margen
+                      +{formatNumber(depto.ventaja)} votos de ventaja
                     </p>
                   </div>
                 </div>
@@ -153,7 +152,7 @@ export default function HallazgosClave() {
                       </span>
                     </div>
                     <p className="text-xs text-gb-slate-muted">
-                      {ganadorApellido} sobre {segundoApellido} · {formatNumber(depto.diferencia)} votos
+                      {formatNumber(depto.diferencia)} votos · {ganadorApellido} sobre {segundoApellido}
                     </p>
                   </div>
                 </div>
