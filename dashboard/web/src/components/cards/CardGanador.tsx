@@ -37,7 +37,7 @@ export default function CardGanador({
         </div>
         <div className="shrink-0 text-left sm:text-right">
           <p className="font-display text-2xl font-semibold" style={{ color }}>
-            {formatPercent(porcentaje)}
+            {formatPercent(porcentaje)}<span className="text-gb-teal-700">*</span>
           </p>
           <p className="text-sm font-mono text-gb-slate-muted">{formatNumber(votos)} votos</p>
         </div>
