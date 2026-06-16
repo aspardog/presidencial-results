@@ -1,38 +1,15 @@
 'use client';
 
-import { useClavesTerritoriales } from '@/hooks/useElectoralData';
 import { formatNumber, formatPercent } from '@/lib/formatters';
 import { getColorPartido } from '@/lib/colors';
+import type { ClavesTerritoriales } from '@/types/electoral';
+
+// Importar datos directamente (build time)
+import clavesData from '../../../public/api/analisis/claves-territoriales.json';
+
+const data = clavesData as ClavesTerritoriales;
 
 export default function ClavesTerritoriales() {
-  const { data, error, isLoading } = useClavesTerritoriales();
-
-  if (isLoading) {
-    return (
-      <section className="mt-6">
-        <div className="grid gap-4 lg:grid-cols-3">
-          {[0, 1, 2].map((item) => (
-            <div key={item} className="gb-card">
-              <div className="animate-pulse space-y-3">
-                <div className="h-4 w-1/2 rounded bg-gb-teal-100" />
-                <div className="h-24 rounded bg-gb-teal-50" />
-                <div className="h-4 w-2/3 rounded bg-gb-teal-100" />
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-    );
-  }
-
-  if (error || !data) {
-    return (
-      <section className="mt-6 gb-card border-l-4 border-l-amber-500 text-sm text-gb-slate">
-        No se pudieron cargar las claves territoriales.
-      </section>
-    );
-  }
-
   const maxVentaja = Math.max(...data.ventajas_decisivas.map((item) => item.ventaja), 1);
 
   return (

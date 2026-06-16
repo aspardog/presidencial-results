@@ -1,9 +1,11 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
-import { getApiUrl, API } from '@/lib/api-client';
+import { useMemo, useState } from 'react';
 import { getColorGanador } from '@/lib/colors';
 import { formatNumber, formatPercent } from '@/lib/formatters';
+
+// Importar GeoJSON estáticamente
+import geojsonData from '../../../public/api/mapas/departamentos.json';
 
 type Position = [number, number];
 type PolygonCoordinates = Position[][];
@@ -47,6 +49,8 @@ interface MapaElectoralProps {
 const VIEWBOX_WIDTH = 1000;
 const VIEWBOX_HEIGHT = 900;
 const PADDING = 24;
+
+const geojson = geojsonData as unknown as DepartamentoFeatureCollection;
 
 function getCodigo(properties: DepartamentoProperties): string {
   return properties.dpto_ccdgo || properties.DPTO_CCDGO || '';
@@ -115,44 +119,8 @@ export default function MapaElectoral({
   onDepartamentoClick,
   departamentoSeleccionado,
 }: MapaElectoralProps) {
-  const [geojson, setGeojson] = useState<DepartamentoFeatureCollection | null>(null);
   const [hoveredCode, setHoveredCode] = useState<string | null>(null);
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    async function loadDepartamentos() {
-      try {
-        setError(null);
-        const response = await fetch(getApiUrl(API.geojsonDepartamentos));
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}`);
-        }
-
-        const data = await response.json() as DepartamentoFeatureCollection;
-        if (!data.features.length) {
-          throw new Error('GeoJSON sin departamentos');
-        }
-
-        if (!cancelled) {
-          setGeojson(data);
-        }
-      } catch (err) {
-        console.error('Error cargando departamentos:', err);
-        if (!cancelled) {
-          setError('No se pudo cargar el mapa electoral.');
-        }
-      }
-    }
-
-    loadDepartamentos();
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   const paths = useMemo(() => {
     if (!geojson?.features.length) return [];
@@ -165,88 +133,69 @@ export default function MapaElectoral({
       nombre: getNombre(feature.properties),
       color: getColorGanador(feature.properties.ganador || ''),
     }));
-  }, [geojson]);
-
-  if (error) {
-    return (
-      <div className="flex h-full min-h-[400px] items-center justify-center rounded-gb-lg bg-gb-surface p-6 text-center">
-        <div>
-          <p className="font-display font-semibold text-gb-ink">Mapa no disponible</p>
-          <p className="mt-1 text-sm text-gb-slate-muted">{error}</p>
-        </div>
-      </div>
-    );
-  }
+  }, []);
 
   return (
     <div className="relative h-full min-h-[400px] w-full overflow-hidden rounded-gb-lg bg-gb-teal-50">
-      {!geojson && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gb-teal-50">
-          <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-gb-teal-700" />
-        </div>
-      )}
+      <svg
+        aria-label="Mapa electoral de Colombia por departamento"
+        className="h-full w-full"
+        preserveAspectRatio="xMidYMid meet"
+        role="img"
+        viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}
+        onMouseLeave={() => {
+          setHoveredCode(null);
+          setTooltip(null);
+        }}
+      >
+        <rect width={VIEWBOX_WIDTH} height={VIEWBOX_HEIGHT} fill="#F1F8F9" />
+        {paths.map(({ d, properties, codigo, nombre, color }) => {
+          const isActive = departamentoSeleccionado === codigo;
+          const isHovered = hoveredCode === codigo;
 
-      {geojson && (
-        <svg
-          aria-label="Mapa electoral de Colombia por departamento"
-          className="h-full w-full"
-          preserveAspectRatio="xMidYMid meet"
-          role="img"
-          viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}
-          onMouseLeave={() => {
-            setHoveredCode(null);
-            setTooltip(null);
-          }}
-        >
-          <rect width={VIEWBOX_WIDTH} height={VIEWBOX_HEIGHT} fill="#F1F8F9" />
-          {paths.map(({ d, properties, codigo, nombre, color }) => {
-            const isActive = departamentoSeleccionado === codigo;
-            const isHovered = hoveredCode === codigo;
-
-            return (
-              <path
-                key={codigo || nombre}
-                d={d}
-                fill={color}
-                fillOpacity={isActive || isHovered ? 0.92 : 0.74}
-                stroke={isActive ? '#15252A' : '#ffffff'}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={isActive ? 3 : 1.2}
-                className="cursor-pointer transition-opacity duration-150 outline-none focus-visible:stroke-gb-ink"
-                tabIndex={0}
-                onClick={() => {
-                  if (codigo) onDepartamentoClick?.(codigo, nombre);
-                }}
-                onFocus={(event) => {
-                  setHoveredCode(codigo);
-                  setTooltip({
-                    x: event.currentTarget.getBoundingClientRect().left,
-                    y: event.currentTarget.getBoundingClientRect().top,
-                    properties,
-                  });
-                }}
-                onKeyDown={(event) => {
-                  if ((event.key === 'Enter' || event.key === ' ') && codigo) {
-                    event.preventDefault();
-                    onDepartamentoClick?.(codigo, nombre);
-                  }
-                }}
-                onMouseMove={(event) => {
-                  setHoveredCode(codigo);
-                  setTooltip({
-                    x: event.clientX,
-                    y: event.clientY,
-                    properties,
-                  });
-                }}
-              >
-                <title>{nombre}</title>
-              </path>
-            );
-          })}
-        </svg>
-      )}
+          return (
+            <path
+              key={codigo || nombre}
+              d={d}
+              fill={color}
+              fillOpacity={isActive || isHovered ? 0.92 : 0.74}
+              stroke={isActive ? '#15252A' : '#ffffff'}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={isActive ? 3 : 1.2}
+              className="cursor-pointer transition-opacity duration-150 outline-none focus-visible:stroke-gb-ink"
+              tabIndex={0}
+              onClick={() => {
+                if (codigo) onDepartamentoClick?.(codigo, nombre);
+              }}
+              onFocus={(event) => {
+                setHoveredCode(codigo);
+                setTooltip({
+                  x: event.currentTarget.getBoundingClientRect().left,
+                  y: event.currentTarget.getBoundingClientRect().top,
+                  properties,
+                });
+              }}
+              onKeyDown={(event) => {
+                if ((event.key === 'Enter' || event.key === ' ') && codigo) {
+                  event.preventDefault();
+                  onDepartamentoClick?.(codigo, nombre);
+                }
+              }}
+              onMouseMove={(event) => {
+                setHoveredCode(codigo);
+                setTooltip({
+                  x: event.clientX,
+                  y: event.clientY,
+                  properties,
+                });
+              }}
+            >
+              <title>{nombre}</title>
+            </path>
+          );
+        })}
+      </svg>
 
       {tooltip && (
         <div
