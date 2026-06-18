@@ -240,235 +240,47 @@ export default function HallazgosClave() {
         </div>
       </div>
 
-      {/* Análisis de Polarización */}
+      {/* La geografía del voto */}
       <div className="mt-10">
         <header className="mb-6">
           <h3 className="font-display text-lg font-semibold text-gb-ink">
-            Análisis de polarización
+            La geografía del voto
           </h3>
           <p className="mt-1 text-sm text-gb-slate-muted">
-            Métricas de concentración del voto y división territorial
+            Cómo se dividió el territorio nacional
           </p>
         </header>
 
-        {/* Métricas principales de polarización */}
-        <div className="grid gap-3 grid-cols-2 lg:grid-cols-4">
-          <div className="rounded-lg border border-gb-border bg-white p-4">
-            <p className="text-xs font-mono text-gb-slate-muted uppercase tracking-wide">
-              Índice bipartidista
-            </p>
-            <p className="mt-2 font-display text-2xl font-semibold text-gb-ink">
-              {formatPercent(polarizacion.nacional.indice_bipartidista)}
-            </p>
-            <p className="mt-1 text-sm text-gb-slate">
-              Votos top 2 candidatos
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-gb-border bg-white p-4">
-            <p className="text-xs font-mono text-gb-slate-muted uppercase tracking-wide">
-              NEP
-            </p>
-            <p className="mt-2 font-display text-2xl font-semibold text-gb-ink">
-              {polarizacion.nacional.nep.toFixed(2)}
-            </p>
-            <p className="mt-1 text-sm text-gb-slate">
-              {polarizacion.nacional.interpretacion_nep}
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-gb-border bg-white p-4">
-            <p className="text-xs font-mono text-gb-slate-muted uppercase tracking-wide">
-              División territorial
-            </p>
-            <p className="mt-2 font-display text-2xl font-semibold text-gb-ink">
-              ±{polarizacion.polarizacion_geografica.desviacion_margenes.toFixed(1)}%
-            </p>
-            <p className="mt-1 text-sm text-gb-slate">
-              {polarizacion.polarizacion_geografica.interpretacion}
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-gb-border bg-white p-4">
-            <p className="text-xs font-mono text-gb-slate-muted uppercase tracking-wide">
-              Margen promedio
-            </p>
-            <p className="mt-2 font-display text-2xl font-semibold text-gb-ink">
-              {formatPercent(polarizacion.polarizacion_geografica.margen_promedio)}
-            </p>
-            <p className="mt-1 text-sm text-gb-slate">
-              Entre 1° y 2° lugar
-            </p>
-          </div>
-        </div>
-
-        {/* Clasificación de competitividad */}
-        <div className="mt-4 grid gap-4 lg:grid-cols-2">
-          <div className="gb-card">
-            <h4 className="gb-eyebrow mb-4">Competitividad territorial</h4>
-            <p className="text-sm text-gb-slate-muted mb-4">
-              Clasificación de los 33 departamentos según el margen de victoria.
-            </p>
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-red-500"></span>
-                  <span className="text-sm text-gb-slate">Ultra-competidos (&lt;2%)</span>
-                </div>
-                <span className="font-mono text-sm font-semibold text-gb-ink">
-                  {polarizacion.competitividad.ultra_competidos}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-orange-400"></span>
-                  <span className="text-sm text-gb-slate">Competidos (2-10%)</span>
-                </div>
-                <span className="font-mono text-sm font-semibold text-gb-ink">
-                  {polarizacion.competitividad.competidos}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-yellow-400"></span>
-                  <span className="text-sm text-gb-slate">Ventaja clara (10-20%)</span>
-                </div>
-                <span className="font-mono text-sm font-semibold text-gb-ink">
-                  {polarizacion.competitividad.ventaja_clara}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-green-500"></span>
-                  <span className="text-sm text-gb-slate">Bastiones (&gt;20%)</span>
-                </div>
-                <span className="font-mono text-sm font-semibold text-gb-ink">
-                  {polarizacion.competitividad.bastiones}
-                </span>
-              </div>
-            </div>
-
-            {/* Barra visual de distribución */}
-            <div className="mt-4 flex h-3 rounded-full overflow-hidden">
-              <div
-                className="bg-red-500"
-                style={{ width: `${(polarizacion.competitividad.ultra_competidos / 33) * 100}%` }}
-              />
-              <div
-                className="bg-orange-400"
-                style={{ width: `${(polarizacion.competitividad.competidos / 33) * 100}%` }}
-              />
-              <div
-                className="bg-yellow-400"
-                style={{ width: `${(polarizacion.competitividad.ventaja_clara / 33) * 100}%` }}
-              />
-              <div
-                className="bg-green-500"
-                style={{ width: `${(polarizacion.competitividad.bastiones / 33) * 100}%` }}
-              />
-            </div>
-          </div>
-
-          <div className="gb-card">
-            <h4 className="gb-eyebrow mb-4">Departamentos más polarizados</h4>
-            <p className="text-sm text-gb-slate-muted mb-4">
-              Territorios con menor número efectivo de partidos (NEP). Menor NEP = voto más concentrado en pocos candidatos.
-            </p>
-            <div className="space-y-3">
-              {polarizacion.departamentos_mas_polarizados.slice(0, 5).map((depto, index) => {
-                const colorGanador = getColorPartido(
-                  depto.ganador.includes('ESPRIELLA') ? 'FIRMAS' :
-                  depto.ganador.includes('CEPEDA') ? 'PACTO' : ''
-                );
-
-                return (
-                  <div key={depto.codigo} className="flex items-center gap-3">
-                    <span className="w-6 shrink-0 font-mono text-xs text-gb-slate-muted">
-                      {index + 1}°
-                    </span>
-                    <div
-                      className="w-1 h-8 rounded-full shrink-0"
-                      style={{ backgroundColor: colorGanador }}
-                    />
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-baseline justify-between gap-2">
-                        <span className="font-medium text-sm text-gb-ink truncate">
-                          {depto.nombre}
-                        </span>
-                        <span className="shrink-0 font-mono text-sm text-gb-ink">
-                          NEP {depto.nep.toFixed(2)}
-                        </span>
-                      </div>
-                      <p className="text-xs text-gb-slate-muted">
-                        {formatPercent(depto.indice_bipartidista)} en top 2 · {formatPercent(depto.margen)} de margen
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-
-        {/* Nota metodológica */}
-        <p className="mt-4 text-xs text-gb-slate-muted">
-          <strong>NEP (Número Efectivo de Partidos):</strong> Índice Laakso-Taagepera que mide la fragmentación electoral. Valores cercanos a 2 indican competencia entre dos fuerzas principales. El índice bipartidista suma los porcentajes de los dos primeros candidatos.
-        </p>
-      </div>
-
-      {/* Análisis de Polarización Municipal */}
-      <div className="mt-10">
-        <header className="mb-6">
-          <h3 className="font-display text-lg font-semibold text-gb-ink">
-            Polarización municipal
-          </h3>
-          <p className="mt-1 text-sm text-gb-slate-muted">
-            Análisis granular de {polMunicipal.resumen.total_municipios.toLocaleString('es-CO')} municipios
-          </p>
-        </header>
-
-        {/* Resumen de fragmentación territorial */}
+        {/* Card 1: Dos Colombias */}
         <div className="gb-card mb-4">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
-              <p className="gb-eyebrow">Fragmentación territorial</p>
-              <p className="mt-2 text-gb-slate">
-                <span className="font-display text-3xl font-semibold text-gb-ink">
+          <p className="gb-eyebrow">Dos Colombias</p>
+          <div className="mt-4 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+            <div className="flex items-baseline gap-3">
+              <div className="text-center">
+                <p className="font-display text-4xl font-semibold text-blue-600">
                   {polMunicipal.resumen.municipios_ganador_nacional}
-                </span>
-                <span className="mx-2 text-gb-slate-muted">vs</span>
-                <span className="font-display text-3xl font-semibold text-gb-ink">
-                  {polMunicipal.resumen.municipios_segundo_nacional}
-                </span>
-                <span className="ml-2 text-sm text-gb-slate-muted">municipios</span>
-              </p>
-              <p className="mt-1 text-sm text-gb-slate-muted">
-                {polMunicipal.resumen.ganador_nacional.split(' ').pop()} ({formatPercent(polMunicipal.resumen.porcentaje_ganador)}) vs {polMunicipal.resumen.segundo_nacional.split(' ').pop()} ({formatPercent(polMunicipal.resumen.porcentaje_segundo)})
-              </p>
-            </div>
-            <div className="flex gap-4">
-              <div className="text-center">
-                <p className="font-mono text-2xl font-semibold text-gb-ink">
-                  {polMunicipal.estadisticas.nep_promedio.toFixed(2)}
                 </p>
-                <p className="text-xs text-gb-slate-muted">NEP promedio</p>
+                <p className="text-sm text-gb-slate">municipios</p>
+                <p className="text-xs text-gb-slate-muted">{polMunicipal.resumen.ganador_nacional.split(' ').pop()}</p>
               </div>
+              <span className="text-2xl text-gb-slate-muted font-light">vs</span>
               <div className="text-center">
-                <p className="font-mono text-2xl font-semibold text-gb-ink">
-                  {formatPercent(polMunicipal.estadisticas.margen_promedio)}
+                <p className="font-display text-4xl font-semibold text-orange-600">
+                  {polMunicipal.resumen.municipios_segundo_nacional}
                 </p>
-                <p className="text-xs text-gb-slate-muted">Margen promedio</p>
+                <p className="text-sm text-gb-slate">municipios</p>
+                <p className="text-xs text-gb-slate-muted">{polMunicipal.resumen.segundo_nacional.split(' ').pop()}</p>
               </div>
             </div>
           </div>
 
-          {/* Barra visual de distribución de municipios */}
-          <div className="mt-4 flex h-4 rounded-full overflow-hidden">
+          {/* Barra visual */}
+          <div className="mt-4 flex h-5 rounded-full overflow-hidden">
             <div
               className="bg-blue-600 flex items-center justify-center"
               style={{ width: `${polMunicipal.resumen.porcentaje_ganador}%` }}
             >
-              <span className="text-[10px] font-mono text-white font-medium">
+              <span className="text-xs font-mono text-white font-medium">
                 {polMunicipal.resumen.porcentaje_ganador.toFixed(0)}%
               </span>
             </div>
@@ -476,201 +288,96 @@ export default function HallazgosClave() {
               className="bg-orange-600 flex items-center justify-center"
               style={{ width: `${polMunicipal.resumen.porcentaje_segundo}%` }}
             >
-              <span className="text-[10px] font-mono text-white font-medium">
+              <span className="text-xs font-mono text-white font-medium">
                 {polMunicipal.resumen.porcentaje_segundo.toFixed(0)}%
               </span>
             </div>
           </div>
+
+          <p className="mt-4 text-sm text-gb-slate">
+            El <strong>{((polMunicipal.competitividad_municipal.bastiones / polMunicipal.resumen.total_municipios) * 100).toFixed(0)}%</strong> de los municipios fueron bastiones definidos por más de 20 puntos.
+            Solo <strong>{polMunicipal.competitividad_municipal.ultra_competidos}</strong> se definieron por menos del 2%.
+          </p>
         </div>
 
-        {/* Competitividad municipal */}
-        <div className="grid gap-3 grid-cols-2 lg:grid-cols-4 mb-4">
-          <div className="rounded-lg border border-gb-border bg-white p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="w-3 h-3 rounded-full bg-red-500"></span>
-              <p className="text-xs font-mono text-gb-slate-muted uppercase">Ultra-competidos</p>
-            </div>
-            <p className="font-display text-2xl font-semibold text-gb-ink">
-              {polMunicipal.competitividad_municipal.ultra_competidos}
-            </p>
-            <p className="text-sm text-gb-slate">Margen &lt;2%</p>
+        {/* Card 2: Donde se decidió */}
+        <div className="gb-card mb-4">
+          <p className="gb-eyebrow">Donde se decidió</p>
+          <p className="mt-1 text-sm text-gb-slate-muted">
+            {polMunicipal.competitividad_municipal.ultra_competidos} municipios definidos por menos del 2%
+          </p>
+
+          <div className="mt-4 space-y-2">
+            {polMunicipal.municipios_mas_competidos.slice(0, 6).map((mun, index) => {
+              const colorGanador = mun.ganador.includes('ESPRIELLA') ? 'text-blue-600' : 'text-orange-600';
+
+              return (
+                <div key={`${mun.codigo_dep}_${mun.codigo_mun}`} className="flex items-center justify-between py-1 border-b border-gb-border last:border-0">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <span className="w-5 shrink-0 font-mono text-xs text-gb-slate-muted">{index + 1}.</span>
+                    <div className="min-w-0">
+                      <span className="font-medium text-sm text-gb-ink">{mun.nombre_mun}</span>
+                      <span className="text-xs text-gb-slate-muted ml-1">({mun.nombre_dep})</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 shrink-0">
+                    <span className="font-mono text-xs text-gb-slate">{formatNumber(mun.total_votos)} votos</span>
+                    <span className={`font-mono text-sm font-semibold ${colorGanador}`}>
+                      {formatPercent(mun.margen)}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-          <div className="rounded-lg border border-gb-border bg-white p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="w-3 h-3 rounded-full bg-orange-400"></span>
-              <p className="text-xs font-mono text-gb-slate-muted uppercase">Competidos</p>
-            </div>
-            <p className="font-display text-2xl font-semibold text-gb-ink">
-              {polMunicipal.competitividad_municipal.competidos}
-            </p>
-            <p className="text-sm text-gb-slate">Margen 2-10%</p>
-          </div>
-          <div className="rounded-lg border border-gb-border bg-white p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="w-3 h-3 rounded-full bg-yellow-400"></span>
-              <p className="text-xs font-mono text-gb-slate-muted uppercase">Ventaja clara</p>
-            </div>
-            <p className="font-display text-2xl font-semibold text-gb-ink">
-              {polMunicipal.competitividad_municipal.ventaja_clara}
-            </p>
-            <p className="text-sm text-gb-slate">Margen 10-20%</p>
-          </div>
-          <div className="rounded-lg border border-gb-border bg-white p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="w-3 h-3 rounded-full bg-green-500"></span>
-              <p className="text-xs font-mono text-gb-slate-muted uppercase">Bastiones</p>
-            </div>
-            <p className="font-display text-2xl font-semibold text-gb-ink">
-              {polMunicipal.competitividad_municipal.bastiones}
-            </p>
-            <p className="text-sm text-gb-slate">Margen &gt;20%</p>
-          </div>
+
+          <p className="mt-4 pt-3 border-t border-gb-border text-xs text-gb-slate-muted">
+            Estos {polMunicipal.competitividad_municipal.ultra_competidos} municipios ultra-competidos sumaron {formatNumber(polMunicipal.municipios_mas_competidos.slice(0, polMunicipal.competitividad_municipal.ultra_competidos).reduce((sum, m) => sum + m.total_votos, 0))} votos.
+          </p>
         </div>
 
-        {/* Heterogeneidad departamental y municipios extremos */}
+        {/* Card 3: Los contrastes */}
         <div className="grid gap-4 lg:grid-cols-2">
-          <div className="gb-card">
-            <h4 className="gb-eyebrow mb-2">Departamentos más divididos</h4>
-            <p className="text-sm text-gb-slate-muted mb-4">
-              Departamentos donde ambos candidatos ganan municipios significativos.
-            </p>
-            <div className="space-y-3">
-              {polMunicipal.departamentos_mas_divididos.slice(0, 5).map((dep, index) => {
-                const ganadorPrincipal = dep.ganadores[0];
-                const colorPrincipal = getColorPartido(
-                  ganadorPrincipal?.nombre.includes('ESPRIELLA') ? 'FIRMAS' :
-                  ganadorPrincipal?.nombre.includes('CEPEDA') ? 'PACTO' : ''
-                );
-
-                return (
-                  <div key={dep.codigo} className="flex items-center gap-3">
-                    <span className="w-6 shrink-0 font-mono text-xs text-gb-slate-muted">
-                      {index + 1}°
-                    </span>
-                    <div
-                      className="w-1 h-10 rounded-full shrink-0"
-                      style={{ backgroundColor: colorPrincipal }}
-                    />
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-baseline justify-between gap-2">
-                        <span className="font-medium text-sm text-gb-ink truncate">
-                          {dep.nombre}
-                        </span>
-                        <span className="shrink-0 font-mono text-xs text-gb-slate-muted">
-                          {dep.total_municipios} mun.
-                        </span>
-                      </div>
-                      <div className="mt-1 flex h-2 rounded-full overflow-hidden bg-gray-100">
-                        {dep.ganadores.map((g, i) => {
-                          const color = g.nombre.includes('ESPRIELLA') ? '#1D4ED8' :
-                                        g.nombre.includes('CEPEDA') ? '#C2410C' : '#6B7280';
-                          return (
-                            <div
-                              key={i}
-                              style={{ width: `${g.porcentaje}%`, backgroundColor: color }}
-                            />
-                          );
-                        })}
-                      </div>
-                      <p className="mt-1 text-xs text-gb-slate-muted">
-                        {dep.ganadores.map(g => `${g.nombre.split(' ').pop()}: ${g.count}`).join(' · ')}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="gb-card">
-            <h4 className="gb-eyebrow mb-2">Municipios más competidos</h4>
-            <p className="text-sm text-gb-slate-muted mb-4">
-              Territorios donde la diferencia entre candidatos fue mínima.
-            </p>
-            <div className="space-y-3">
-              {polMunicipal.municipios_mas_competidos.slice(0, 5).map((mun, index) => {
-                const colorGanador = getColorPartido(
-                  mun.ganador.includes('ESPRIELLA') ? 'FIRMAS' :
-                  mun.ganador.includes('CEPEDA') ? 'PACTO' : ''
-                );
-
-                return (
-                  <div key={`${mun.codigo_dep}_${mun.codigo_mun}`} className="flex items-center gap-3">
-                    <span className="w-6 shrink-0 font-mono text-xs text-gb-slate-muted">
-                      {index + 1}°
-                    </span>
-                    <div
-                      className="w-1 h-8 rounded-full shrink-0"
-                      style={{ backgroundColor: colorGanador }}
-                    />
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-baseline justify-between gap-2">
-                        <span className="font-medium text-sm text-gb-ink truncate">
-                          {mun.nombre_mun}
-                        </span>
-                        <span className="shrink-0 font-mono text-sm font-semibold text-red-600">
-                          {formatPercent(mun.margen)}
-                        </span>
-                      </div>
-                      <p className="text-xs text-gb-slate-muted">
-                        {mun.nombre_dep} · {formatNumber(mun.total_votos)} votos
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-
-        {/* Bastiones de cada candidato */}
-        <div className="mt-4 grid gap-4 lg:grid-cols-2">
           <div className="gb-card">
             <div className="flex items-center gap-2 mb-4">
               <div className="w-3 h-3 rounded-full bg-blue-600"></div>
-              <h4 className="gb-eyebrow">Bastiones de {polMunicipal.resumen.ganador_nacional.split(' ').slice(-2).join(' ')}</h4>
+              <p className="gb-eyebrow">Bastiones de {polMunicipal.resumen.ganador_nacional.split(' ').slice(-2).join(' ')}</p>
             </div>
-            <div className="space-y-2">
-              {polMunicipal.bastiones_ganador.slice(0, 5).map((mun, index) => (
-                <div key={`${mun.codigo_dep}_${mun.codigo_mun}`} className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 min-w-0">
-                    <span className="shrink-0 font-mono text-xs text-gb-slate-muted">{index + 1}.</span>
-                    <span className="text-sm text-gb-slate truncate">{mun.nombre_mun}</span>
-                    <span className="shrink-0 text-xs text-gb-slate-muted">({mun.nombre_dep})</span>
+            <div className="space-y-3">
+              {polarizacion.departamentos_mas_polarizados
+                .filter(d => d.ganador.includes('ESPRIELLA'))
+                .slice(0, 3)
+                .map((depto, index) => (
+                  <div key={depto.codigo} className="flex items-center justify-between">
+                    <span className="text-sm text-gb-slate">{depto.nombre}</span>
+                    <span className="font-mono text-sm font-semibold text-blue-600">
+                      +{formatPercent(depto.margen)}
+                    </span>
                   </div>
-                  <span className="shrink-0 font-mono text-sm font-semibold text-blue-600">
-                    {formatPercent(mun.porcentaje_ganador)}
-                  </span>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
 
           <div className="gb-card">
             <div className="flex items-center gap-2 mb-4">
               <div className="w-3 h-3 rounded-full bg-orange-600"></div>
-              <h4 className="gb-eyebrow">Bastiones de {polMunicipal.resumen.segundo_nacional.split(' ').slice(-2).join(' ')}</h4>
+              <p className="gb-eyebrow">Bastiones de {polMunicipal.resumen.segundo_nacional.split(' ').slice(-2).join(' ')}</p>
             </div>
-            <div className="space-y-2">
-              {polMunicipal.bastiones_segundo.slice(0, 5).map((mun, index) => (
-                <div key={`${mun.codigo_dep}_${mun.codigo_mun}`} className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 min-w-0">
-                    <span className="shrink-0 font-mono text-xs text-gb-slate-muted">{index + 1}.</span>
-                    <span className="text-sm text-gb-slate truncate">{mun.nombre_mun}</span>
-                    <span className="shrink-0 text-xs text-gb-slate-muted">({mun.nombre_dep})</span>
+            <div className="space-y-3">
+              {polarizacion.departamentos_mas_polarizados
+                .filter(d => d.ganador.includes('CEPEDA'))
+                .slice(0, 3)
+                .map((depto, index) => (
+                  <div key={depto.codigo} className="flex items-center justify-between">
+                    <span className="text-sm text-gb-slate">{depto.nombre}</span>
+                    <span className="font-mono text-sm font-semibold text-orange-600">
+                      +{formatPercent(depto.margen)}
+                    </span>
                   </div>
-                  <span className="shrink-0 font-mono text-sm font-semibold text-orange-600">
-                    {formatPercent(mun.porcentaje_ganador)}
-                  </span>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
         </div>
-
-        <p className="mt-4 text-xs text-gb-slate-muted">
-          <strong>Heterogeneidad:</strong> Mide la variabilidad de márgenes entre municipios de un mismo departamento. Departamentos «divididos» tienen ambos candidatos ganando municipios con más del 20% de participación cada uno.
-        </p>
       </div>
     </section>
   );
