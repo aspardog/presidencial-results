@@ -300,40 +300,66 @@ export default function HallazgosClave() {
           </p>
         </div>
 
-        {/* Card 2: Donde se decidió */}
-        <div className="gb-card mb-4">
-          <p className="gb-eyebrow">Donde se decidió</p>
-          <p className="mt-1 text-sm text-gb-slate-muted">
-            {polMunicipal.competitividad_municipal.ultra_competidos} municipios definidos por menos del 2%
-          </p>
+        {/* Card 2 y 3: Donde se decidió + Bastiones */}
+        <div className="grid gap-4 lg:grid-cols-2 mb-4">
+          {/* Donde se decidió */}
+          <div className="gb-card">
+            <p className="gb-eyebrow">Donde se decidió</p>
+            <p className="mt-1 text-sm text-gb-slate-muted">
+              {polMunicipal.competitividad_municipal.ultra_competidos} municipios con margen &lt;2%
+            </p>
 
-          <div className="mt-4 space-y-2">
-            {polMunicipal.municipios_mas_competidos.slice(0, 6).map((mun, index) => {
-              const colorGanador = mun.ganador.includes('ESPRIELLA') ? 'text-blue-600' : 'text-orange-600';
+            <div className="mt-4 space-y-2">
+              {polMunicipal.municipios_mas_competidos.slice(0, 5).map((mun, index) => {
+                const colorGanador = mun.ganador.includes('ESPRIELLA') ? 'text-blue-600' : 'text-orange-600';
 
-              return (
-                <div key={`${mun.codigo_dep}_${mun.codigo_mun}`} className="flex items-center justify-between py-1 border-b border-gb-border last:border-0">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <span className="w-5 shrink-0 font-mono text-xs text-gb-slate-muted">{index + 1}.</span>
-                    <div className="min-w-0">
-                      <span className="font-medium text-sm text-gb-ink">{mun.nombre_mun}</span>
-                      <span className="text-xs text-gb-slate-muted ml-1">({mun.nombre_dep})</span>
+                return (
+                  <div key={`${mun.codigo_dep}_${mun.codigo_mun}`} className="flex items-center justify-between py-1 border-b border-gb-border last:border-0">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="w-4 shrink-0 font-mono text-xs text-gb-slate-muted">{index + 1}.</span>
+                      <div className="min-w-0">
+                        <span className="font-medium text-sm text-gb-ink truncate">{mun.nombre_mun}</span>
+                        <span className="text-xs text-gb-slate-muted ml-1">({mun.nombre_dep})</span>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-3 shrink-0">
-                    <span className="font-mono text-xs text-gb-slate">{formatNumber(mun.total_votos)} votos</span>
-                    <span className={`font-mono text-sm font-semibold ${colorGanador}`}>
+                    <span className={`font-mono text-sm font-semibold shrink-0 ${colorGanador}`}>
                       {formatPercent(mun.margen)}
                     </span>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
 
-          <p className="mt-4 pt-3 border-t border-gb-border text-xs text-gb-slate-muted">
-            Estos {polMunicipal.competitividad_municipal.ultra_competidos} municipios ultra-competidos sumaron {formatNumber(polMunicipal.municipios_mas_competidos.slice(0, polMunicipal.competitividad_municipal.ultra_competidos).reduce((sum, m) => sum + m.total_votos, 0))} votos.
-          </p>
+          {/* Bastiones */}
+          <div className="gb-card">
+            <p className="gb-eyebrow">Bastiones</p>
+            <p className="mt-1 text-sm text-gb-slate-muted">
+              {polMunicipal.competitividad_municipal.bastiones} municipios con margen &gt;20%
+            </p>
+
+            <div className="mt-4 space-y-2">
+              {[...polMunicipal.bastiones_ganador.slice(0, 3), ...polMunicipal.bastiones_segundo.slice(0, 2)].map((mun, index) => {
+                const colorGanador = mun.ganador.includes('ESPRIELLA') ? 'text-blue-600' : 'text-orange-600';
+                const bgColor = mun.ganador.includes('ESPRIELLA') ? 'bg-blue-600' : 'bg-orange-600';
+
+                return (
+                  <div key={`${mun.codigo_dep}_${mun.codigo_mun}`} className="flex items-center justify-between py-1 border-b border-gb-border last:border-0">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <div className={`w-2 h-2 rounded-full shrink-0 ${bgColor}`}></div>
+                      <div className="min-w-0">
+                        <span className="font-medium text-sm text-gb-ink truncate">{mun.nombre_mun}</span>
+                        <span className="text-xs text-gb-slate-muted ml-1">({mun.nombre_dep})</span>
+                      </div>
+                    </div>
+                    <span className={`font-mono text-sm font-semibold shrink-0 ${colorGanador}`}>
+                      {formatPercent(mun.margen)}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
 
         {/* Card 3: Los contrastes */}
