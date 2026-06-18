@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build:data": "node scripts/build-data.js",
-    "validate": "node scripts/validate-static-contracts.js",
+    "validate": "node scripts/validate-static-contracts.js && node scripts/validate-municipal-matching.js",
     "verify:prod": "node scripts/verify-production.js",
     "build": "npm run validate && next build",
     "build:full": "npm run build:data && npm run build",
