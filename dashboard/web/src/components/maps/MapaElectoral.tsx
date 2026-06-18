@@ -6,26 +6,51 @@ import { getCodigoElectoralDesdeDane } from '@/lib/departamentos';
 import { formatNumber, formatPercent } from '@/lib/formatters';
 
 import departamentosData from '../../../public/api/mapas/departamentos.json';
+import polarizacionData from '../../../public/api/analisis/polarizacion.json';
+import polarizacionMunicipalData from '../../../public/api/analisis/polarizacion-municipal.json';
 
 type MapMode = 'ganador' | 'polarizacion';
 
-/**
- * Devuelve un color basado en el porcentaje del ganador.
- * 50% = muy competido (rojo intenso)
- * 60% = competido (naranja)
- * 70% = ventaja clara (amarillo)
- * 80%+ = bastión (verde)
- */
-function getColorPolarizacion(porcentajeGanador: number): string {
-  const p = porcentajeGanador || 50;
+// Crear mapas de código -> margen para acceso rápido
+const margenesDepartamentos = new Map<string, number>(
+  (polarizacionData as { por_departamento: Array<{ codigo: string; margen: number }> }).por_departamento.map(
+    (d) => [d.codigo, d.margen]
+  )
+);
 
-  if (p < 52) return '#DC2626'; // ultra-competido - rojo
-  if (p < 55) return '#EA580C'; // competido - naranja oscuro
-  if (p < 60) return '#F97316'; // competido - naranja
-  if (p < 65) return '#FBBF24'; // ventaja moderada - amarillo
-  if (p < 70) return '#A3E635'; // ventaja clara - lima
-  if (p < 80) return '#22C55E'; // bastión - verde
+const margenesMunicipios = new Map<string, number>(
+  [
+    ...(polarizacionMunicipalData as { municipios_mas_polarizados: Array<{ codigo_dep: string; codigo_mun: string; margen: number }> }).municipios_mas_polarizados,
+    ...(polarizacionMunicipalData as { municipios_mas_competidos: Array<{ codigo_dep: string; codigo_mun: string; margen: number }> }).municipios_mas_competidos,
+    ...(polarizacionMunicipalData as { bastiones_ganador: Array<{ codigo_dep: string; codigo_mun: string; margen: number }> }).bastiones_ganador,
+    ...(polarizacionMunicipalData as { bastiones_segundo: Array<{ codigo_dep: string; codigo_mun: string; margen: number }> }).bastiones_segundo,
+  ].map((m) => [`${m.codigo_dep}${m.codigo_mun}`, m.margen])
+);
+
+/**
+ * Devuelve un color basado en el margen (% primero - % segundo).
+ * <2% = ultra-competido (rojo)
+ * 2-10% = competido (naranja)
+ * 10-20% = ventaja clara (amarillo)
+ * >20% = bastión (verde)
+ */
+function getColorPorMargen(margen: number): string {
+  const m = Math.abs(margen);
+
+  if (m < 2) return '#DC2626'; // ultra-competido - rojo
+  if (m < 5) return '#EA580C'; // muy competido - naranja oscuro
+  if (m < 10) return '#F97316'; // competido - naranja
+  if (m < 20) return '#FBBF24'; // ventaja clara - amarillo
+  if (m < 40) return '#22C55E'; // bastión - verde
   return '#15803D'; // bastión fuerte - verde oscuro
+}
+
+function getClasificacionMargen(margen: number): string {
+  const m = Math.abs(margen);
+  if (m < 2) return 'Ultra-competido';
+  if (m < 10) return 'Competido';
+  if (m < 20) return 'Ventaja clara';
+  return 'Bastión';
 }
 
 type Position = [number, number];
@@ -230,15 +255,30 @@ export default function MapaElectoral({
     const project = createProjection(visibleFeatures);
     return visibleFeatures.map((feature) => {
       const colorGanador = getColorGanador(feature.properties.ganador || '');
-      const colorPolarizacion = getColorPolarizacion(feature.properties.porcentaje_ganador || 50);
+      const codigo = getCodigoFeature(feature.properties, isMunicipioView);
+
+      // Obtener margen real de los datos de polarización
+      let margen: number;
+      if (isMunicipioView) {
+        // Para municipios: usar código DANE completo (dpto + mpio)
+        const codigoDane = feature.properties.mpio_cdpmp ||
+          `${feature.properties.dpto_ccdgo}${feature.properties.mpio_ccdgo}`;
+        margen = margenesMunicipios.get(codigoDane) ??
+          // Fallback: calcular aproximado desde porcentaje
+          (feature.properties.porcentaje_ganador ? (feature.properties.porcentaje_ganador * 2 - 100) : 20);
+      } else {
+        // Para departamentos: usar código electoral
+        margen = margenesDepartamentos.get(codigo) ?? 20;
+      }
 
       return {
         d: featureToPath(feature, project),
         properties: feature.properties,
-        codigo: getCodigoFeature(feature.properties, isMunicipioView),
+        codigo,
         nombre: getNombreFeature(feature.properties, isMunicipioView),
         colorGanador,
-        colorPolarizacion,
+        colorPolarizacion: getColorPorMargen(margen),
+        margen,
       };
     });
   }, [isMunicipioView, visibleFeatures]);
@@ -415,21 +455,30 @@ export default function MapaElectoral({
                 </p>
               )}
             </>
-          ) : (
-            <>
-              <p className="mt-1 text-gb-slate">
-                Ganador con <span className="font-mono font-semibold">{formatPercent(tooltip.properties.porcentaje_ganador || 0)}</span>
-              </p>
-              <p className="font-mono text-sm" style={{ color: getColorPolarizacion(tooltip.properties.porcentaje_ganador || 50) }}>
-                {(tooltip.properties.porcentaje_ganador || 50) < 52 ? 'Ultra-competido' :
-                 (tooltip.properties.porcentaje_ganador || 50) < 60 ? 'Competido' :
-                 (tooltip.properties.porcentaje_ganador || 50) < 70 ? 'Ventaja clara' : 'Bastión'}
-              </p>
-              <p className="mt-1 text-xs text-gb-slate-muted">
-                {formatNumber(tooltip.properties.total_votos || 0)} votos totales
-              </p>
-            </>
-          )}
+          ) : (() => {
+            // Calcular margen para el tooltip
+            const codigoDane = tooltip.properties.mpio_cdpmp ||
+              `${tooltip.properties.dpto_ccdgo}${tooltip.properties.mpio_ccdgo}`;
+            const codigoDepto = getCodigoDepartamento(tooltip.properties);
+            const margenTooltip = tooltip.isMunicipio
+              ? (margenesMunicipios.get(codigoDane) ??
+                 (tooltip.properties.porcentaje_ganador ? (tooltip.properties.porcentaje_ganador * 2 - 100) : 20))
+              : (margenesDepartamentos.get(codigoDepto) ?? 20);
+
+            return (
+              <>
+                <p className="mt-1 text-gb-slate">
+                  Margen: <span className="font-mono font-semibold">{formatPercent(Math.abs(margenTooltip))}</span>
+                </p>
+                <p className="font-mono text-sm" style={{ color: getColorPorMargen(margenTooltip) }}>
+                  {getClasificacionMargen(margenTooltip)}
+                </p>
+                <p className="mt-1 text-xs text-gb-slate-muted">
+                  {formatNumber(tooltip.properties.total_votos || 0)} votos totales
+                </p>
+              </>
+            );
+          })()}
         </div>
       )}
 
@@ -454,23 +503,23 @@ export default function MapaElectoral({
           </>
         ) : (
           <>
-            <p className="gb-eyebrow mb-2">Competitividad</p>
+            <p className="gb-eyebrow mb-2">Margen 1° - 2°</p>
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 <div className="h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: '#DC2626' }} />
-                <span className="text-gb-slate">&lt;52% Ultra-competido</span>
+                <span className="text-gb-slate">&lt;2% Ultra-competido</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: '#F97316' }} />
-                <span className="text-gb-slate">52-60% Competido</span>
+                <span className="text-gb-slate">2-10% Competido</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: '#FBBF24' }} />
-                <span className="text-gb-slate">60-70% Ventaja clara</span>
+                <span className="text-gb-slate">10-20% Ventaja clara</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: '#22C55E' }} />
-                <span className="text-gb-slate">&gt;70% Bastión</span>
+                <span className="text-gb-slate">&gt;20% Bastión</span>
               </div>
             </div>
           </>
