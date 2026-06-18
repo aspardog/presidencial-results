@@ -23,26 +23,69 @@ type MunicipioVotos = {
   diferencia: number;
 };
 
-// Crear mapa de código electoral completo -> datos de votos municipales
+/**
+ * Normaliza un nombre de municipio para matching:
+ * - Quita acentos
+ * - Convierte a mayúsculas
+ * - Quita espacios, puntuación y paréntesis
+ */
+function normalizarNombre(nombre: string): string {
+  return nombre
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // Quitar acentos
+    .toUpperCase()
+    .replace(/[.,()]/g, '') // Quitar puntuación y paréntesis
+    .replace(/\s+/g, '') // Quitar espacios
+    .trim();
+}
+
+// Crear mapas para lookup de municipios
+// Mapa principal: código depto + nombre normalizado -> datos
 const municipiosVotosMap = new Map<string, MunicipioVotos>();
+// Mapa secundario por depto para búsqueda parcial
+const municipiosPorDepto = new Map<string, MunicipioVotos[]>();
+
 Object.entries(municipiosVotosData as Record<string, MunicipioVotos[]>).forEach(([dptoCodigo, municipios]) => {
+  municipiosPorDepto.set(dptoCodigo, municipios);
   municipios.forEach((mun) => {
-    const codigoCompleto = `${dptoCodigo}${mun.codigo}`;
-    municipiosVotosMap.set(codigoCompleto, mun);
+    const key = `${dptoCodigo}_${normalizarNombre(mun.nombre)}`;
+    municipiosVotosMap.set(key, mun);
   });
 });
+
+/**
+ * Obtiene los datos de votos de un municipio por código depto electoral + nombre.
+ * Usa matching exacto primero, luego búsqueda parcial como fallback.
+ */
+function getMunicipioVotos(codigoDeptoElectoral: string, nombreMunicipio: string): MunicipioVotos | undefined {
+  const nombreNorm = normalizarNombre(nombreMunicipio);
+  const key = `${codigoDeptoElectoral}_${nombreNorm}`;
+
+  // Intentar match exacto primero
+  const exactMatch = municipiosVotosMap.get(key);
+  if (exactMatch) return exactMatch;
+
+  // Fallback: buscar por coincidencia parcial en el departamento
+  const municipiosDepto = municipiosPorDepto.get(codigoDeptoElectoral);
+  if (municipiosDepto) {
+    // Buscar si el nombre del GeoJSON está contenido en algún nombre electoral o viceversa
+    const match = municipiosDepto.find(m => {
+      const nombreElectoral = normalizarNombre(m.nombre);
+      return nombreElectoral.includes(nombreNorm) || nombreNorm.includes(nombreElectoral);
+    });
+    if (match) return match;
+  }
+
+  return undefined;
+}
 
 /**
  * Calcula el margen electoral de un municipio.
  * Margen = % ganador - % segundo = (votos_ganador - votos_segundo) / total_votos * 100
  */
-function calcularMargenMunicipio(codigoElectoral: string): number {
-  // Primero intentar con datos de polarización (más precisos)
-  const margenPolarizacion = margenesMunicipios.get(codigoElectoral);
-  if (margenPolarizacion !== undefined) return margenPolarizacion;
-
-  // Si no existe, calcular desde datos de votos
-  const munData = municipiosVotosMap.get(codigoElectoral);
+function calcularMargenMunicipio(codigoDeptoElectoral: string, nombreMunicipio: string): number {
+  // Calcular desde datos de votos
+  const munData = getMunicipioVotos(codigoDeptoElectoral, nombreMunicipio);
   if (munData && munData.total_votos > 0) {
     const porcentajeSegundo = (munData.votos_segundo / munData.total_votos) * 100;
     return munData.porcentaje_ganador - porcentajeSegundo;
@@ -308,16 +351,14 @@ export default function MapaElectoral({
       const colorGanador = getColorGanador(feature.properties.ganador || '');
       const codigo = getCodigoFeature(feature.properties, isMunicipioView);
 
-      // Obtener margen real de los datos de polarización o calcularlo de votos
+      // Obtener margen real de los datos de votos
       let margen: number;
       if (isMunicipioView) {
-        // Para municipios: convertir código DANE a electoral
+        // Para municipios: usar código depto electoral + nombre del municipio
         const codigoDaneDepto = feature.properties.dpto_ccdgo || '';
         const codigoElectoralDepto = getCodigoElectoralDesdeDane(codigoDaneDepto);
-        const codigoMun = feature.properties.mpio_ccdgo || '';
-        const codigoElectoralCompleto = `${codigoElectoralDepto}${codigoMun}`;
-        // Calcular margen (primero intenta polarización, luego datos de votos)
-        margen = calcularMargenMunicipio(codigoElectoralCompleto);
+        const nombreMunicipio = feature.properties.mpio_cnmbr || '';
+        margen = calcularMargenMunicipio(codigoElectoralDepto, nombreMunicipio);
       } else {
         // Para departamentos: usar código electoral
         margen = margenesDepartamentos.get(codigo) ?? 20;
@@ -472,13 +513,11 @@ export default function MapaElectoral({
       </svg>
 
       {tooltip && (() => {
-        // Para municipios, obtener datos de votos desde el lookup
-        // El GeoJSON usa códigos DANE, pero municipiosVotosData usa códigos electorales
+        // Para municipios, obtener datos de votos por nombre (códigos DANE != electorales)
         const codigoDane = tooltip.properties.dpto_ccdgo || '';
         const codigoElectoralDepto = getCodigoElectoralDesdeDane(codigoDane);
-        const codigoMun = tooltip.properties.mpio_ccdgo || '';
-        const codigoLookup = `${codigoElectoralDepto}${codigoMun}`;
-        const munData = tooltip.isMunicipio ? municipiosVotosMap.get(codigoLookup) : null;
+        const nombreMunicipio = tooltip.properties.mpio_cnmbr || '';
+        const munData = tooltip.isMunicipio ? getMunicipioVotos(codigoElectoralDepto, nombreMunicipio) : null;
 
         // Usar datos del lookup para municipios, o propiedades directas para departamentos
         const ganador = tooltip.isMunicipio && munData ? munData.ganador : tooltip.properties.ganador;
@@ -527,9 +566,8 @@ export default function MapaElectoral({
             ) : (() => {
               // Calcular margen para el tooltip
               const codigoDepto = getCodigoDepartamento(tooltip.properties);
-              const codigoElectoralCompleto = `${codigoElectoralDepto}${codigoMun}`;
               const margenTooltip = tooltip.isMunicipio
-                ? calcularMargenMunicipio(codigoElectoralCompleto)
+                ? calcularMargenMunicipio(codigoElectoralDepto, nombreMunicipio)
                 : (margenesDepartamentos.get(codigoDepto) ?? 20);
 
               return (
