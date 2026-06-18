@@ -8,6 +8,29 @@ import { formatNumber, formatPercent } from '@/lib/formatters';
 import departamentosData from '../../../public/api/mapas/departamentos.json';
 import polarizacionData from '../../../public/api/analisis/polarizacion.json';
 import polarizacionMunicipalData from '../../../public/api/analisis/polarizacion-municipal.json';
+import municipiosVotosData from '../../../public/api/departamentos/municipios.json';
+
+type MunicipioVotos = {
+  codigo: string;
+  nombre: string;
+  total_votos: number;
+  ganador: string;
+  partido_ganador: string;
+  votos_ganador: number;
+  porcentaje_ganador: number;
+  segundo: string;
+  votos_segundo: number;
+  diferencia: number;
+};
+
+// Crear mapa de código DANE completo -> datos de votos municipales
+const municipiosVotosMap = new Map<string, MunicipioVotos>();
+Object.entries(municipiosVotosData as Record<string, MunicipioVotos[]>).forEach(([dptoCodigo, municipios]) => {
+  municipios.forEach((mun) => {
+    const codigoCompleto = `${dptoCodigo}${mun.codigo}`;
+    municipiosVotosMap.set(codigoCompleto, mun);
+  });
+});
 
 type MapMode = 'ganador' | 'polarizacion';
 
@@ -268,11 +291,13 @@ export default function MapaElectoral({
       // Obtener margen real de los datos de polarización
       let margen: number;
       if (isMunicipioView) {
-        // Para municipios: usar código DANE completo (dpto + mpio)
-        const codigoDane = feature.properties.mpio_cdpmp ||
-          `${feature.properties.dpto_ccdgo}${feature.properties.mpio_ccdgo}`;
+        // Para municipios: convertir código DANE a electoral para buscar en margenesMunicipios
+        const codigoDaneDepto = feature.properties.dpto_ccdgo || '';
+        const codigoElectoralDepto = getCodigoElectoralDesdeDane(codigoDaneDepto);
+        const codigoMun = feature.properties.mpio_ccdgo || '';
+        const codigoElectoralCompleto = `${codigoElectoralDepto}${codigoMun}`;
         // Datos de margen vienen de polarización, fallback a 20 si no existe
-        margen = margenesMunicipios.get(codigoDane) ?? 20;
+        margen = margenesMunicipios.get(codigoElectoralCompleto) ?? 20;
       } else {
         // Para departamentos: usar código electoral
         margen = margenesDepartamentos.get(codigo) ?? 20;
@@ -426,68 +451,86 @@ export default function MapaElectoral({
         })}
       </svg>
 
-      {tooltip && (
-        <div
-          className="pointer-events-none fixed z-50 max-w-[260px] gb-card px-3 py-2 text-sm shadow-gb-sm"
-          style={{ left: tooltip.x + 12, top: tooltip.y + 12 }}
-        >
-          <p className="font-display font-semibold text-gb-ink">
-            {getNombreFeature(tooltip.properties, tooltip.isMunicipio)}
-          </p>
-          {tooltip.isMunicipio && tooltip.properties.dpto_cnmbr && (
-            <p className="text-xs text-gb-slate-muted">{tooltip.properties.dpto_cnmbr}</p>
-          )}
+      {tooltip && (() => {
+        // Para municipios, obtener datos de votos desde el lookup
+        // El GeoJSON usa códigos DANE, pero municipiosVotosData usa códigos electorales
+        const codigoDane = tooltip.properties.dpto_ccdgo || '';
+        const codigoElectoralDepto = getCodigoElectoralDesdeDane(codigoDane);
+        const codigoMun = tooltip.properties.mpio_ccdgo || '';
+        const codigoLookup = `${codigoElectoralDepto}${codigoMun}`;
+        const munData = tooltip.isMunicipio ? municipiosVotosMap.get(codigoLookup) : null;
 
-          {mapMode === 'ganador' ? (
-            <>
-              <p className="mt-1 text-gb-slate">
-                Ganador: <span className="font-medium">{tooltip.properties.ganador || 'N/A'}</span>
-              </p>
-              <p className="font-mono text-gb-teal-700">
-                {formatNumber(tooltip.properties.votos_ganador || 0)} votos (
-                {formatPercent(tooltip.properties.porcentaje_ganador || 0)})
-              </p>
-              {tooltip.properties.segundo && (
-                <p className="mt-2 text-gb-slate">
-                  Segundo: <span className="font-medium">{tooltip.properties.segundo}</span>
-                </p>
-              )}
-              {tooltip.properties.diferencia !== undefined ? (
-                <p className="font-mono text-gb-slate-muted">
-                  Margen: {formatNumber(tooltip.properties.diferencia || 0)} votos
-                </p>
-              ) : (
-                <p className="font-mono text-gb-slate-muted">
-                  Total: {formatNumber(tooltip.properties.total_votos || 0)} votos
-                </p>
-              )}
-            </>
-          ) : (() => {
-            // Calcular margen para el tooltip
-            const codigoDane = tooltip.properties.mpio_cdpmp ||
-              `${tooltip.properties.dpto_ccdgo}${tooltip.properties.mpio_ccdgo}`;
-            const codigoDepto = getCodigoDepartamento(tooltip.properties);
-            const margenTooltip = tooltip.isMunicipio
-              ? (margenesMunicipios.get(codigoDane) ??
-                 (tooltip.properties.porcentaje_ganador ? (tooltip.properties.porcentaje_ganador * 2 - 100) : 20))
-              : (margenesDepartamentos.get(codigoDepto) ?? 20);
+        // Usar datos del lookup para municipios, o propiedades directas para departamentos
+        const ganador = tooltip.isMunicipio && munData ? munData.ganador : tooltip.properties.ganador;
+        const votosGanador = tooltip.isMunicipio && munData ? munData.votos_ganador : tooltip.properties.votos_ganador;
+        const porcentajeGanador = tooltip.isMunicipio && munData ? munData.porcentaje_ganador : tooltip.properties.porcentaje_ganador;
+        const segundo = tooltip.isMunicipio && munData ? munData.segundo : tooltip.properties.segundo;
+        const diferencia = tooltip.isMunicipio && munData ? munData.diferencia : tooltip.properties.diferencia;
+        const totalVotos = tooltip.isMunicipio && munData ? munData.total_votos : tooltip.properties.total_votos;
 
-            return (
+        return (
+          <div
+            className="pointer-events-none fixed z-50 max-w-[260px] gb-card px-3 py-2 text-sm shadow-gb-sm"
+            style={{ left: tooltip.x + 12, top: tooltip.y + 12 }}
+          >
+            <p className="font-display font-semibold text-gb-ink">
+              {getNombreFeature(tooltip.properties, tooltip.isMunicipio)}
+            </p>
+            {tooltip.isMunicipio && tooltip.properties.dpto_cnmbr && (
+              <p className="text-xs text-gb-slate-muted">{tooltip.properties.dpto_cnmbr}</p>
+            )}
+
+            {mapMode === 'ganador' ? (
               <>
                 <p className="mt-1 text-gb-slate">
-                  Margen: <span className="font-mono font-semibold">{formatPercent(Math.abs(margenTooltip))}</span>
+                  Ganador: <span className="font-medium">{ganador || 'N/A'}</span>
                 </p>
-                <p className="font-mono text-sm" style={{ color: getColorPorMargen(margenTooltip) }}>
-                  {getClasificacionMargen(margenTooltip)}
+                <p className="font-mono text-gb-teal-700">
+                  {formatNumber(votosGanador || 0)} votos (
+                  {formatPercent(porcentajeGanador || 0)})
                 </p>
-                <p className="mt-1 text-xs text-gb-slate-muted">
-                  {formatNumber(tooltip.properties.total_votos || 0)} votos totales
-                </p>
+                {segundo && (
+                  <p className="mt-2 text-gb-slate">
+                    Segundo: <span className="font-medium">{segundo}</span>
+                  </p>
+                )}
+                {diferencia !== undefined ? (
+                  <p className="font-mono text-gb-slate-muted">
+                    Margen: {formatNumber(diferencia || 0)} votos
+                  </p>
+                ) : (
+                  <p className="font-mono text-gb-slate-muted">
+                    Total: {formatNumber(totalVotos || 0)} votos
+                  </p>
+                )}
               </>
-            );
-          })()}
-        </div>
-      )}
+            ) : (() => {
+              // Calcular margen para el tooltip
+              // margenesMunicipios usa códigos electorales (igual que municipiosVotosMap)
+              const codigoDepto = getCodigoDepartamento(tooltip.properties);
+              const codigoElectoralCompleto = `${codigoElectoralDepto}${codigoMun}`;
+              const margenTooltip = tooltip.isMunicipio
+                ? (margenesMunicipios.get(codigoElectoralCompleto) ??
+                   (porcentajeGanador ? (porcentajeGanador * 2 - 100) : 20))
+                : (margenesDepartamentos.get(codigoDepto) ?? 20);
+
+              return (
+                <>
+                  <p className="mt-1 text-gb-slate">
+                    Margen: <span className="font-mono font-semibold">{formatPercent(Math.abs(margenTooltip))}</span>
+                  </p>
+                  <p className="font-mono text-sm" style={{ color: getColorPorMargen(margenTooltip) }}>
+                    {getClasificacionMargen(margenTooltip)}
+                  </p>
+                  <p className="mt-1 text-xs text-gb-slate-muted">
+                    {formatNumber(totalVotos || 0)} votos totales
+                  </p>
+                </>
+              );
+            })()}
+          </div>
+        );
+      })()}
 
       <div className="absolute bottom-2 left-2 sm:bottom-4 sm:left-4 gb-card p-2 sm:p-3 text-[10px] sm:text-xs shadow-gb-sm">
         {mapMode === 'ganador' ? (
