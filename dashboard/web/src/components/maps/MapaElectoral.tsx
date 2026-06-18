@@ -7,6 +7,27 @@ import { formatNumber, formatPercent } from '@/lib/formatters';
 
 import departamentosData from '../../../public/api/mapas/departamentos.json';
 
+type MapMode = 'ganador' | 'polarizacion';
+
+/**
+ * Devuelve un color basado en el porcentaje del ganador.
+ * 50% = muy competido (rojo intenso)
+ * 60% = competido (naranja)
+ * 70% = ventaja clara (amarillo)
+ * 80%+ = bastión (verde)
+ */
+function getColorPolarizacion(porcentajeGanador: number): string {
+  const p = porcentajeGanador || 50;
+
+  if (p < 52) return '#DC2626'; // ultra-competido - rojo
+  if (p < 55) return '#EA580C'; // competido - naranja oscuro
+  if (p < 60) return '#F97316'; // competido - naranja
+  if (p < 65) return '#FBBF24'; // ventaja moderada - amarillo
+  if (p < 70) return '#A3E635'; // ventaja clara - lima
+  if (p < 80) return '#22C55E'; // bastión - verde
+  return '#15803D'; // bastión fuerte - verde oscuro
+}
+
 type Position = [number, number];
 type PolygonCoordinates = Position[][];
 type MultiPolygonCoordinates = PolygonCoordinates[];
@@ -169,6 +190,7 @@ export default function MapaElectoral({
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
   const [municipiosGeoJSON, setMunicipiosGeoJSON] = useState<FeatureCollection | null>(null);
   const [municipiosError, setMunicipiosError] = useState<string | null>(null);
+  const [mapMode, setMapMode] = useState<MapMode>('ganador');
   const municipiosRequestRef = useRef(false);
 
   useEffect(() => {
@@ -206,13 +228,19 @@ export default function MapaElectoral({
     if (!visibleFeatures.length) return [];
 
     const project = createProjection(visibleFeatures);
-    return visibleFeatures.map((feature) => ({
-      d: featureToPath(feature, project),
-      properties: feature.properties,
-      codigo: getCodigoFeature(feature.properties, isMunicipioView),
-      nombre: getNombreFeature(feature.properties, isMunicipioView),
-      color: getColorGanador(feature.properties.ganador || ''),
-    }));
+    return visibleFeatures.map((feature) => {
+      const colorGanador = getColorGanador(feature.properties.ganador || '');
+      const colorPolarizacion = getColorPolarizacion(feature.properties.porcentaje_ganador || 50);
+
+      return {
+        d: featureToPath(feature, project),
+        properties: feature.properties,
+        codigo: getCodigoFeature(feature.properties, isMunicipioView),
+        nombre: getNombreFeature(feature.properties, isMunicipioView),
+        colorGanador,
+        colorPolarizacion,
+      };
+    });
   }, [isMunicipioView, visibleFeatures]);
 
   const isZoomed = Boolean(departamentoSeleccionado);
@@ -231,6 +259,33 @@ export default function MapaElectoral({
             {mapTitle}
           </p>
         </div>
+
+        {/* Tabs de modo */}
+        <div className="flex rounded-gb-md border border-gb-border bg-white shadow-gb-sm overflow-hidden">
+          <button
+            type="button"
+            className={`px-3 py-2 text-xs font-semibold transition ${
+              mapMode === 'ganador'
+                ? 'bg-gb-teal-700 text-white'
+                : 'text-gb-slate hover:bg-gb-teal-50'
+            }`}
+            onClick={() => setMapMode('ganador')}
+          >
+            Ganador
+          </button>
+          <button
+            type="button"
+            className={`px-3 py-2 text-xs font-semibold transition ${
+              mapMode === 'polarizacion'
+                ? 'bg-gb-teal-700 text-white'
+                : 'text-gb-slate hover:bg-gb-teal-50'
+            }`}
+            onClick={() => setMapMode('polarizacion')}
+          >
+            Competitividad
+          </button>
+        </div>
+
         {isZoomed && onReset && (
           <button
             className="rounded-gb-md border border-gb-border-strong bg-white px-3 py-2 text-sm font-semibold text-gb-slate shadow-gb-sm transition hover:border-gb-teal-600 hover:text-gb-teal-700"
@@ -273,15 +328,16 @@ export default function MapaElectoral({
         }}
       >
         <rect width={VIEWBOX_WIDTH} height={VIEWBOX_HEIGHT} fill="#F1F8F9" />
-        {paths.map(({ d, properties, codigo, nombre, color }) => {
+        {paths.map(({ d, properties, codigo, nombre, colorGanador, colorPolarizacion }) => {
           const isActive = !isMunicipioView && departamentoSeleccionado === codigo;
           const isHovered = hoveredCode === codigo;
+          const fillColor = mapMode === 'ganador' ? colorGanador : colorPolarizacion;
 
           return (
             <path
               key={codigo || nombre}
               d={d}
-              fill={color}
+              fill={fillColor}
               fillOpacity={isActive || isHovered ? 0.92 : isMunicipioView ? 0.8 : 0.74}
               stroke={isHovered || isActive ? '#15252A' : '#ffffff'}
               strokeLinecap="round"
@@ -334,46 +390,91 @@ export default function MapaElectoral({
           {tooltip.isMunicipio && tooltip.properties.dpto_cnmbr && (
             <p className="text-xs text-gb-slate-muted">{tooltip.properties.dpto_cnmbr}</p>
           )}
-          <p className="mt-1 text-gb-slate">
-            Ganador: <span className="font-medium">{tooltip.properties.ganador || 'N/A'}</span>
-          </p>
-          <p className="font-mono text-gb-teal-700">
-            {formatNumber(tooltip.properties.votos_ganador || 0)} votos (
-            {formatPercent(tooltip.properties.porcentaje_ganador || 0)})
-          </p>
-          {tooltip.properties.segundo && (
-            <p className="mt-2 text-gb-slate">
-              Segundo: <span className="font-medium">{tooltip.properties.segundo}</span>
-            </p>
-          )}
-          {tooltip.properties.diferencia !== undefined ? (
-            <p className="font-mono text-gb-slate-muted">
-              Margen: {formatNumber(tooltip.properties.diferencia || 0)} votos
-            </p>
+
+          {mapMode === 'ganador' ? (
+            <>
+              <p className="mt-1 text-gb-slate">
+                Ganador: <span className="font-medium">{tooltip.properties.ganador || 'N/A'}</span>
+              </p>
+              <p className="font-mono text-gb-teal-700">
+                {formatNumber(tooltip.properties.votos_ganador || 0)} votos (
+                {formatPercent(tooltip.properties.porcentaje_ganador || 0)})
+              </p>
+              {tooltip.properties.segundo && (
+                <p className="mt-2 text-gb-slate">
+                  Segundo: <span className="font-medium">{tooltip.properties.segundo}</span>
+                </p>
+              )}
+              {tooltip.properties.diferencia !== undefined ? (
+                <p className="font-mono text-gb-slate-muted">
+                  Margen: {formatNumber(tooltip.properties.diferencia || 0)} votos
+                </p>
+              ) : (
+                <p className="font-mono text-gb-slate-muted">
+                  Total: {formatNumber(tooltip.properties.total_votos || 0)} votos
+                </p>
+              )}
+            </>
           ) : (
-            <p className="font-mono text-gb-slate-muted">
-              Total: {formatNumber(tooltip.properties.total_votos || 0)} votos
-            </p>
+            <>
+              <p className="mt-1 text-gb-slate">
+                Ganador con <span className="font-mono font-semibold">{formatPercent(tooltip.properties.porcentaje_ganador || 0)}</span>
+              </p>
+              <p className="font-mono text-sm" style={{ color: getColorPolarizacion(tooltip.properties.porcentaje_ganador || 50) }}>
+                {(tooltip.properties.porcentaje_ganador || 50) < 52 ? 'Ultra-competido' :
+                 (tooltip.properties.porcentaje_ganador || 50) < 60 ? 'Competido' :
+                 (tooltip.properties.porcentaje_ganador || 50) < 70 ? 'Ventaja clara' : 'Bastión'}
+              </p>
+              <p className="mt-1 text-xs text-gb-slate-muted">
+                {formatNumber(tooltip.properties.total_votos || 0)} votos totales
+              </p>
+            </>
           )}
         </div>
       )}
 
       <div className="absolute bottom-4 left-4 gb-card p-3 text-xs shadow-gb-sm">
-        <p className="gb-eyebrow mb-2">Ganador por {isMunicipioView ? 'municipio' : 'departamento'}</p>
-        <div className="space-y-1.5">
-          <div className="flex items-center gap-2">
-            <div className="h-3 w-3 rounded-gb-sm" style={{ backgroundColor: '#1D4ED8' }} />
-            <span className="text-gb-slate">De La Espriella</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="h-3 w-3 rounded-gb-sm" style={{ backgroundColor: '#C2410C' }} />
-            <span className="text-gb-slate">Cepeda</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="h-3 w-3 rounded-gb-sm" style={{ backgroundColor: '#7C3AED' }} />
-            <span className="text-gb-slate">Valencia</span>
-          </div>
-        </div>
+        {mapMode === 'ganador' ? (
+          <>
+            <p className="gb-eyebrow mb-2">Ganador por {isMunicipioView ? 'municipio' : 'departamento'}</p>
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2">
+                <div className="h-3 w-3 rounded-gb-sm" style={{ backgroundColor: '#1D4ED8' }} />
+                <span className="text-gb-slate">De La Espriella</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="h-3 w-3 rounded-gb-sm" style={{ backgroundColor: '#C2410C' }} />
+                <span className="text-gb-slate">Cepeda</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="h-3 w-3 rounded-gb-sm" style={{ backgroundColor: '#7C3AED' }} />
+                <span className="text-gb-slate">Valencia</span>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <p className="gb-eyebrow mb-2">Competitividad</p>
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <div className="h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: '#DC2626' }} />
+                <span className="text-gb-slate">&lt;52% Ultra-competido</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: '#F97316' }} />
+                <span className="text-gb-slate">52-60% Competido</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: '#FBBF24' }} />
+                <span className="text-gb-slate">60-70% Ventaja clara</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: '#22C55E' }} />
+                <span className="text-gb-slate">&gt;70% Bastión</span>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
