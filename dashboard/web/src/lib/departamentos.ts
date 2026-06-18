@@ -37,3 +37,12 @@ const DANE_TO_ELECTORAL: Record<string, string> = {
 export function getCodigoElectoralDesdeDane(codigoDane: string): string {
   return DANE_TO_ELECTORAL[codigoDane] || codigoDane;
 }
+
+// Inverso: de electoral a DANE (para cargar archivos GeoJSON)
+const ELECTORAL_TO_DANE: Record<string, string> = Object.fromEntries(
+  Object.entries(DANE_TO_ELECTORAL).map(([dane, electoral]) => [electoral, dane])
+);
+
+export function getCodigoDaneDesdElectoral(codigoElectoral: string): string {
+  return ELECTORAL_TO_DANE[codigoElectoral] || codigoElectoral;
+}

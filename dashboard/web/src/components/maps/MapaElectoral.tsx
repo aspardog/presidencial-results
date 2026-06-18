@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { getColorGanador } from '@/lib/colors';
-import { getCodigoElectoralDesdeDane } from '@/lib/departamentos';
+import { getCodigoElectoralDesdeDane, getCodigoDaneDesdElectoral } from '@/lib/departamentos';
 import { formatNumber, formatPercent } from '@/lib/formatters';
 
 import departamentosData from '../../../public/api/mapas/departamentos.json';
@@ -227,8 +227,11 @@ export default function MapaElectoral({
     // Si ya cargamos este departamento, no volver a cargar
     if (loadedDepartamento === departamentoSeleccionado) return;
 
+    // Convertir código electoral a DANE para cargar el archivo correcto
+    const codigoDane = getCodigoDaneDesdElectoral(departamentoSeleccionado);
+
     // Cargar archivo específico del departamento (OPTIMIZADO: ~138KB vs 4.4MB)
-    fetch(`/api/mapas/municipios/${departamentoSeleccionado}.json`)
+    fetch(`/api/mapas/municipios/${codigoDane}.json`)
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
