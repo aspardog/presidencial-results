@@ -15,6 +15,12 @@ const resumen = resumenData as ResumenNacional;
 const polarizacion = polarizacionData as AnalisisPolarizacion;
 const polMunicipal = polarizacionMunicipalData as PolarizacionMunicipal;
 
+// Helper para obtener apellido correcto (CEPEDA, no CASTRO)
+const getApellido = (nombre: string) => {
+  if (nombre.includes('CEPEDA')) return 'CEPEDA';
+  return nombre.split(' ').pop() || '';
+};
+
 export default function HallazgosClave() {
   const margenVictoria = resumen.votos_ganador - resumen.votos_segundo;
   const maxVentaja = Math.max(...claves.ventajas_decisivas.map((depto) => depto.ventaja), 1);
@@ -102,7 +108,7 @@ export default function HallazgosClave() {
             15 — 18
           </p>
           <p className="mt-1 text-sm text-gb-slate">
-            {resumen.ganador.split(' ').pop()} vs {resumen.segundo.split(' ').pop()}
+            {getApellido(resumen.ganador)} vs {getApellido(resumen.segundo)}
           </p>
         </div>
       </div>
@@ -157,8 +163,8 @@ export default function HallazgosClave() {
           <div className="space-y-3">
             {claves.departamentos_competidos.slice(0, 5).map((depto, index) => {
               const ordinal = `${index + 1}°`;
-              const ganadorApellido = depto.ganador.split(' ').pop();
-              const segundoApellido = depto.segundo.split(' ').pop();
+              const ganadorApellido = getApellido(depto.ganador);
+              const segundoApellido = getApellido(depto.segundo);
               const colorGanador = getColorPartido(
                 depto.ganador.includes('ESPRIELLA') ? 'FIRMAS' :
                 depto.ganador.includes('CEPEDA') ? 'PACTO' : ''
@@ -261,7 +267,7 @@ export default function HallazgosClave() {
                   {polMunicipal.resumen.municipios_ganador_nacional}
                 </p>
                 <p className="text-xs sm:text-sm text-gb-slate">municipios</p>
-                <p className="text-[10px] sm:text-xs text-gb-slate-muted">{polMunicipal.resumen.ganador_nacional.split(' ').pop()}</p>
+                <p className="text-[10px] sm:text-xs text-gb-slate-muted">{getApellido(polMunicipal.resumen.ganador_nacional)}</p>
               </div>
               <span className="text-xl sm:text-2xl text-gb-slate-muted font-light">vs</span>
               <div className="text-center">
@@ -269,7 +275,7 @@ export default function HallazgosClave() {
                   {polMunicipal.resumen.municipios_segundo_nacional}
                 </p>
                 <p className="text-xs sm:text-sm text-gb-slate">municipios</p>
-                <p className="text-[10px] sm:text-xs text-gb-slate-muted">{polMunicipal.resumen.segundo_nacional.split(' ').pop()}</p>
+                <p className="text-[10px] sm:text-xs text-gb-slate-muted">{getApellido(polMunicipal.resumen.segundo_nacional)}</p>
               </div>
             </div>
           </div>
@@ -302,11 +308,11 @@ export default function HallazgosClave() {
 
         {/* Card 2 y 3: Donde se decidió + Bastiones */}
         <div className="grid gap-3 sm:gap-4 lg:grid-cols-2 mb-3 sm:mb-4">
-          {/* Donde se decidió */}
+          {/* Competidos y ultra-competidos */}
           <div className="gb-card">
-            <p className="gb-eyebrow">Donde se decidió</p>
+            <p className="gb-eyebrow">Competidos y ultra-competidos</p>
             <p className="mt-1 text-xs sm:text-sm text-gb-slate-muted">
-              {polMunicipal.competitividad_municipal.ultra_competidos} municipios con margen &lt;2%
+              {polMunicipal.competitividad_municipal.ultra_competidos + polMunicipal.competitividad_municipal.competidos} municipios con margen &lt;10%
             </p>
 
             <div className="mt-3 sm:mt-4 space-y-1.5 sm:space-y-2">
@@ -318,7 +324,9 @@ export default function HallazgosClave() {
                     <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
                       <span className="w-4 shrink-0 font-mono text-[10px] sm:text-xs text-gb-slate-muted">{index + 1}.</span>
                       <div className="min-w-0">
-                        <span className="font-medium text-xs sm:text-sm text-gb-ink truncate block">{mun.nombre_mun}</span>
+                        <span className="font-medium text-xs sm:text-sm text-gb-ink truncate block">
+                          {mun.nombre_mun} <span className="text-gb-slate-muted font-normal">({mun.nombre_dep})</span>
+                        </span>
                       </div>
                     </div>
                     <span className={`font-mono text-xs sm:text-sm font-semibold shrink-0 ${colorGanador}`}>
@@ -347,7 +355,9 @@ export default function HallazgosClave() {
                     <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
                       <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full shrink-0 ${bgColor}`}></div>
                       <div className="min-w-0">
-                        <span className="font-medium text-xs sm:text-sm text-gb-ink truncate block">{mun.nombre_mun}</span>
+                        <span className="font-medium text-xs sm:text-sm text-gb-ink truncate block">
+                          {mun.nombre_mun} <span className="text-gb-slate-muted font-normal">({mun.nombre_dep})</span>
+                        </span>
                       </div>
                     </div>
                     <span className={`font-mono text-xs sm:text-sm font-semibold shrink-0 ${colorGanador}`}>
@@ -360,18 +370,19 @@ export default function HallazgosClave() {
           </div>
         </div>
 
-        {/* Card 3: Los contrastes */}
+        {/* Card 3: Los contrastes - bastiones y ventajas claras departamentales */}
         <div className="grid gap-3 sm:gap-4 lg:grid-cols-2">
           <div className="gb-card">
             <div className="flex items-center gap-1.5 sm:gap-2 mb-3 sm:mb-4">
               <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-blue-600"></div>
-              <p className="gb-eyebrow text-[10px] sm:text-xs">Bastiones {polMunicipal.resumen.ganador_nacional.split(' ').pop()}</p>
+              <p className="gb-eyebrow text-[10px] sm:text-xs">Bastiones y ventajas {getApellido(polMunicipal.resumen.ganador_nacional)}</p>
             </div>
             <div className="space-y-2 sm:space-y-3">
-              {polarizacion.departamentos_mas_polarizados
-                .filter(d => d.ganador.includes('ESPRIELLA'))
-                .slice(0, 3)
-                .map((depto, index) => (
+              {polarizacion.por_departamento
+                .filter(d => d.ganador.includes('ESPRIELLA') && d.margen >= 10)
+                .sort((a, b) => b.margen - a.margen)
+                .slice(0, 5)
+                .map((depto) => (
                   <div key={depto.codigo} className="flex items-center justify-between">
                     <span className="text-xs sm:text-sm text-gb-slate">{depto.nombre}</span>
                     <span className="font-mono text-xs sm:text-sm font-semibold text-blue-600">
@@ -385,13 +396,14 @@ export default function HallazgosClave() {
           <div className="gb-card">
             <div className="flex items-center gap-1.5 sm:gap-2 mb-3 sm:mb-4">
               <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-orange-600"></div>
-              <p className="gb-eyebrow text-[10px] sm:text-xs">Bastiones {polMunicipal.resumen.segundo_nacional.split(' ').pop()}</p>
+              <p className="gb-eyebrow text-[10px] sm:text-xs">Bastiones y ventajas {getApellido(polMunicipal.resumen.segundo_nacional)}</p>
             </div>
             <div className="space-y-2 sm:space-y-3">
-              {polarizacion.departamentos_mas_polarizados
-                .filter(d => d.ganador.includes('CEPEDA'))
-                .slice(0, 3)
-                .map((depto, index) => (
+              {polarizacion.por_departamento
+                .filter(d => d.ganador.includes('CEPEDA') && d.margen >= 10)
+                .sort((a, b) => b.margen - a.margen)
+                .slice(0, 5)
+                .map((depto) => (
                   <div key={depto.codigo} className="flex items-center justify-between">
                     <span className="text-xs sm:text-sm text-gb-slate">{depto.nombre}</span>
                     <span className="font-mono text-xs sm:text-sm font-semibold text-orange-600">
