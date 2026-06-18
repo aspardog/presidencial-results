@@ -103,10 +103,10 @@ export default function HomePage() {
         onReset={departamentoSeleccionado ? handleReset : undefined}
       />
 
-      <main className="p-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <main className="px-4 py-4 sm:p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           <div className="space-y-4 lg:col-span-2">
-            <div className="gb-card flex h-[600px] flex-col gap-3 p-4">
+            <div className="gb-card flex h-[450px] sm:h-[550px] lg:h-[600px] flex-col gap-3 p-3 sm:p-4">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex min-w-0 items-center gap-2 text-sm font-semibold text-gb-slate">
                   <button
@@ -256,7 +256,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-4 sm:mt-6">
           {metricasActuales.map((metrica) => (
             <CardResumen
               key={metrica.label}

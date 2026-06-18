@@ -22,83 +22,83 @@ export default function HallazgosClave() {
   const diferenciaPorcentual = resumen.porcentaje_ganador - porcentajeSegundo;
 
   return (
-    <section className="mt-10">
-      <header className="mb-6">
-        <h2 className="font-display text-lg font-semibold text-gb-ink">
+    <section className="mt-6 sm:mt-10">
+      <header className="mb-4 sm:mb-6">
+        <h2 className="font-display text-base sm:text-lg font-semibold text-gb-ink">
           Hallazgos clave
         </h2>
-        <p className="mt-1 text-sm text-gb-slate-muted">
+        <p className="mt-1 text-xs sm:text-sm text-gb-slate-muted">
           Lectura nacional y territorial de los resultados electorales
         </p>
       </header>
 
       {/* Hero: Resultado Nacional */}
       <div className="gb-card">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3 sm:gap-4">
           <div>
             <p className="gb-eyebrow">Resultado nacional</p>
-            <p className="mt-2 font-display text-5xl font-semibold tabular-nums text-gb-ink">
+            <p className="mt-1.5 sm:mt-2 font-display text-3xl sm:text-4xl lg:text-5xl font-semibold tabular-nums text-gb-ink">
               {formatPercent(resumen.porcentaje_ganador)}<span className="text-gb-teal-700">*</span>
             </p>
-            <p className="mt-2 text-gb-slate">
+            <p className="mt-1.5 sm:mt-2 text-sm sm:text-base text-gb-slate">
               {resumen.ganador}
             </p>
           </div>
           <div className="md:text-right">
-            <p className="font-mono text-2xl font-semibold text-gb-teal-700">
+            <p className="font-mono text-xl sm:text-2xl font-semibold text-gb-teal-700">
               +{formatNumber(margenVictoria)}
             </p>
-            <p className="mt-1 text-sm text-gb-slate-muted">
+            <p className="mt-0.5 sm:mt-1 text-xs sm:text-sm text-gb-slate-muted">
               votos de ventaja
             </p>
           </div>
         </div>
-        <p className="mt-4 pt-4 border-t border-gb-border text-xs text-gb-slate-muted">
-          <span className="text-gb-teal-700 font-medium">*</span> Porcentaje calculado sobre votos válidos en territorio nacional. No incluye votos de consulados en el exterior.
+        <p className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gb-border text-[10px] sm:text-xs text-gb-slate-muted">
+          <span className="text-gb-teal-700 font-medium">*</span> Porcentaje sobre votos válidos. No incluye consulados.
         </p>
       </div>
 
       {/* Síntesis electoral - highlight cards */}
-      <div className="mt-4 grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
-        <div className="rounded-lg border border-gb-border bg-white p-4">
-          <p className="text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Votos netos</p>
-          <p className="mt-2 font-display text-xl font-semibold text-gb-teal-700">
+      <div className="mt-3 sm:mt-4 grid gap-2 sm:gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
+        <div className="rounded-lg border border-gb-border bg-white p-3 sm:p-4">
+          <p className="text-[10px] sm:text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Votos netos</p>
+          <p className="mt-1.5 sm:mt-2 font-display text-base sm:text-xl font-semibold text-gb-teal-700">
             +{formatNumber(margenVictoria)}
           </p>
-          <p className="mt-1 text-sm text-gb-slate">
+          <p className="mt-0.5 sm:mt-1 text-xs sm:text-sm text-gb-slate">
             Diferencia absoluta
           </p>
         </div>
-        <div className="rounded-lg border border-gb-border bg-white p-4">
-          <p className="text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Diferencia %</p>
-          <p className="mt-2 font-display text-xl font-semibold text-gb-teal-700">
+        <div className="rounded-lg border border-gb-border bg-white p-3 sm:p-4">
+          <p className="text-[10px] sm:text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Diferencia %</p>
+          <p className="mt-1.5 sm:mt-2 font-display text-base sm:text-xl font-semibold text-gb-teal-700">
             +{formatPercent(diferenciaPorcentual)}
           </p>
-          <p className="mt-1 text-sm text-gb-slate">
+          <p className="mt-0.5 sm:mt-1 text-xs sm:text-sm text-gb-slate">
             Puntos porcentuales
           </p>
         </div>
-        <div className="rounded-lg border border-gb-border bg-white p-4">
-          <p className="text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Más reñido</p>
-          <p className="mt-2 font-display text-xl font-semibold text-gb-ink">
+        <div className="rounded-lg border border-gb-border bg-white p-3 sm:p-4">
+          <p className="text-[10px] sm:text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Más reñido</p>
+          <p className="mt-1.5 sm:mt-2 font-display text-base sm:text-xl font-semibold text-gb-ink truncate">
             {claves.departamentos_competidos[0].nombre}
           </p>
-          <p className="mt-1 text-sm text-gb-slate">
-            {formatNumber(claves.departamentos_competidos[0].diferencia)} votos · {formatPercent(claves.departamentos_competidos[0].margen_porcentual)}
+          <p className="mt-0.5 sm:mt-1 text-xs sm:text-sm text-gb-slate">
+            {formatPercent(claves.departamentos_competidos[0].margen_porcentual)}
           </p>
         </div>
-        <div className="rounded-lg border border-gb-border bg-white p-4">
-          <p className="text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Mayor ventaja</p>
-          <p className="mt-2 font-display text-xl font-semibold text-gb-ink">
+        <div className="rounded-lg border border-gb-border bg-white p-3 sm:p-4">
+          <p className="text-[10px] sm:text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Mayor ventaja</p>
+          <p className="mt-1.5 sm:mt-2 font-display text-base sm:text-xl font-semibold text-gb-ink truncate">
             {claves.ventajas_decisivas[0].nombre}
           </p>
-          <p className="mt-1 text-sm text-gb-slate">
-            +{formatNumber(claves.ventajas_decisivas[0].ventaja)} votos netos
+          <p className="mt-0.5 sm:mt-1 text-xs sm:text-sm text-gb-slate">
+            +{formatNumber(claves.ventajas_decisivas[0].ventaja)}
           </p>
         </div>
-        <div className="col-span-2 sm:col-span-1 rounded-lg border border-gb-border bg-white p-4">
-          <p className="text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Territorios</p>
-          <p className="mt-2 font-display text-xl font-semibold text-gb-ink">
+        <div className="col-span-2 sm:col-span-1 rounded-lg border border-gb-border bg-white p-3 sm:p-4">
+          <p className="text-[10px] sm:text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Territorios</p>
+          <p className="mt-1.5 sm:mt-2 font-display text-base sm:text-xl font-semibold text-gb-ink">
             15 — 18
           </p>
           <p className="mt-1 text-sm text-gb-slate">
@@ -242,45 +242,45 @@ export default function HallazgosClave() {
 
       {/* La geografía del voto */}
       <div className="mt-10">
-        <header className="mb-6">
-          <h3 className="font-display text-lg font-semibold text-gb-ink">
+        <header className="mb-4 sm:mb-6">
+          <h3 className="font-display text-base sm:text-lg font-semibold text-gb-ink">
             La geografía del voto
           </h3>
-          <p className="mt-1 text-sm text-gb-slate-muted">
+          <p className="mt-1 text-xs sm:text-sm text-gb-slate-muted">
             Cómo se dividió el territorio nacional
           </p>
         </header>
 
         {/* Card 1: Dos Colombias */}
-        <div className="gb-card mb-4">
+        <div className="gb-card mb-3 sm:mb-4">
           <p className="gb-eyebrow">Dos Colombias</p>
-          <div className="mt-4 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-            <div className="flex items-baseline gap-3">
+          <div className="mt-3 sm:mt-4 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 sm:gap-4">
+            <div className="flex items-baseline gap-2 sm:gap-3">
               <div className="text-center">
-                <p className="font-display text-4xl font-semibold text-blue-600">
+                <p className="font-display text-2xl sm:text-4xl font-semibold text-blue-600">
                   {polMunicipal.resumen.municipios_ganador_nacional}
                 </p>
-                <p className="text-sm text-gb-slate">municipios</p>
-                <p className="text-xs text-gb-slate-muted">{polMunicipal.resumen.ganador_nacional.split(' ').pop()}</p>
+                <p className="text-xs sm:text-sm text-gb-slate">municipios</p>
+                <p className="text-[10px] sm:text-xs text-gb-slate-muted">{polMunicipal.resumen.ganador_nacional.split(' ').pop()}</p>
               </div>
-              <span className="text-2xl text-gb-slate-muted font-light">vs</span>
+              <span className="text-xl sm:text-2xl text-gb-slate-muted font-light">vs</span>
               <div className="text-center">
-                <p className="font-display text-4xl font-semibold text-orange-600">
+                <p className="font-display text-2xl sm:text-4xl font-semibold text-orange-600">
                   {polMunicipal.resumen.municipios_segundo_nacional}
                 </p>
-                <p className="text-sm text-gb-slate">municipios</p>
-                <p className="text-xs text-gb-slate-muted">{polMunicipal.resumen.segundo_nacional.split(' ').pop()}</p>
+                <p className="text-xs sm:text-sm text-gb-slate">municipios</p>
+                <p className="text-[10px] sm:text-xs text-gb-slate-muted">{polMunicipal.resumen.segundo_nacional.split(' ').pop()}</p>
               </div>
             </div>
           </div>
 
           {/* Barra visual */}
-          <div className="mt-4 flex h-5 rounded-full overflow-hidden">
+          <div className="mt-3 sm:mt-4 flex h-4 sm:h-5 rounded-full overflow-hidden">
             <div
               className="bg-blue-600 flex items-center justify-center"
               style={{ width: `${polMunicipal.resumen.porcentaje_ganador}%` }}
             >
-              <span className="text-xs font-mono text-white font-medium">
+              <span className="text-[10px] sm:text-xs font-mono text-white font-medium">
                 {polMunicipal.resumen.porcentaje_ganador.toFixed(0)}%
               </span>
             </div>
@@ -288,41 +288,40 @@ export default function HallazgosClave() {
               className="bg-orange-600 flex items-center justify-center"
               style={{ width: `${polMunicipal.resumen.porcentaje_segundo}%` }}
             >
-              <span className="text-xs font-mono text-white font-medium">
+              <span className="text-[10px] sm:text-xs font-mono text-white font-medium">
                 {polMunicipal.resumen.porcentaje_segundo.toFixed(0)}%
               </span>
             </div>
           </div>
 
-          <p className="mt-4 text-sm text-gb-slate">
-            El <strong>{((polMunicipal.competitividad_municipal.bastiones / polMunicipal.resumen.total_municipios) * 100).toFixed(0)}%</strong> de los municipios fueron bastiones definidos por más de 20 puntos.
-            Solo <strong>{polMunicipal.competitividad_municipal.ultra_competidos}</strong> se definieron por menos del 2%.
+          <p className="mt-3 sm:mt-4 text-xs sm:text-sm text-gb-slate">
+            El <strong>{((polMunicipal.competitividad_municipal.bastiones / polMunicipal.resumen.total_municipios) * 100).toFixed(0)}%</strong> fueron bastiones (&gt;20 pts).
+            Solo <strong>{polMunicipal.competitividad_municipal.ultra_competidos}</strong> ultra-competidos (&lt;2%).
           </p>
         </div>
 
         {/* Card 2 y 3: Donde se decidió + Bastiones */}
-        <div className="grid gap-4 lg:grid-cols-2 mb-4">
+        <div className="grid gap-3 sm:gap-4 lg:grid-cols-2 mb-3 sm:mb-4">
           {/* Donde se decidió */}
           <div className="gb-card">
             <p className="gb-eyebrow">Donde se decidió</p>
-            <p className="mt-1 text-sm text-gb-slate-muted">
+            <p className="mt-1 text-xs sm:text-sm text-gb-slate-muted">
               {polMunicipal.competitividad_municipal.ultra_competidos} municipios con margen &lt;2%
             </p>
 
-            <div className="mt-4 space-y-2">
+            <div className="mt-3 sm:mt-4 space-y-1.5 sm:space-y-2">
               {polMunicipal.municipios_mas_competidos.slice(0, 5).map((mun, index) => {
                 const colorGanador = mun.ganador.includes('ESPRIELLA') ? 'text-blue-600' : 'text-orange-600';
 
                 return (
-                  <div key={`${mun.codigo_dep}_${mun.codigo_mun}`} className="flex items-center justify-between py-1 border-b border-gb-border last:border-0">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <span className="w-4 shrink-0 font-mono text-xs text-gb-slate-muted">{index + 1}.</span>
+                  <div key={`${mun.codigo_dep}_${mun.codigo_mun}`} className="flex items-center justify-between py-0.5 sm:py-1 border-b border-gb-border last:border-0">
+                    <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                      <span className="w-4 shrink-0 font-mono text-[10px] sm:text-xs text-gb-slate-muted">{index + 1}.</span>
                       <div className="min-w-0">
-                        <span className="font-medium text-sm text-gb-ink truncate">{mun.nombre_mun}</span>
-                        <span className="text-xs text-gb-slate-muted ml-1">({mun.nombre_dep})</span>
+                        <span className="font-medium text-xs sm:text-sm text-gb-ink truncate block">{mun.nombre_mun}</span>
                       </div>
                     </div>
-                    <span className={`font-mono text-sm font-semibold shrink-0 ${colorGanador}`}>
+                    <span className={`font-mono text-xs sm:text-sm font-semibold shrink-0 ${colorGanador}`}>
                       {formatPercent(mun.margen)}
                     </span>
                   </div>
@@ -334,25 +333,24 @@ export default function HallazgosClave() {
           {/* Bastiones */}
           <div className="gb-card">
             <p className="gb-eyebrow">Bastiones</p>
-            <p className="mt-1 text-sm text-gb-slate-muted">
+            <p className="mt-1 text-xs sm:text-sm text-gb-slate-muted">
               {polMunicipal.competitividad_municipal.bastiones} municipios con margen &gt;20%
             </p>
 
-            <div className="mt-4 space-y-2">
+            <div className="mt-3 sm:mt-4 space-y-1.5 sm:space-y-2">
               {[...polMunicipal.bastiones_ganador.slice(0, 3), ...polMunicipal.bastiones_segundo.slice(0, 2)].map((mun, index) => {
                 const colorGanador = mun.ganador.includes('ESPRIELLA') ? 'text-blue-600' : 'text-orange-600';
                 const bgColor = mun.ganador.includes('ESPRIELLA') ? 'bg-blue-600' : 'bg-orange-600';
 
                 return (
-                  <div key={`${mun.codigo_dep}_${mun.codigo_mun}`} className="flex items-center justify-between py-1 border-b border-gb-border last:border-0">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <div className={`w-2 h-2 rounded-full shrink-0 ${bgColor}`}></div>
+                  <div key={`${mun.codigo_dep}_${mun.codigo_mun}`} className="flex items-center justify-between py-0.5 sm:py-1 border-b border-gb-border last:border-0">
+                    <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                      <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full shrink-0 ${bgColor}`}></div>
                       <div className="min-w-0">
-                        <span className="font-medium text-sm text-gb-ink truncate">{mun.nombre_mun}</span>
-                        <span className="text-xs text-gb-slate-muted ml-1">({mun.nombre_dep})</span>
+                        <span className="font-medium text-xs sm:text-sm text-gb-ink truncate block">{mun.nombre_mun}</span>
                       </div>
                     </div>
-                    <span className={`font-mono text-sm font-semibold shrink-0 ${colorGanador}`}>
+                    <span className={`font-mono text-xs sm:text-sm font-semibold shrink-0 ${colorGanador}`}>
                       {formatPercent(mun.margen)}
                     </span>
                   </div>
@@ -363,20 +361,20 @@ export default function HallazgosClave() {
         </div>
 
         {/* Card 3: Los contrastes */}
-        <div className="grid gap-4 lg:grid-cols-2">
+        <div className="grid gap-3 sm:gap-4 lg:grid-cols-2">
           <div className="gb-card">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-3 h-3 rounded-full bg-blue-600"></div>
-              <p className="gb-eyebrow">Bastiones de {polMunicipal.resumen.ganador_nacional.split(' ').slice(-2).join(' ')}</p>
+            <div className="flex items-center gap-1.5 sm:gap-2 mb-3 sm:mb-4">
+              <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-blue-600"></div>
+              <p className="gb-eyebrow text-[10px] sm:text-xs">Bastiones {polMunicipal.resumen.ganador_nacional.split(' ').pop()}</p>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-2 sm:space-y-3">
               {polarizacion.departamentos_mas_polarizados
                 .filter(d => d.ganador.includes('ESPRIELLA'))
                 .slice(0, 3)
                 .map((depto, index) => (
                   <div key={depto.codigo} className="flex items-center justify-between">
-                    <span className="text-sm text-gb-slate">{depto.nombre}</span>
-                    <span className="font-mono text-sm font-semibold text-blue-600">
+                    <span className="text-xs sm:text-sm text-gb-slate">{depto.nombre}</span>
+                    <span className="font-mono text-xs sm:text-sm font-semibold text-blue-600">
                       +{formatPercent(depto.margen)}
                     </span>
                   </div>
@@ -385,18 +383,18 @@ export default function HallazgosClave() {
           </div>
 
           <div className="gb-card">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-3 h-3 rounded-full bg-orange-600"></div>
-              <p className="gb-eyebrow">Bastiones de {polMunicipal.resumen.segundo_nacional.split(' ').slice(-2).join(' ')}</p>
+            <div className="flex items-center gap-1.5 sm:gap-2 mb-3 sm:mb-4">
+              <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-orange-600"></div>
+              <p className="gb-eyebrow text-[10px] sm:text-xs">Bastiones {polMunicipal.resumen.segundo_nacional.split(' ').pop()}</p>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-2 sm:space-y-3">
               {polarizacion.departamentos_mas_polarizados
                 .filter(d => d.ganador.includes('CEPEDA'))
                 .slice(0, 3)
                 .map((depto, index) => (
                   <div key={depto.codigo} className="flex items-center justify-between">
-                    <span className="text-sm text-gb-slate">{depto.nombre}</span>
-                    <span className="font-mono text-sm font-semibold text-orange-600">
+                    <span className="text-xs sm:text-sm text-gb-slate">{depto.nombre}</span>
+                    <span className="font-mono text-xs sm:text-sm font-semibold text-orange-600">
                       +{formatPercent(depto.margen)}
                     </span>
                   </div>
