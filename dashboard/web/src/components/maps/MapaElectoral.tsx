@@ -34,10 +34,20 @@ function normalizarNombre(nombre: string): string {
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '') // Quitar acentos
     .toUpperCase()
-    .replace(/[.,()]/g, '') // Quitar puntuación y paréntesis
+    .replace(/[.,()-]/g, '') // Quitar puntuación, paréntesis y guiones
     .replace(/\s+/g, '') // Quitar espacios
     .trim();
 }
+
+// Mapeo manual para municipios con nombres muy diferentes entre DANE y electoral
+const NOMBRE_ALIASES: Record<string, string> = {
+  // depto_nombreNormalizado -> nombreNormalizado en electoral
+  '05_SANTACRUZDEMOMPOX': 'MOMPOS',
+  '07_VILLADELEYVA': 'VILLADELEIVA',
+  '11_LOPEZDEMICAY': 'LOPEZMICAY',
+  '60_MIRITIPARANA': 'MIRITIPARANA',
+  '68_PAPUNAHUA': 'MORICHALPAPUNAGUA',
+};
 
 // Crear mapas para lookup de municipios
 // Mapa principal: código depto + nombre normalizado -> datos
@@ -55,7 +65,7 @@ Object.entries(municipiosVotosData as Record<string, MunicipioVotos[]>).forEach(
 
 /**
  * Obtiene los datos de votos de un municipio por código depto electoral + nombre.
- * Usa matching exacto primero, luego búsqueda parcial como fallback.
+ * Usa matching exacto primero, luego aliases, y búsqueda parcial como fallback.
  */
 function getMunicipioVotos(codigoDeptoElectoral: string, nombreMunicipio: string): MunicipioVotos | undefined {
   const nombreNorm = normalizarNombre(nombreMunicipio);
@@ -64,6 +74,14 @@ function getMunicipioVotos(codigoDeptoElectoral: string, nombreMunicipio: string
   // Intentar match exacto primero
   const exactMatch = municipiosVotosMap.get(key);
   if (exactMatch) return exactMatch;
+
+  // Intentar con alias manual
+  const aliasNombre = NOMBRE_ALIASES[key];
+  if (aliasNombre) {
+    const aliasKey = `${codigoDeptoElectoral}_${aliasNombre}`;
+    const aliasMatch = municipiosVotosMap.get(aliasKey);
+    if (aliasMatch) return aliasMatch;
+  }
 
   // Fallback: buscar por coincidencia parcial en el departamento
   const municipiosDepto = municipiosPorDepto.get(codigoDeptoElectoral);

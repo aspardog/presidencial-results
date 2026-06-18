@@ -21,10 +21,19 @@ function normalizarNombre(nombre) {
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .toUpperCase()
-    .replace(/[.,()]/g, '')
+    .replace(/[.,()-]/g, '') // Incluye guiones
     .replace(/\s+/g, '')
     .trim();
 }
+
+// Mapeo manual para municipios con nombres muy diferentes entre DANE y electoral
+const NOMBRE_ALIASES = {
+  '05_SANTACRUZDEMOMPOX': 'MOMPOS',
+  '07_VILLADELEYVA': 'VILLADELEIVA',
+  '11_LOPEZDEMICAY': 'LOPEZMICAY',
+  '60_MIRITIPARANA': 'MIRITIPARANA',
+  '68_PAPUNAHUA': 'MORICHALPAPUNAGUA',
+};
 
 // Cargar mapeo DANE -> Electoral
 const DANE_TO_ELECTORAL = {
@@ -69,9 +78,19 @@ function validateMunicipalMatching() {
     const nombreNorm = normalizarNombre(nombreMunicipio);
     const key = `${codigoDeptoElectoral}_${nombreNorm}`;
 
+    // Match exacto
     const exactMatch = municipiosVotosMap.get(key);
     if (exactMatch) return exactMatch;
 
+    // Match por alias
+    const aliasNombre = NOMBRE_ALIASES[key];
+    if (aliasNombre) {
+      const aliasKey = `${codigoDeptoElectoral}_${aliasNombre}`;
+      const aliasMatch = municipiosVotosMap.get(aliasKey);
+      if (aliasMatch) return aliasMatch;
+    }
+
+    // Match parcial
     const municipiosDepto = municipiosPorDepto.get(codigoDeptoElectoral);
     if (municipiosDepto) {
       const match = municipiosDepto.find(m => {

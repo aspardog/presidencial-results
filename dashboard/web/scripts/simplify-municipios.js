@@ -13,6 +13,104 @@ const DEFAULT_DESTINATION = path.resolve(
   __dirname,
   '../public/api/mapas/municipios.json'
 );
+const ELECTORAL_DATA_PATH = path.resolve(
+  __dirname,
+  '../public/api/departamentos/municipios.json'
+);
+
+// Mapeo DANE -> Electoral
+const DANE_TO_ELECTORAL = {
+  '05': '01', '08': '03', '13': '05', '15': '07', '17': '09',
+  '19': '11', '20': '12', '23': '13', '25': '15', '11': '16',
+  '27': '17', '41': '19', '47': '21', '52': '23', '66': '24',
+  '54': '25', '63': '26', '68': '27', '70': '28', '73': '29',
+  '76': '31', '81': '40', '18': '44', '85': '46', '44': '48',
+  '94': '50', '50': '52', '95': '54', '88': '56', '91': '60',
+  '86': '64', '97': '68', '99': '72',
+};
+
+/**
+ * Normaliza un nombre de municipio para matching.
+ */
+function normalizarNombre(nombre) {
+  return nombre
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toUpperCase()
+    .replace(/[.,()-]/g, '') // Incluye guiones
+    .replace(/\s+/g, '')
+    .trim();
+}
+
+// Mapeo manual para municipios con nombres muy diferentes entre DANE y electoral
+const NOMBRE_ALIASES = {
+  '05_SANTACRUZDEMOMPOX': 'MOMPOS',
+  '07_VILLADELEYVA': 'VILLADELEIVA',
+  '11_LOPEZDEMICAY': 'LOPEZMICAY',
+  '60_MIRITIPARANA': 'MIRITIPARANA',
+  '68_PAPUNAHUA': 'MORICHALPAPUNAGUA',
+};
+
+// Cargar datos electorales y crear mapa de lookup
+let electoralDataMap = null;
+let electoralDataByDepto = null;
+
+function loadElectoralData() {
+  if (electoralDataMap) return;
+
+  if (!fs.existsSync(ELECTORAL_DATA_PATH)) {
+    console.warn('  ! Electoral data not found, ganador enrichment disabled');
+    return;
+  }
+
+  const data = JSON.parse(fs.readFileSync(ELECTORAL_DATA_PATH, 'utf-8'));
+  electoralDataMap = new Map();
+  electoralDataByDepto = new Map();
+
+  Object.entries(data).forEach(([dptoCodigo, municipios]) => {
+    electoralDataByDepto.set(dptoCodigo, municipios);
+    municipios.forEach((mun) => {
+      const key = `${dptoCodigo}_${normalizarNombre(mun.nombre)}`;
+      electoralDataMap.set(key, mun);
+    });
+  });
+}
+
+/**
+ * Busca el ganador de un municipio en datos electorales.
+ */
+function getGanadorFromElectoral(dptoDane, nombreMunicipio) {
+  loadElectoralData();
+  if (!electoralDataMap) return null;
+
+  const deptoElectoral = DANE_TO_ELECTORAL[dptoDane] || dptoDane;
+  const nombreNorm = normalizarNombre(nombreMunicipio);
+  const key = `${deptoElectoral}_${nombreNorm}`;
+
+  // Match exacto
+  let mun = electoralDataMap.get(key);
+  if (mun) return mun.ganador;
+
+  // Match por alias
+  const aliasNombre = NOMBRE_ALIASES[key];
+  if (aliasNombre) {
+    const aliasKey = `${deptoElectoral}_${aliasNombre}`;
+    mun = electoralDataMap.get(aliasKey);
+    if (mun) return mun.ganador;
+  }
+
+  // Match parcial
+  const municipiosDepto = electoralDataByDepto.get(deptoElectoral);
+  if (municipiosDepto) {
+    mun = municipiosDepto.find(m => {
+      const nombreElectoral = normalizarNombre(m.nombre);
+      return nombreElectoral.includes(nombreNorm) || nombreNorm.includes(nombreElectoral);
+    });
+    if (mun) return mun.ganador;
+  }
+
+  return null;
+}
 
 function roundCoordinate([lng, lat], precision) {
   const scale = 10 ** precision;
@@ -82,13 +180,19 @@ function simplifyGeometry(geometry, vertexRatio, precision) {
 // Propiedades mínimas para el mapa - ganador necesario para colorear
 // Propiedades de votos detallados están en departamentos/municipios.json
 function pickProperties(properties) {
+  // Si ganador está vacío, enriquecerlo desde datos electorales
+  let ganador = properties.ganador;
+  if (!ganador) {
+    ganador = getGanadorFromElectoral(properties.dpto_ccdgo, properties.mpio_cnmbr);
+  }
+
   return {
     dpto_ccdgo: properties.dpto_ccdgo,
     mpio_ccdgo: properties.mpio_ccdgo,
     mpio_cdpmp: properties.mpio_cdpmp,
     dpto_cnmbr: properties.dpto_cnmbr,
     mpio_cnmbr: properties.mpio_cnmbr,
-    ganador: properties.ganador, // Necesario para colorear el mapa
+    ganador: ganador || '', // Necesario para colorear el mapa
   };
 }
 
