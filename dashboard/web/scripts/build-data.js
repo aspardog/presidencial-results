@@ -6,7 +6,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { simplifyMunicipios } = require('./simplify-municipios');
+const { simplifyMunicipios, simplifyMunicipiosByDepartment, formatMB, formatKB } = require('./simplify-municipios');
 
 // Rutas
 const DATA_DIR = path.resolve(__dirname, '../../../data/gold');
@@ -801,15 +801,29 @@ function copyGeoJSON() {
     console.log('  ✓ mapas/departamentos.json');
   }
 
-  console.log('  ⏳ Simplificando municipios...');
+  // Dividir municipios en archivos por departamento (OPTIMIZACIÓN)
+  console.log('  ⏳ Dividiendo municipios por departamento...');
+  const splitResult = simplifyMunicipiosByDepartment({
+    destinationDir: path.join(destDir, 'municipios'),
+  });
+
+  if (splitResult) {
+    console.log(
+      `  ✓ mapas/municipios/ (${splitResult.departments} archivos, ${formatMB(splitResult.originalSize)} → ${formatMB(splitResult.totalNewSize)} total)`
+    );
+    console.log(
+      `    Promedio por departamento: ${formatKB(splitResult.averageSize)}`
+    );
+  }
+
+  // También generar archivo único para compatibilidad (se puede eliminar después)
+  console.log('  ⏳ Generando municipios.json (compatibilidad)...');
   const municipiosResult = simplifyMunicipios({
     destination: path.join(destDir, 'municipios.json'),
   });
   if (municipiosResult) {
-    const originalSize = municipiosResult.originalSize / (1024 * 1024);
-    const newSize = municipiosResult.newSize / (1024 * 1024);
     console.log(
-      `  ✓ mapas/municipios.json (${originalSize.toFixed(1)} MB → ${newSize.toFixed(1)} MB)`
+      `  ✓ mapas/municipios.json (${formatMB(municipiosResult.originalSize)} → ${formatMB(municipiosResult.newSize)})`
     );
   }
 }

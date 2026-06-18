@@ -1,0 +1,204 @@
+================================================================================
+PROPUESTAS DE OPTIMIZACIÓN - Dashboard Electoral Colombia 2026
+================================================================================
+
+Fecha: Junio 2026
+Plataforma: https://voto-colombia-2026.vercel.app
+
+================================================================================
+RESUMEN EJECUTIVO
+================================================================================
+
+Problema principal: El archivo municipios.json pesa 4.4MB y se descarga
+completo cuando el usuario selecciona cualquier departamento.
+
+Ahorro potencial total: ~6MB (70% del peso actual de datos)
+
+================================================================================
+ALTO IMPACTO
+================================================================================
+
+1. DIVIDIR MUNICIPIOS.JSON EN 33 ARCHIVOS
+   --------------------------------------
+   Ahorro: 97% menos datos por sesión (4.4MB → ~130KB promedio)
+   Esfuerzo: 2-3 días
+
+   Estado actual:
+   - Un solo archivo con 1,122 municipios
+   - Se descarga completo al hacer clic en cualquier departamento
+
+   Propuesta:
+   - Crear /api/mapas/municipios/05.json (Antioquia)
+   - Crear /api/mapas/municipios/08.json (Atlántico)
+   - ... (33 archivos en total)
+
+   Cambios necesarios:
+   - Modificar scripts/build-data.js para generar archivos por departamento
+   - Modificar MapaElectoral.tsx línea 222:
+     fetch(`/api/mapas/municipios/${departamentoSeleccionado}.json`)
+
+   Beneficio: Usuario típico descarga ~130KB en vez de 4.4MB
+
+
+2. LIMPIAR PROPIEDADES DEL GEOJSON
+   --------------------------------
+   Ahorro: ~2MB (45% menos)
+   Esfuerzo: 1 día
+
+   Estado actual:
+   Cada feature del GeoJSON tiene 12+ propiedades:
+   - geometry (necesario)
+   - codigo_dep, codigo_mun, nombre (necesarios)
+   - total_votos, ganador, votos_ganador, porcentaje_ganador,
+     segundo, votos_segundo, diferencia (DUPLICADOS)
+
+   Propuesta:
+   - Estos datos ya existen en departamentos/municipios.json
+   - Eliminar propiedades electorales del GeoJSON
+   - Mantener solo: geometry, codigo_dep, codigo_mun, nombre
+
+   Cambios necesarios:
+   - Modificar scripts/build-data.js en la función de simplificación
+   - Ajustar MapaElectoral.tsx para obtener datos de municipios.json
+
+================================================================================
+MEDIO IMPACTO
+================================================================================
+
+3. REEMPLAZAR NIVO POR SVG CUSTOM
+   -------------------------------
+   Ahorro: 1.9MB en bundle JavaScript
+   Esfuerzo: 1-2 días
+
+   Estado actual:
+   - Librería @nivo/bar pesa 2.1MB
+   - Solo se usa para UN gráfico de barras horizontales (BarrasCandidatos)
+
+   Propuesta:
+   - Reemplazar con componente SVG custom
+   - O usar CSS Grid con barras de ancho porcentual
+
+   Cambios necesarios:
+   - Reescribir src/components/charts/BarrasCandidatos.tsx
+   - Eliminar @nivo/bar de package.json
+
+   Alternativa:
+   - Usar Recharts (200KB vs 2.1MB de Nivo)
+
+
+4. AGREGAR CACHE HEADERS
+   ----------------------
+   Ahorro: Elimina re-descargas en visitas repetidas
+   Esfuerzo: 2 horas
+
+   Propuesta:
+   Agregar en vercel.json o next.config.js:
+
+   {
+     "headers": [
+       {
+         "source": "/api/(.*).json",
+         "headers": [
+           {
+             "key": "Cache-Control",
+             "value": "public, max-age=86400, immutable"
+           }
+         ]
+       }
+     ]
+   }
+
+   Beneficio: Visitantes recurrentes cargan datos desde cache del navegador
+
+================================================================================
+BAJO IMPACTO (pero fácil)
+================================================================================
+
+5. PRE-COMPUTAR FILTROS EN HALLAZGOSCLAVE
+   ---------------------------------------
+   Beneficio: Elimina .filter()/.sort() en cada render
+   Esfuerzo: 4 horas
+
+   Estado actual (HallazgosClave.tsx líneas 381-413):
+
+   polarizacion.por_departamento
+     .filter(d => d.ganador.includes('ESPRIELLA') && d.margen >= 10)
+     .sort((a, b) => b.margen - a.margen)
+     .slice(0, 5)
+
+   Propuesta:
+   - Pre-calcular en el pipeline de R
+   - Agregar campos a claves-territoriales.json:
+     - bastiones_espriella: [...]
+     - bastiones_cepeda: [...]
+
+   Cambios necesarios:
+   - Modificar scripts/02_silver_to_gold/ en R
+   - Simplificar HallazgosClave.tsx
+
+================================================================================
+ROADMAP DE IMPLEMENTACIÓN
+================================================================================
+
+FASE 1 - Mayor ROI (1 semana)
+  [ ] Dividir municipios.json en 33 archivos
+  [ ] Limpiar propiedades del GeoJSON
+  [ ] Agregar cache headers
+
+FASE 2 - Optimización de bundle (3 días)
+  [ ] Reemplazar Nivo con SVG custom o Recharts
+
+FASE 3 - Pulido (1 día)
+  [ ] Pre-computar filtros en pipeline R
+
+================================================================================
+ARCHIVOS A MODIFICAR
+================================================================================
+
+Para GeoJSON:
+- scripts/build-data.js (generación de datos)
+- public/api/mapas/municipios.json → public/api/mapas/municipios/*.json
+- src/components/maps/MapaElectoral.tsx (líneas 222-236)
+
+Para chart:
+- src/components/charts/BarrasCandidatos.tsx (reescribir completo)
+- package.json (eliminar @nivo/bar)
+
+Para pre-computación:
+- scripts/02_silver_to_gold/ (pipeline R)
+- src/components/analysis/HallazgosClave.tsx (líneas 381-413)
+
+Para cache:
+- vercel.json o next.config.js
+
+================================================================================
+MÉTRICAS ACTUALES
+================================================================================
+
+Tamaño de datos estáticos:
+- municipios.json:     4.4 MB (1.4 MB gzip)
+- departamentos.json:  587 KB (60 KB gzip)
+- Otros JSON:          ~200 KB total
+
+Bundle JavaScript:
+- @nivo/bar:           2.1 MB (unpacked)
+- Total estimado:      ~3-4 MB
+
+Tiempo de carga inicial: ~2-3 segundos (conexión rápida)
+Tiempo al seleccionar departamento: ~1-2 segundos (descarga municipios)
+
+================================================================================
+MÉTRICAS OBJETIVO (post-optimización)
+================================================================================
+
+Tamaño de datos:
+- municipios por depto: ~130 KB promedio (97% menos)
+- departamentos.json:   ~300 KB (sin datos electorales)
+
+Bundle JavaScript:
+- Sin Nivo:            ~1-2 MB (50% menos)
+
+Tiempo de carga inicial: <1 segundo
+Tiempo al seleccionar departamento: <0.5 segundos
+
+================================================================================

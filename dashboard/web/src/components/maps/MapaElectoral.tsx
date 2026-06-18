@@ -213,27 +213,36 @@ export default function MapaElectoral({
   const [municipiosGeoJSON, setMunicipiosGeoJSON] = useState<FeatureCollection | null>(null);
   const [municipiosError, setMunicipiosError] = useState<string | null>(null);
   const [mapMode, setMapMode] = useState<MapMode>('ganador');
-  const municipiosRequestRef = useRef(false);
+  const [loadedDepartamento, setLoadedDepartamento] = useState<string | null>(null);
 
+  // Cargar GeoJSON del departamento seleccionado (archivos divididos por depto)
   useEffect(() => {
-    if (!departamentoSeleccionado || municipiosGeoJSON || municipiosRequestRef.current) return;
+    if (!departamentoSeleccionado) {
+      // Reset cuando se deselecciona
+      setMunicipiosGeoJSON(null);
+      setLoadedDepartamento(null);
+      return;
+    }
 
-    municipiosRequestRef.current = true;
-    fetch('/api/mapas/municipios.json')
+    // Si ya cargamos este departamento, no volver a cargar
+    if (loadedDepartamento === departamentoSeleccionado) return;
+
+    // Cargar archivo específico del departamento (OPTIMIZADO: ~138KB vs 4.4MB)
+    fetch(`/api/mapas/municipios/${departamentoSeleccionado}.json`)
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
       })
       .then((data) => {
         setMunicipiosGeoJSON(data as FeatureCollection);
+        setLoadedDepartamento(departamentoSeleccionado);
         setMunicipiosError(null);
       })
       .catch((err) => {
         console.error('Error cargando municipios:', err);
-        municipiosRequestRef.current = false;
         setMunicipiosError('No se pudo cargar la desagregacion municipal.');
       });
-  }, [departamentoSeleccionado, municipiosGeoJSON]);
+  }, [departamentoSeleccionado, loadedDepartamento]);
 
   const isMunicipioView = Boolean(departamentoSeleccionado);
 
@@ -241,9 +250,8 @@ export default function MapaElectoral({
     if (!departamentoSeleccionado) return departamentosGeoJSON.features;
     if (!municipiosGeoJSON) return [];
 
-    return municipiosGeoJSON.features.filter(
-      (feature) => getCodigoDepartamento(feature.properties) === departamentoSeleccionado
-    );
+    // El archivo ya contiene solo los municipios del departamento (no hay que filtrar)
+    return municipiosGeoJSON.features;
   }, [departamentoSeleccionado, municipiosGeoJSON]);
 
   const paths = useMemo(() => {
@@ -260,9 +268,8 @@ export default function MapaElectoral({
         // Para municipios: usar código DANE completo (dpto + mpio)
         const codigoDane = feature.properties.mpio_cdpmp ||
           `${feature.properties.dpto_ccdgo}${feature.properties.mpio_ccdgo}`;
-        margen = margenesMunicipios.get(codigoDane) ??
-          // Fallback: calcular aproximado desde porcentaje
-          (feature.properties.porcentaje_ganador ? (feature.properties.porcentaje_ganador * 2 - 100) : 20);
+        // Datos de margen vienen de polarización, fallback a 20 si no existe
+        margen = margenesMunicipios.get(codigoDane) ?? 20;
       } else {
         // Para departamentos: usar código electoral
         margen = margenesDepartamentos.get(codigo) ?? 20;

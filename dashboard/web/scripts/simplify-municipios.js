@@ -79,6 +79,8 @@ function simplifyGeometry(geometry, vertexRatio, precision) {
   return geometry;
 }
 
+// Propiedades mínimas para el mapa - ganador necesario para colorear
+// Propiedades de votos detallados están en departamentos/municipios.json
 function pickProperties(properties) {
   return {
     dpto_ccdgo: properties.dpto_ccdgo,
@@ -86,10 +88,7 @@ function pickProperties(properties) {
     mpio_cdpmp: properties.mpio_cdpmp,
     dpto_cnmbr: properties.dpto_cnmbr,
     mpio_cnmbr: properties.mpio_cnmbr,
-    ganador: properties.ganador,
-    votos_ganador: properties.votos_ganador,
-    porcentaje_ganador: properties.porcentaje_ganador,
-    total_votos: properties.total_votos,
+    ganador: properties.ganador, // Necesario para colorear el mapa
   };
 }
 
@@ -135,6 +134,85 @@ function formatMB(bytes) {
   return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
 }
 
+function formatKB(bytes) {
+  return `${(bytes / 1024).toFixed(0)} KB`;
+}
+
+/**
+ * Divide los municipios en archivos separados por departamento.
+ * Esto reduce drásticamente el tamaño de descarga por sesión.
+ */
+function simplifyMunicipiosByDepartment({
+  source = DEFAULT_SOURCE,
+  destinationDir = path.resolve(__dirname, '../public/api/mapas/municipios'),
+  vertexRatio = DEFAULT_VERTEX_RATIO,
+  precision = DEFAULT_PRECISION,
+} = {}) {
+  if (!fs.existsSync(source)) {
+    console.warn(`  ! No encontrado: ${path.relative(process.cwd(), source)}`);
+    return null;
+  }
+
+  const originalSize = fs.statSync(source).size;
+  const data = JSON.parse(fs.readFileSync(source, 'utf-8'));
+
+  // Agrupar features por departamento
+  const byDepartment = {};
+  data.features.forEach((feature) => {
+    const deptCode = feature.properties?.dpto_ccdgo;
+    if (!deptCode) return;
+
+    if (!byDepartment[deptCode]) {
+      byDepartment[deptCode] = [];
+    }
+
+    byDepartment[deptCode].push({
+      type: 'Feature',
+      properties: pickProperties(feature.properties || {}),
+      geometry: simplifyGeometry(feature.geometry, vertexRatio, precision),
+    });
+  });
+
+  // Crear directorio de salida
+  fs.mkdirSync(destinationDir, { recursive: true });
+
+  // Escribir un archivo por departamento
+  let totalNewSize = 0;
+  const departmentStats = [];
+
+  Object.entries(byDepartment).forEach(([deptCode, features]) => {
+    const deptGeoJSON = {
+      type: 'FeatureCollection',
+      features,
+    };
+
+    const destPath = path.join(destinationDir, `${deptCode}.json`);
+    fs.writeFileSync(destPath, JSON.stringify(deptGeoJSON));
+
+    const fileSize = fs.statSync(destPath).size;
+    totalNewSize += fileSize;
+
+    departmentStats.push({
+      code: deptCode,
+      features: features.length,
+      size: fileSize,
+    });
+  });
+
+  return {
+    source,
+    destinationDir,
+    departments: Object.keys(byDepartment).length,
+    totalFeatures: data.features.length,
+    originalSize,
+    totalNewSize,
+    averageSize: totalNewSize / Object.keys(byDepartment).length,
+    departmentStats,
+    vertexRatio,
+    precision,
+  };
+}
+
 if (require.main === module) {
   const result = simplifyMunicipios();
   if (result) {
@@ -146,6 +224,9 @@ if (require.main === module) {
 
 module.exports = {
   simplifyMunicipios,
+  simplifyMunicipiosByDepartment,
   simplifyGeometry,
   simplifyRing,
+  formatMB,
+  formatKB,
 };
