@@ -216,6 +216,33 @@ Un usuario que selecciona UN departamento ahora descarga:
   AHORRO: 97% menos datos transferidos
 
 
+IMPACTO REAL PARA EL USUARIO
+----------------------------
+Ejemplo: Usuario en conexión 4G (10 Mbps) hace clic en un departamento
+
+Departamento        Antes (4.43 MB)    Después         Mejora
+----------------    ---------------    -----------     ------
+Antioquia           3.5 seg            0.4 seg         88% más rápido
+Cundinamarca        3.5 seg            0.25 seg        93% más rápido
+Bogotá              3.5 seg            0.01 seg        99% más rápido
+Promedio            3.5 seg            0.1 seg         97% más rápido
+
+Ejemplo: Usuario en conexión 3G lenta (1 Mbps)
+
+Departamento        Antes (4.43 MB)    Después         Mejora
+----------------    ---------------    -----------     ------
+Antioquia           35 seg             4.1 seg         88% más rápido
+Cundinamarca        35 seg             2.5 seg         93% más rápido
+Bogotá              35 seg             0.1 seg         99% más rápido
+Promedio            35 seg             1.1 seg         97% más rápido
+
+¿Por qué importa?
+- Primera impresión: El mapa municipal aparece casi instantáneamente
+- Usuarios rurales: La diferencia es de minutos vs segundos
+- Datos móviles: Ahorra ~4 MB por cada departamento visitado
+- Rebote: Menos usuarios abandonan la página por lentitud
+
+
 CASOS EXTREMOS
 --------------
 Departamento más grande (Antioquia):
