@@ -23,7 +23,7 @@ type MunicipioVotos = {
   diferencia: number;
 };
 
-// Crear mapa de código DANE completo -> datos de votos municipales
+// Crear mapa de código electoral completo -> datos de votos municipales
 const municipiosVotosMap = new Map<string, MunicipioVotos>();
 Object.entries(municipiosVotosData as Record<string, MunicipioVotos[]>).forEach(([dptoCodigo, municipios]) => {
   municipios.forEach((mun) => {
@@ -31,6 +31,26 @@ Object.entries(municipiosVotosData as Record<string, MunicipioVotos[]>).forEach(
     municipiosVotosMap.set(codigoCompleto, mun);
   });
 });
+
+/**
+ * Calcula el margen electoral de un municipio.
+ * Margen = % ganador - % segundo = (votos_ganador - votos_segundo) / total_votos * 100
+ */
+function calcularMargenMunicipio(codigoElectoral: string): number {
+  // Primero intentar con datos de polarización (más precisos)
+  const margenPolarizacion = margenesMunicipios.get(codigoElectoral);
+  if (margenPolarizacion !== undefined) return margenPolarizacion;
+
+  // Si no existe, calcular desde datos de votos
+  const munData = municipiosVotosMap.get(codigoElectoral);
+  if (munData && munData.total_votos > 0) {
+    const porcentajeSegundo = (munData.votos_segundo / munData.total_votos) * 100;
+    return munData.porcentaje_ganador - porcentajeSegundo;
+  }
+
+  // Fallback
+  return 20;
+}
 
 type MapMode = 'ganador' | 'polarizacion';
 
@@ -288,16 +308,16 @@ export default function MapaElectoral({
       const colorGanador = getColorGanador(feature.properties.ganador || '');
       const codigo = getCodigoFeature(feature.properties, isMunicipioView);
 
-      // Obtener margen real de los datos de polarización
+      // Obtener margen real de los datos de polarización o calcularlo de votos
       let margen: number;
       if (isMunicipioView) {
-        // Para municipios: convertir código DANE a electoral para buscar en margenesMunicipios
+        // Para municipios: convertir código DANE a electoral
         const codigoDaneDepto = feature.properties.dpto_ccdgo || '';
         const codigoElectoralDepto = getCodigoElectoralDesdeDane(codigoDaneDepto);
         const codigoMun = feature.properties.mpio_ccdgo || '';
         const codigoElectoralCompleto = `${codigoElectoralDepto}${codigoMun}`;
-        // Datos de margen vienen de polarización, fallback a 20 si no existe
-        margen = margenesMunicipios.get(codigoElectoralCompleto) ?? 20;
+        // Calcular margen (primero intenta polarización, luego datos de votos)
+        margen = calcularMargenMunicipio(codigoElectoralCompleto);
       } else {
         // Para departamentos: usar código electoral
         margen = margenesDepartamentos.get(codigo) ?? 20;
@@ -506,12 +526,10 @@ export default function MapaElectoral({
               </>
             ) : (() => {
               // Calcular margen para el tooltip
-              // margenesMunicipios usa códigos electorales (igual que municipiosVotosMap)
               const codigoDepto = getCodigoDepartamento(tooltip.properties);
               const codigoElectoralCompleto = `${codigoElectoralDepto}${codigoMun}`;
               const margenTooltip = tooltip.isMunicipio
-                ? (margenesMunicipios.get(codigoElectoralCompleto) ??
-                   (porcentajeGanador ? (porcentajeGanador * 2 - 100) : 20))
+                ? calcularMargenMunicipio(codigoElectoralCompleto)
                 : (margenesDepartamentos.get(codigoDepto) ?? 20);
 
               return (
