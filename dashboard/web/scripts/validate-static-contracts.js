@@ -140,9 +140,10 @@ function validatePublicApi() {
   const detalle = readJson('public/api/departamentos/detalle.json');
   const municipios = readJson('public/api/departamentos/municipios.json');
   const claves = readJson('public/api/analisis/claves-territoriales.json');
+  const polarizacion = readJson('public/api/analisis/polarizacion.json');
   const geojson = readJson('public/api/mapas/departamentos.json');
 
-  if (!resumen || !Array.isArray(candidatos) || !Array.isArray(departamentos) || !detalle || !municipios || !claves || !geojson) {
+  if (!resumen || !Array.isArray(candidatos) || !Array.isArray(departamentos) || !detalle || !municipios || !claves || !polarizacion || !geojson) {
     return;
   }
 
@@ -212,6 +213,26 @@ function validatePublicApi() {
   assert(Array.isArray(claves.departamentos_competidos) && claves.departamentos_competidos.length >= 5, 'Key findings need competed departments.');
   assert(Array.isArray(claves.ventajas_decisivas) && claves.ventajas_decisivas.length >= 5, 'Key findings need decisive advantages.');
   assert(Array.isArray(claves.fortalezas) && claves.fortalezas.length >= 3, 'Key findings need candidate strengths.');
+  assert(Array.isArray(polarizacion.bastiones_ganador_nacional), 'Polarization data needs precomputed winner strongholds.');
+  assert(Array.isArray(polarizacion.bastiones_segundo_nacional), 'Polarization data needs precomputed runner-up strongholds.');
+
+  const expectedWinnerStrongholds = polarizacion.por_departamento
+    .filter((depto) => depto.ganador === resumen.ganador && depto.margen >= 10)
+    .sort((a, b) => b.margen - a.margen)
+    .slice(0, 5);
+  const expectedRunnerUpStrongholds = polarizacion.por_departamento
+    .filter((depto) => depto.ganador === resumen.segundo && depto.margen >= 10)
+    .sort((a, b) => b.margen - a.margen)
+    .slice(0, 5);
+
+  assert(
+    JSON.stringify(polarizacion.bastiones_ganador_nacional) === JSON.stringify(expectedWinnerStrongholds),
+    'Precomputed winner strongholds do not match the full department data.'
+  );
+  assert(
+    JSON.stringify(polarizacion.bastiones_segundo_nacional) === JSON.stringify(expectedRunnerUpStrongholds),
+    'Precomputed runner-up strongholds do not match the full department data.'
+  );
 
   for (const item of [...claves.departamentos_competidos, ...claves.ventajas_decisivas]) {
     assert(departamentoCodes.has(normalizeCode(item.codigo)), `Finding references unknown department code ${item.codigo}.`);
@@ -230,11 +251,23 @@ function validatePublicApi() {
 function validateSourceContracts() {
   const pageSource = fs.readFileSync(path.join(ROOT_DIR, 'src/app/page.tsx'), 'utf8');
   const hallazgosSource = fs.readFileSync(path.join(ROOT_DIR, 'src/components/analysis/HallazgosClave.tsx'), 'utf8');
+  const packageJson = readJson('package.json');
+  const vercelConfig = readJson('vercel.json');
 
   assert(pageSource.includes('HallazgosClave'), 'Home page must render the unified HallazgosClave component.');
   assert(!pageSource.includes('ClavesTerritoriales'), 'Home page must not render a separate ClavesTerritoriales section.');
   assert(!fs.existsSync(path.join(ROOT_DIR, 'src/components/analysis/ClavesTerritoriales.tsx')), 'Separate ClavesTerritoriales component must not be restored.');
   assert(hallazgosSource.includes('Síntesis electoral'), 'Unified findings must include the territorial synthesis block.');
+  assert(!packageJson?.dependencies?.['@nivo/bar'], '@nivo/bar must not be restored; the candidate chart is native HTML/CSS.');
+  assert(
+    vercelConfig?.headers?.some((rule) =>
+      rule.source === '/api/(.*).json' &&
+      rule.headers?.some((header) =>
+        header.key === 'Cache-Control' && header.value === 'public, max-age=86400, immutable'
+      )
+    ),
+    'Vercel must cache static API JSON for 24 hours.'
+  );
 }
 
 function main() {

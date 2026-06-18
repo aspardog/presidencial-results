@@ -424,6 +424,13 @@ function buildAnalisisPolarizacion() {
     .sort((a, b) => b.nep - a.nep)
     .slice(0, 5);
 
+  const ganadorNacional = candidatosNacionales[0]?.nombre;
+  const segundoNacional = candidatosNacionales[1]?.nombre;
+  const bastionesPorCandidato = (nombre) => metricasPorDepartamento
+    .filter((departamento) => departamento.ganador === nombre && departamento.margen >= 10)
+    .sort((a, b) => b.margen - a.margen)
+    .slice(0, 5);
+
   return {
     // Métricas nacionales
     nacional: {
@@ -450,6 +457,8 @@ function buildAnalisisPolarizacion() {
     // Rankings
     departamentos_mas_polarizados: deptosMasPolarizados,
     departamentos_menos_polarizados: deptosMenosPolarizados,
+    bastiones_ganador_nacional: bastionesPorCandidato(ganadorNacional),
+    bastiones_segundo_nacional: bastionesPorCandidato(segundoNacional),
     // Todos los departamentos con métricas
     por_departamento: metricasPorDepartamento.sort((a, b) => a.codigo.localeCompare(b.codigo)),
   };

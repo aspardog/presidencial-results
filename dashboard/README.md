@@ -18,14 +18,15 @@ El frontend no consulta una API dinamica en produccion. Los datos se generan com
 
 - **Frontend:** Next.js 16, React 18, TypeScript, Tailwind CSS
 - **Mapas:** SVG nativo con GeoJSON simplificado
-- **Graficos:** Nivo Bar
+- **Graficos:** HTML/CSS nativo accesible
 - **Deploy:** Vercel con export estatico
 - **Datos:** JSON generados desde `data/gold`
 
 ## Funcionalidad
 
 - Mapa electoral interactivo por departamento.
-- Seleccion de departamento con resultados locales.
+- Seleccion de departamento con mapa y resultados municipales.
+- Modos de visualizacion por ganador y polarizacion.
 - Resumen nacional con total de votos, votos validos, mesas y departamentos.
 - Barras comparativas por candidato.
 - Seccion unica de `Hallazgos clave`, que integra lectura nacional y territorial:
@@ -36,6 +37,7 @@ El frontend no consulta una API dinamica en produccion. Los datos se generan com
   - Departamentos que concentraron la ventaja.
   - Departamentos mas competidos.
   - Bastiones electorales por candidato.
+  - Analisis de polarizacion y competitividad departamental y municipal.
 
 ## Flujo Seguro De Datos Y Deploy
 
@@ -69,6 +71,11 @@ La idea es que no se publique una version si los datos no cuadran, si el mapa no
 - Hallazgos territoriales incompletos.
 - Restauracion accidental de una seccion separada `ClavesTerritoriales`.
 - Proyecto Vercel distinto a `voto-colombia-2026`.
+- Matching inferior al 95% entre municipios DANE y datos electorales.
+
+La validacion municipal compara por nombre normalizado, no por codigo, porque
+los codigos municipales DANE y electorales pertenecen a sistemas distintos.
+El estado actual es 100% (1.122/1.122 municipios).
 
 `npm run verify:prod` consulta la URL publica y confirma que:
 
@@ -102,7 +109,7 @@ Dashboard local: http://localhost:3000
 |---------|-----|
 | `npm run dev` | Ejecuta Next.js en desarrollo. |
 | `npm run build:data` | Regenera `public/api/` desde `data/gold`. |
-| `npm run validate` | Valida contratos de datos, mapa, hallazgos y Vercel. |
+| `npm run validate` | Valida contratos estaticos y matching municipal. |
 | `npm run build` | Valida y compila Next.js. |
 | `npm run build:full` | Regenera datos, valida y compila. |
 | `npm run verify:prod` | Verifica la URL publica de produccion. |
@@ -119,11 +126,30 @@ Los archivos consumidos por el dashboard viven en `web/public/api/`:
 | `nacional/candidatos.json` | Candidatos nacionales ordenados por votos. |
 | `departamentos/lista.json` | Resumen por departamento. |
 | `departamentos/detalle.json` | Candidatos y metricas por departamento. |
+| `departamentos/municipios.json` | Resultados municipales agrupados por codigo electoral departamental. |
 | `analisis/claves-territoriales.json` | Insumos territoriales usados dentro de `Hallazgos clave`. |
+| `analisis/polarizacion.json` | Polarizacion y competitividad departamental. |
+| `analisis/polarizacion-municipal.json` | Polarizacion, margenes y bastiones municipales. |
 | `mapas/departamentos.json` | GeoJSON simplificado de departamentos. |
-| `mapas/municipios.json` | GeoJSON simplificado de municipios para uso futuro o analisis. |
+| `mapas/municipios/{codigo_dane}.json` | GeoJSON municipal cargado bajo demanda; 33 archivos. |
+| `mapas/municipios.json` | Capa nacional conservada por compatibilidad. |
 
 Aunque el archivo de analisis conserva el nombre `claves-territoriales.json`, ya no existe una seccion visual separada con ese nombre. Es una fuente de datos interna para la seccion unificada `Hallazgos clave`.
+
+### Optimizacion y matching municipal
+
+La capa nacional de municipios pesa aproximadamente 4,43 MB. El build la
+divide por codigo DANE departamental y el mapa descarga solo el archivo del
+departamento seleccionado, de unos 135 KB en promedio (97% menos transferencia
+por seleccion).
+
+Los tooltips y colores se enriquecen con `departamentos/municipios.json`. El
+matching normaliza acentos, mayusculas, puntuacion, guiones y espacios, y usa
+aliases explicitos para cinco nombres que difieren sustancialmente entre DANE
+y Registraduria. La regla se valida en el componente del mapa y en
+`scripts/validate-municipal-matching.js`.
+
+Los JSON bajo `/api/*.json` se publican con cache de navegador de 24 horas.
 
 ## Componentes Principales
 

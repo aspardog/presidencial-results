@@ -1,5 +1,5 @@
 ================================================================================
-PROPUESTAS DE OPTIMIZACIÓN - Dashboard Electoral Colombia 2026
+OPTIMIZACIONES IMPLEMENTADAS - Dashboard Electoral Colombia 2026
 ================================================================================
 
 Fecha: Junio 2026
@@ -9,10 +9,9 @@ Plataforma: https://voto-colombia-2026.vercel.app
 RESUMEN EJECUTIVO
 ================================================================================
 
-Problema principal: El archivo municipios.json pesa 4.4MB y se descarga
-completo cuando el usuario selecciona cualquier departamento.
-
-Ahorro potencial total: ~6MB (70% del peso actual de datos)
+Las cinco optimizaciones propuestas están implementadas. El build valida que
+el matching municipal siga en 100%, que los rankings precalculados coincidan
+con la fuente completa y que no se reintroduzcan Nivo ni la ausencia de caché.
 
 ================================================================================
 ALTO IMPACTO
@@ -23,9 +22,10 @@ ALTO IMPACTO
    Ahorro: 97% menos datos por sesión (4.4MB → ~130KB promedio)
    Esfuerzo: 2-3 días
 
-   Estado actual:
-   - Un solo archivo con 1,122 municipios
-   - Se descarga completo al hacer clic en cualquier departamento
+   Estado: IMPLEMENTADO
+   - 33 archivos por código DANE departamental
+   - 1,122 municipios con matching electoral 100%
+   - Descarga promedio aproximada de 134 KB por selección
 
    Propuesta:
    - Crear /api/mapas/municipios/05.json (Antioquia)
@@ -45,17 +45,14 @@ ALTO IMPACTO
    Ahorro: ~2MB (45% menos)
    Esfuerzo: 1 día
 
-   Estado actual:
-   Cada feature del GeoJSON tiene 12+ propiedades:
-   - geometry (necesario)
-   - codigo_dep, codigo_mun, nombre (necesarios)
-   - total_votos, ganador, votos_ganador, porcentaje_ganador,
-     segundo, votos_segundo, diferencia (DUPLICADOS)
+   Estado: IMPLEMENTADO
+   Cada feature conserva geometría, códigos y nombres. Los datos electorales
+   (ganador, votos, porcentajes, segundo y diferencia) se obtienen desde
+   departamentos/municipios.json.
 
-   Propuesta:
-   - Estos datos ya existen en departamentos/municipios.json
-   - Eliminar propiedades electorales del GeoJSON
-   - Mantener solo: geometry, codigo_dep, codigo_mun, nombre
+   La validación impide publicar si algún municipio no resuelve sus datos de
+   color y tooltip. Se mantienen dpto_cnmbr y mpio_cdpmp porque aportan nombre
+   contextual y una clave geográfica estable sin duplicar resultados.
 
    Cambios necesarios:
    - Modificar scripts/build-data.js en la función de simplificación
@@ -70,11 +67,12 @@ MEDIO IMPACTO
    Ahorro: 1.9MB en bundle JavaScript
    Esfuerzo: 1-2 días
 
-   Estado actual:
-   - Librería @nivo/bar pesa 2.1MB
-   - Solo se usa para UN gráfico de barras horizontales (BarrasCandidatos)
+   Estado: IMPLEMENTADO
+   - BarrasCandidatos usa HTML/CSS nativo y roles accesibles
+   - @nivo/bar y sus dependencias fueron retirados
 
-   Propuesta:
+   Estado: IMPLEMENTADO
+   Configuración aplicada en vercel.json:
    - Reemplazar con componente SVG custom
    - O usar CSS Grid con barras de ancho porcentual
 
@@ -119,37 +117,33 @@ BAJO IMPACTO (pero fácil)
    Beneficio: Elimina .filter()/.sort() en cada render
    Esfuerzo: 4 horas
 
-   Estado actual (HallazgosClave.tsx líneas 381-413):
+   Estado: IMPLEMENTADO
+   El cálculo se realiza en scripts/build-data.js y se publica en
+   analisis/polarizacion.json como bastiones_ganador_nacional y
+   bastiones_segundo_nacional. HallazgosClave consume ambos rankings y los
+   nombres se derivan del resultado nacional, sin candidatos hardcodeados.
+
+   Cálculo anterior eliminado de HallazgosClave:
 
    polarizacion.por_departamento
      .filter(d => d.ganador.includes('ESPRIELLA') && d.margen >= 10)
      .sort((a, b) => b.margen - a.margen)
      .slice(0, 5)
 
-   Propuesta:
-   - Pre-calcular en el pipeline de R
-   - Agregar campos a claves-territoriales.json:
-     - bastiones_espriella: [...]
-     - bastiones_cepeda: [...]
-
-   Cambios necesarios:
-   - Modificar scripts/02_silver_to_gold/ en R
-   - Simplificar HallazgosClave.tsx
-
 ================================================================================
 ROADMAP DE IMPLEMENTACIÓN
 ================================================================================
 
 FASE 1 - Mayor ROI (1 semana)
-  [ ] Dividir municipios.json en 33 archivos
-  [ ] Limpiar propiedades del GeoJSON
-  [ ] Agregar cache headers
+  [x] Dividir municipios.json en 33 archivos
+  [x] Limpiar propiedades del GeoJSON
+  [x] Agregar cache headers
 
 FASE 2 - Optimización de bundle (3 días)
-  [ ] Reemplazar Nivo con SVG custom o Recharts
+  [x] Reemplazar Nivo con HTML/CSS nativo
 
 FASE 3 - Pulido (1 día)
-  [ ] Pre-computar filtros en pipeline R
+  [x] Pre-computar filtros en el generador estático
 
 ================================================================================
 ARCHIVOS A MODIFICAR
@@ -165,7 +159,7 @@ Para chart:
 - package.json (eliminar @nivo/bar)
 
 Para pre-computación:
-- scripts/02_silver_to_gold/ (pipeline R)
+- scripts/build-data.js
 - src/components/analysis/HallazgosClave.tsx (líneas 381-413)
 
 Para cache:
@@ -181,8 +175,8 @@ Tamaño de datos estáticos:
 - Otros JSON:          ~200 KB total
 
 Bundle JavaScript:
-- @nivo/bar:           2.1 MB (unpacked)
-- Total estimado:      ~3-4 MB
+- @nivo/bar:           eliminado
+- Gráfico:             HTML/CSS nativo, sin dependencia externa
 
 Tiempo de carga inicial: ~2-3 segundos (conexión rápida)
 Tiempo al seleccionar departamento: ~1-2 segundos (descarga municipios)
@@ -196,7 +190,7 @@ Tamaño de datos:
 - departamentos.json:   ~300 KB (sin datos electorales)
 
 Bundle JavaScript:
-- Sin Nivo:            ~1-2 MB (50% menos)
+- Sin Nivo:            objetivo alcanzado
 
 Tiempo de carga inicial: <1 segundo
 Tiempo al seleccionar departamento: <0.5 segundos

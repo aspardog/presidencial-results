@@ -128,7 +128,7 @@ function validateMunicipalMatching() {
 
     geoData.features.forEach(f => {
       const nombreGeo = f.properties.mpio_cnmbr;
-      const deptoNombre = f.properties.dpto_cnmbr;
+      const deptoNombre = f.properties.dpto_cnmbr || daneCodigo;
       const data = getMunicipioVotos(electoralCodigo, nombreGeo);
 
       totalMunicipios++;
@@ -136,12 +136,12 @@ function validateMunicipalMatching() {
         totalMatches++;
         deptoMatches++;
 
-        // Verificar que tiene datos de votos
-        if (!data.total_votos || data.total_votos === 0) {
+        // Verificar que todos los datos usados por color y tooltip estén disponibles.
+        if (!data.total_votos || !data.ganador || !data.votos_ganador || !data.porcentaje_ganador) {
           noMatches.push({
             depto: deptoNombre,
             municipio: nombreGeo,
-            issue: 'Matched but total_votos = 0',
+            issue: 'Matched but electoral details are incomplete',
           });
         }
       } else {

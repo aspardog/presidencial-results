@@ -54,13 +54,51 @@ Key static endpoints:
 - `nacional/candidatos.json` - Candidates sorted by votes
 - `departamentos/lista.json` - Department summaries
 - `departamentos/detalle.json` - Per-department candidates and metrics
+- `departamentos/municipios.json` - Municipal vote data indexed by electoral department code
 - `analisis/claves-territoriales.json` - Territorial analysis data
+- `analisis/polarizacion.json` - Department-level polarization metrics
+- `analisis/polarizacion-municipal.json` - Municipal polarization metrics
 - `mapas/departamentos.json` - Simplified GeoJSON for interactive map
-- `mapas/municipios.json` - Simplified municipal GeoJSON generated for map data coverage
+- `mapas/municipios/{codigo}.json` - Per-department municipal GeoJSON (33 files, ~135KB each)
+
+### GeoJSON Optimization
+
+Municipal GeoJSON is split by department to reduce download size:
+- **Before:** Single 4.43 MB file downloaded for any department
+- **After:** ~135 KB average per department (97% reduction)
+
+Files use DANE department codes (e.g., `mapas/municipios/05.json` for Antioquia).
+
+### Municipal Data Matching
+
+The GeoJSON uses DANE codes, but electoral data uses different codes. Matching is done by **normalized municipality name**, not code.
+
+Key files:
+- `src/lib/departamentos.ts` - DANE ↔ Electoral code conversion
+- `src/components/maps/MapaElectoral.tsx` - Name normalization and lookup logic
+
+Name normalization:
+1. Remove accents (NFD + regex)
+2. Uppercase
+3. Remove punctuation, parentheses, hyphens
+4. Remove spaces
+
+Manual aliases for edge cases (5 municipalities with very different names):
+```javascript
+NOMBRE_ALIASES = {
+  '05_SANTACRUZDEMOMPOX': 'MOMPOS',
+  '07_VILLADELEYVA': 'VILLADELEIVA',
+  '11_LOPEZDEMICAY': 'LOPEZMICAY',
+  '60_MIRITIPARANA': 'MIRITIPARANA',
+  '68_PAPUNAHUA': 'MORICHALPAPUNAGUA',
+}
+```
 
 ### Validation System
 
-`npm run validate` blocks builds if:
+`npm run validate` runs two validation scripts:
+
+**1. Static Contracts (`validate-static-contracts.js`):**
 - `total_votos` or `votos_validos` is zero
 - Candidate vote sum ≠ `votos_validos`
 - Department sum ≠ national valid votes
@@ -68,6 +106,12 @@ Key static endpoints:
 - DANE map codes don't resolve to electoral codes
 - Missing territorial findings
 - Wrong Vercel project (must be `voto-colombia-2026`)
+
+**2. Municipal Matching (`validate-municipal-matching.js`):**
+- Verifies each GeoJSON municipality matches electoral data
+- Requires 95%+ match rate to pass
+- Shows which municipalities fail to match
+- Current rate: 100% (1122/1122)
 
 `npm run verify:prod` checks the live URL post-deployment.
 
@@ -85,7 +129,7 @@ Electoral types are defined in `dashboard/web/src/types/electoral.ts`. Main inte
 
 - `MapaElectoral` - Interactive SVG map of Colombia
 - `HallazgosClave` - Unified national and territorial analysis section (replaces separate ClavesTerritoriales)
-- `BarrasCandidatos` - Nivo bar chart for candidate comparison
+- `BarrasCandidatos` - Native HTML/CSS candidate comparison with accessible meter semantics
 - `CardResumen`, `CardGanador` - Summary cards
 
 ### Adding New Analysis

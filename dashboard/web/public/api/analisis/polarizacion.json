@@ -120,6 +120,110 @@
       "total_votos": 1568926
     }
   ],
+  "bastiones_ganador_nacional": [
+    {
+      "codigo": "25",
+      "nombre": "NORTE DE SANTANDER",
+      "nep": 1.83,
+      "indice_bipartidista": 89.16,
+      "margen": 53.87,
+      "clasificacion": "bastion",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 726070
+    },
+    {
+      "codigo": "46",
+      "nombre": "CASANARE",
+      "nep": 2.17,
+      "indice_bipartidista": 87.69,
+      "margen": 37.31,
+      "clasificacion": "bastion",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 215184
+    },
+    {
+      "codigo": "01",
+      "nombre": "ANTIOQUIA",
+      "nep": 2.57,
+      "indice_bipartidista": 81.45,
+      "margen": 29.54,
+      "clasificacion": "bastion",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 3108951
+    },
+    {
+      "codigo": "27",
+      "nombre": "SANTANDER",
+      "nep": 2.34,
+      "indice_bipartidista": 87.17,
+      "margen": 28.8,
+      "clasificacion": "bastion",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 1180629
+    },
+    {
+      "codigo": "19",
+      "nombre": "HUILA",
+      "nep": 2.38,
+      "indice_bipartidista": 88.19,
+      "margen": 22.5,
+      "clasificacion": "bastion",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 537724
+    }
+  ],
+  "bastiones_segundo_nacional": [
+    {
+      "codigo": "68",
+      "nombre": "VAUPES",
+      "nep": 1.63,
+      "indice_bipartidista": 92.04,
+      "margen": 61.5,
+      "clasificacion": "bastion",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "total_votos": 9030
+    },
+    {
+      "codigo": "17",
+      "nombre": "CHOCO",
+      "nep": 1.61,
+      "indice_bipartidista": 93.21,
+      "margen": 61.13,
+      "clasificacion": "bastion",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "total_votos": 142333
+    },
+    {
+      "codigo": "64",
+      "nombre": "PUTUMAYO",
+      "nep": 1.75,
+      "indice_bipartidista": 92.45,
+      "margen": 53.63,
+      "clasificacion": "bastion",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "total_votos": 129239
+    },
+    {
+      "codigo": "11",
+      "nombre": "CAUCA",
+      "nep": 1.87,
+      "indice_bipartidista": 90.05,
+      "margen": 50.29,
+      "clasificacion": "bastion",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "total_votos": 659938
+    },
+    {
+      "codigo": "23",
+      "nombre": "NARIÑO",
+      "nep": 1.85,
+      "indice_bipartidista": 91.86,
+      "margen": 48.17,
+      "clasificacion": "bastion",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "total_votos": 678804
+    }
+  ],
   "por_departamento": [
     {
       "codigo": "01",

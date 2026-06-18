@@ -1,6 +1,5 @@
 'use client';
 
-import { ResponsiveBar } from '@nivo/bar';
 import type { CandidatoNacional, CandidatoDepartamento } from '@/types/electoral';
 import { formatNumber, formatPercent } from '@/lib/formatters';
 
@@ -13,60 +12,45 @@ export default function BarrasCandidatos({
   candidatos,
   maxVisible = 6,
 }: BarrasCandidatosProps) {
-  const data = candidatos.slice(0, maxVisible).map((c) => ({
-    nombre: c.nombre.split(' ').slice(0, 2).join(' '),
-    votos: c.votos,
-    porcentaje: c.porcentaje,
-    color: c.color,
-    nombreCompleto: c.nombre,
-    partido: c.partido,
-  }));
+  const data = candidatos.slice(0, maxVisible);
+  const maxVotos = Math.max(...data.map((candidato) => candidato.votos), 1);
 
   return (
-    <div className="h-[300px]">
-      <ResponsiveBar
-        data={data}
-        keys={['votos']}
-        indexBy="nombre"
-        layout="horizontal"
-        margin={{ top: 10, right: 20, bottom: 30, left: 120 }}
-        padding={0.3}
-        colors={({ data }) => data.color as string}
-        borderRadius={4}
-        enableGridY={false}
-        enableLabel={false}
-        axisTop={null}
-        axisRight={null}
-        axisBottom={{
-          tickSize: 0,
-          tickPadding: 10,
-          format: (v) => `${(Number(v) / 1000000).toFixed(1)}M`,
-        }}
-        axisLeft={{
-          tickSize: 0,
-          tickPadding: 10,
-        }}
-        tooltip={({ data }) => (
-          <div className="gb-card px-3 py-2 text-sm shadow-gb-sm">
-            <p className="font-display font-semibold text-gb-ink">{data.nombreCompleto as string}</p>
-            <p className="text-gb-slate-muted text-xs">{data.partido as string}</p>
-            <p className="mt-1 font-mono text-gb-teal-700">
-              {formatNumber(data.votos as number)} votos ({formatPercent(data.porcentaje as number)})
-            </p>
+    <div className="flex h-[300px] flex-col justify-evenly gap-2" role="list" aria-label="Votos por candidato">
+      {data.map((candidato) => {
+        const ancho = Math.max((candidato.votos / maxVotos) * 100, 1);
+
+        return (
+          <div key={candidato.nombre} className="grid grid-cols-[7.5rem_1fr] items-center gap-3" role="listitem">
+            <div className="min-w-0 text-right">
+              <p className="truncate text-xs font-semibold text-gb-slate" title={candidato.nombre}>
+                {candidato.nombre}
+              </p>
+              <p className="font-mono text-[10px] text-gb-slate-muted">
+                {formatPercent(candidato.porcentaje)}
+              </p>
+            </div>
+            <div
+              className="h-8 overflow-hidden rounded-gb-md bg-gb-teal-50"
+              title={`${candidato.nombre} — ${candidato.partido}: ${formatNumber(candidato.votos)} votos (${formatPercent(candidato.porcentaje)})`}
+            >
+              <div
+                aria-label={`${candidato.nombre}: ${formatNumber(candidato.votos)} votos`}
+                className="flex h-full min-w-1 items-center justify-end rounded-gb-md px-2 transition-[width]"
+                role="meter"
+                aria-valuemin={0}
+                aria-valuemax={maxVotos}
+                aria-valuenow={candidato.votos}
+                style={{ width: `${ancho}%`, backgroundColor: candidato.color }}
+              >
+                <span className="whitespace-nowrap font-mono text-[10px] font-semibold text-white drop-shadow-sm">
+                  {formatNumber(candidato.votos)}
+                </span>
+              </div>
+            </div>
           </div>
-        )}
-        theme={{
-          axis: {
-            ticks: {
-              text: {
-                fontFamily: 'var(--gb-font-body)',
-                fontSize: 12,
-                fill: '#5E7074',
-              },
-            },
-          },
-        }}
-      />
+        );
+      })}
     </div>
   );
 }

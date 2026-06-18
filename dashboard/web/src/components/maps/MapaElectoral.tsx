@@ -315,27 +315,23 @@ export default function MapaElectoral({
   const [hoveredCode, setHoveredCode] = useState<string | null>(null);
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
   const [municipiosGeoJSON, setMunicipiosGeoJSON] = useState<FeatureCollection | null>(null);
-  const [municipiosError, setMunicipiosError] = useState<string | null>(null);
+  const [municipiosError, setMunicipiosError] = useState<{ codigo: string; mensaje: string } | null>(null);
   const [mapMode, setMapMode] = useState<MapMode>('ganador');
   const [loadedDepartamento, setLoadedDepartamento] = useState<string | null>(null);
 
   // Cargar GeoJSON del departamento seleccionado (archivos divididos por depto)
   useEffect(() => {
-    if (!departamentoSeleccionado) {
-      // Reset cuando se deselecciona
-      setMunicipiosGeoJSON(null);
-      setLoadedDepartamento(null);
-      return;
-    }
+    if (!departamentoSeleccionado) return;
 
     // Si ya cargamos este departamento, no volver a cargar
     if (loadedDepartamento === departamentoSeleccionado) return;
 
     // Convertir código electoral a DANE para cargar el archivo correcto
     const codigoDane = getCodigoDaneDesdElectoral(departamentoSeleccionado);
+    const controller = new AbortController();
 
     // Cargar archivo específico del departamento (OPTIMIZADO: ~138KB vs 4.4MB)
-    fetch(`/api/mapas/municipios/${codigoDane}.json`)
+    fetch(`/api/mapas/municipios/${codigoDane}.json`, { signal: controller.signal })
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
@@ -346,37 +342,49 @@ export default function MapaElectoral({
         setMunicipiosError(null);
       })
       .catch((err) => {
+        if (err instanceof DOMException && err.name === 'AbortError') return;
         console.error('Error cargando municipios:', err);
-        setMunicipiosError('No se pudo cargar la desagregacion municipal.');
+        setMunicipiosError({
+          codigo: departamentoSeleccionado,
+          mensaje: 'No se pudo cargar la desagregacion municipal.',
+        });
       });
+
+    return () => controller.abort();
   }, [departamentoSeleccionado, loadedDepartamento]);
 
   const isMunicipioView = Boolean(departamentoSeleccionado);
 
   const visibleFeatures = useMemo(() => {
     if (!departamentoSeleccionado) return departamentosGeoJSON.features;
-    if (!municipiosGeoJSON) return [];
+    if (!municipiosGeoJSON || loadedDepartamento !== departamentoSeleccionado) return [];
 
     // El archivo ya contiene solo los municipios del departamento (no hay que filtrar)
     return municipiosGeoJSON.features;
-  }, [departamentoSeleccionado, municipiosGeoJSON]);
+  }, [departamentoSeleccionado, loadedDepartamento, municipiosGeoJSON]);
 
   const paths = useMemo(() => {
     if (!visibleFeatures.length) return [];
 
     const project = createProjection(visibleFeatures);
     return visibleFeatures.map((feature) => {
-      const colorGanador = getColorGanador(feature.properties.ganador || '');
       const codigo = getCodigoFeature(feature.properties, isMunicipioView);
+      const codigoDaneDepto = feature.properties.dpto_ccdgo || '';
+      const codigoElectoralDepto = getCodigoElectoralDesdeDane(codigoDaneDepto);
+      const nombreMunicipio = feature.properties.mpio_cnmbr || '';
+      const municipioData = isMunicipioView
+        ? getMunicipioVotos(codigoElectoralDepto, nombreMunicipio)
+        : undefined;
+      const colorGanador = getColorGanador(
+        municipioData?.ganador || feature.properties.ganador || ''
+      );
 
       // Obtener margen real de los datos de votos
       let margen: number;
       if (isMunicipioView) {
-        // Para municipios: usar código depto electoral + nombre del municipio
-        const codigoDaneDepto = feature.properties.dpto_ccdgo || '';
-        const codigoElectoralDepto = getCodigoElectoralDesdeDane(codigoDaneDepto);
-        const nombreMunicipio = feature.properties.mpio_cnmbr || '';
-        margen = calcularMargenMunicipio(codigoElectoralDepto, nombreMunicipio);
+        margen = municipioData && municipioData.total_votos > 0
+          ? municipioData.porcentaje_ganador - ((municipioData.votos_segundo / municipioData.total_votos) * 100)
+          : 20;
       } else {
         // Para departamentos: usar código electoral
         margen = margenesDepartamentos.get(codigo) ?? 20;
@@ -398,7 +406,10 @@ export default function MapaElectoral({
   const mapTitle = isZoomed && departamentoSeleccionadoNombre
     ? `Municipios de ${departamentoSeleccionadoNombre}`
     : 'Colombia por departamentos';
-  const loadingMunicipios = isMunicipioView && !municipiosGeoJSON && !municipiosError;
+  const errorMunicipiosActual = municipiosError && municipiosError.codigo === departamentoSeleccionado
+    ? municipiosError.mensaje
+    : null;
+  const loadingMunicipios = isMunicipioView && loadedDepartamento !== departamentoSeleccionado && !errorMunicipiosActual;
   const emptyMunicipios = isMunicipioView && !loadingMunicipios && visibleFeatures.length === 0;
 
   return (
@@ -456,9 +467,9 @@ export default function MapaElectoral({
           </div>
         </div>
       )}
-      {municipiosError && (
+      {errorMunicipiosActual && (
         <div className="absolute inset-0 z-10 flex items-center justify-center bg-gb-teal-50/90 px-6 text-center">
-          <p className="text-sm font-medium text-gb-slate">{municipiosError}</p>
+          <p className="text-sm font-medium text-gb-slate">{errorMunicipiosActual}</p>
         </div>
       )}
       {emptyMunicipios && (

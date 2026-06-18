@@ -21,7 +21,7 @@ TOTAL DATOS GEOJSON: 5.01 MB
 
 PROPIEDADES POR FEATURE (municipios.json)
 -----------------------------------------
-Cantidad: 9 propiedades
+Cantidad antes de la limpieza completa: 9 propiedades
 
 Propiedades actuales:
   - dpto_ccdgo        (código departamento)     [NECESARIO]
@@ -29,12 +29,12 @@ Propiedades actuales:
   - mpio_cdpmp        (código compuesto)        [NECESARIO]
   - dpto_cnmbr        (nombre departamento)     [NECESARIO]
   - mpio_cnmbr        (nombre municipio)        [NECESARIO]
-  - ganador           (nombre ganador)          [NECESARIO - para colorear mapa]
+  - ganador           (nombre ganador)          [DUPLICADO]
   - votos_ganador     (votos del ganador)       [DUPLICADO]
   - porcentaje_ganador (% del ganador)          [DUPLICADO]
   - total_votos       (votos totales)           [DUPLICADO]
 
-Propiedades duplicadas: 3 de 9 (33%)
+Propiedades duplicadas: 4 de 9 (44%)
 
 
 DISTRIBUCIÓN POR DEPARTAMENTO
@@ -117,6 +117,7 @@ CAMBIO 2: Eliminar propiedades duplicadas
 Fecha: 2026-06-18
 
 Propiedades eliminadas:
+  - ganador           (existe en departamentos/municipios.json)
   - votos_ganador      (existe en departamentos/municipios.json)
   - porcentaje_ganador (existe en departamentos/municipios.json)
   - total_votos        (existe en departamentos/municipios.json)
@@ -127,9 +128,13 @@ Propiedades mantenidas:
   - mpio_cdpmp   (código compuesto)
   - dpto_cnmbr   (nombre departamento)
   - mpio_cnmbr   (nombre municipio)
-  - ganador      (necesario para colorear el mapa)
 
-Reducción: 9 → 6 propiedades (33% menos)
+Reducción: 9 → 5 propiedades (44% menos)
+
+La lógica del mapa obtiene ganador, votos, porcentajes, segundo y diferencia
+desde departamentos/municipios.json. La validación de build exige matching
+100% (1,122/1,122), por lo que retirar el duplicado no cambia colores ni
+tooltips.
 
 
 ================================================================================
@@ -191,7 +196,7 @@ Total archivos:           33
 Total features:           1,122 municipios
 Tamaño total:             4.36 MB
 Promedio por departamento: 135 KB
-Propiedades por feature:   6
+Propiedades por feature:   5
 
 
 ================================================================================
@@ -202,7 +207,7 @@ Métrica                      Antes       Después     Mejora
 -------------------------    --------    --------    ------
 Tamaño municipios total      4.43 MB     4.36 MB     -2%
 Descarga por sesión          4.43 MB     135 KB      -97%
-Propiedades por feature      9           6           -33%
+Propiedades por feature      9           5           -44%
 Archivos                     1           33          +32
 
 
@@ -286,14 +291,65 @@ NOTAS TÉCNICAS
 1. El archivo municipios.json único se mantiene para compatibilidad
    (se puede eliminar en futuras versiones).
 
-2. La propiedad 'ganador' se mantiene en el GeoJSON porque es necesaria
-   para colorear el mapa. Los datos detallados de votos están en
-   departamentos/municipios.json.
+2. La propiedad 'ganador' ya no se duplica en el GeoJSON. El mapa la obtiene
+   desde departamentos/municipios.json mediante el matching validado.
 
 3. El código de MapaElectoral.tsx ahora hace fetch a:
-   /api/mapas/municipios/${departamentoSeleccionado}.json
+   /api/mapas/municipios/${codigoDane}.json
 
 4. Se limpia el estado cuando se cambia de departamento para evitar
    mostrar datos del departamento anterior.
+
+5. El matching de datos municipales es por NOMBRE normalizado, no por código,
+   porque los códigos DANE y electorales son diferentes.
+
+6. Existen 5 aliases manuales para municipios con nombres muy diferentes
+   entre sistemas DANE y electoral.
+
+================================================================================
+SISTEMA DE MATCHING MUNICIPAL
+================================================================================
+
+PROBLEMA
+--------
+Los códigos municipales DANE (GeoJSON) ≠ códigos electorales (datos de votos).
+
+Ejemplo para Meta:
+  ACACÍAS:  DANE=006, Electoral=005
+  GRANADA:  DANE=313, Electoral=035
+
+SOLUCIÓN
+--------
+Matching por nombre normalizado en lugar de código:
+
+1. Normalización:
+   - Quitar acentos (NFD + regex)
+   - Mayúsculas
+   - Quitar puntuación, paréntesis, guiones
+   - Quitar espacios
+
+2. Búsqueda en 3 pasos:
+   a) Match exacto por nombre normalizado
+   b) Match por alias manual (5 casos especiales)
+   c) Match parcial (nombre contenido en otro)
+
+ALIASES MANUALES
+----------------
+depto_nombreDANE              -> nombreElectoral
+05_SANTACRUZDEMOMPOX          -> MOMPOS
+07_VILLADELEYVA               -> VILLADELEIVA
+11_LOPEZDEMICAY               -> LOPEZMICAY
+60_MIRITIPARANA               -> MIRITIPARANA
+68_PAPUNAHUA                  -> MORICHALPAPUNAGUA
+
+RESULTADO
+---------
+Match rate: 100% (1122/1122 municipios)
+
+ARCHIVOS INVOLUCRADOS
+---------------------
+- src/components/maps/MapaElectoral.tsx (lógica de matching en runtime)
+- scripts/validate-municipal-matching.js (validación en build)
+- scripts/simplify-municipios.js (geometría y propiedades geográficas mínimas)
 
 ================================================================================

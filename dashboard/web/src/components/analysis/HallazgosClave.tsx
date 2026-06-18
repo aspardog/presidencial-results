@@ -378,11 +378,7 @@ export default function HallazgosClave() {
               <p className="gb-eyebrow text-[10px] sm:text-xs">Bastiones y ventajas {getApellido(polMunicipal.resumen.ganador_nacional)}</p>
             </div>
             <div className="space-y-2 sm:space-y-3">
-              {polarizacion.por_departamento
-                .filter(d => d.ganador.includes('ESPRIELLA') && d.margen >= 10)
-                .sort((a, b) => b.margen - a.margen)
-                .slice(0, 5)
-                .map((depto) => (
+              {polarizacion.bastiones_ganador_nacional.map((depto) => (
                   <div key={depto.codigo} className="flex items-center justify-between">
                     <span className="text-xs sm:text-sm text-gb-slate">{depto.nombre}</span>
                     <span className="font-mono text-xs sm:text-sm font-semibold text-blue-600">
@@ -399,11 +395,7 @@ export default function HallazgosClave() {
               <p className="gb-eyebrow text-[10px] sm:text-xs">Bastiones y ventajas {getApellido(polMunicipal.resumen.segundo_nacional)}</p>
             </div>
             <div className="space-y-2 sm:space-y-3">
-              {polarizacion.por_departamento
-                .filter(d => d.ganador.includes('CEPEDA') && d.margen >= 10)
-                .sort((a, b) => b.margen - a.margen)
-                .slice(0, 5)
-                .map((depto) => (
+              {polarizacion.bastiones_segundo_nacional.map((depto) => (
                   <div key={depto.codigo} className="flex items-center justify-between">
                     <span className="text-xs sm:text-sm text-gb-slate">{depto.nombre}</span>
                     <span className="font-mono text-xs sm:text-sm font-semibold text-orange-600">

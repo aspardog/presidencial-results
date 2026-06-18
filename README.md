@@ -18,9 +18,11 @@ Bronze (origen) -> Silver (datos limpios) -> Gold (productos analiticos)
 - Silver a Gold: implementado para nivel nacional, departamental y municipal.
 - JSON para dashboard: implementado.
 - Geometrias DANE MGN 2025 en Silver: disponibles.
-- GeoJSON electoral con votos: pendiente; `generar_geojson.py` solo verifica prerrequisitos.
+- Mapas electorales del dashboard: implementados con GeoJSON simplificado.
+- GeoJSON municipal: dividido en 33 archivos por departamento para carga bajo demanda.
 - Homologacion Registraduria-DANE: completada (100% departamentos y municipios).
-- Tests automatizados: pendientes.
+- Validaciones del dashboard: contratos estaticos y matching municipal automatizados.
+- Tests automatizados del pipeline R: pendientes.
 
 ## Datos actuales
 
@@ -86,7 +88,7 @@ data/
     municipal/              Agregaciones por municipio
     visualizaciones/
       dashboard/            JSON para dashboards web
-      mapas/geojson/        Salida futura para GeoJSON electoral
+      mapas/                Insumos y salidas geograficas del dashboard
 scripts/
   00_setup/
   01_bronze_to_silver/
@@ -104,9 +106,10 @@ La descripcion extensa esta en
 - `data/gold/departamental/`: resultados, rankings y diferencias.
 - `data/gold/municipal/`: resultados, participacion y mapeo de mesas.
 - `data/gold/visualizaciones/dashboard/`: JSON para consumo web.
-- `data/gold/visualizaciones/mapas/geojson/`: salida prevista para GeoJSON electoral.
+- `data/gold/visualizaciones/mapas/`: insumos GeoJSON y versiones simplificadas
+  consumidas por el proceso de build del dashboard.
 
-### GeoJSON Electoral
+### GeoJSON electoral y dashboard
 
 La capa Silver ya contiene geometrias oficiales del DANE:
 
@@ -115,9 +118,18 @@ La capa Silver ya contiene geometrias oficiales del DANE:
 | `data/silver/geograficos/geometrias_deptos.geojson` | 33 departamentos |
 | `data/silver/geograficos/geometrias_municipios.geojson` | 1.122 municipios |
 
-`scripts/02_silver_to_gold/visualizaciones/generar_geojson.py` verifica que
-existan las geometrias y los insumos electorales. La union espacial para
-generar GeoJSON con votos y ganador sigue pendiente de implementacion.
+`scripts/02_silver_to_gold/visualizaciones/generar_geojson.py` solo verifica
+los prerrequisitos del pipeline R; la union espacial no esta implementada en
+ese script. El dashboard ya dispone de GeoJSON electoral generado previamente
+y `dashboard/web/scripts/build-data.js` lo simplifica y publica en
+`dashboard/web/public/api/mapas/`.
+
+Para municipios se generan 33 archivos `mapas/municipios/{codigo_dane}.json`.
+Al seleccionar un departamento, el navegador descarga solo su archivo (unos
+135 KB en promedio, frente a 4,43 MB del archivo nacional). El cruce con los
+resultados electorales se realiza por nombre normalizado porque los codigos
+municipales DANE y electorales no son equivalentes. `npm run validate` exige
+un matching minimo de 95%; el estado actual es 100% (1.122/1.122).
 
 ## Documentacion
 
@@ -154,9 +166,9 @@ Fuentes:
 - Municipios: `MGN2025_MPIO_GRAFICO.zip` (68 MB)
 
 La homologacion entre codigos electorales (Registraduria) y codigos DANE
-(DIVIPOLA) esta documentada en `data/silver/metadata/electoral/`. La union de
-esas geometrias con resultados electorales para Gold todavia no esta
-implementada en `generar_geojson.py`.
+(DIVIPOLA) esta documentada en `data/silver/metadata/electoral/`. Para conocer
+el flujo de generacion, optimizacion y validacion de los mapas publicados,
+consulte [dashboard/README.md](dashboard/README.md).
 
 ## Versionamiento
 

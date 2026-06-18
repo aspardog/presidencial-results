@@ -137,6 +137,8 @@ export interface AnalisisPolarizacion {
   competitividad: Competitividad;
   departamentos_mas_polarizados: DepartamentoPolarizacion[];
   departamentos_menos_polarizados: DepartamentoPolarizacion[];
+  bastiones_ganador_nacional: DepartamentoPolarizacion[];
+  bastiones_segundo_nacional: DepartamentoPolarizacion[];
   por_departamento: DepartamentoPolarizacion[];
 }
 

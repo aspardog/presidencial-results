@@ -112,11 +112,28 @@ El estado actual es:
 
 - `data/silver/geograficos/geometrias_deptos.geojson`: disponible.
 - `data/silver/geograficos/geometrias_municipios.geojson`: disponible.
-- GeoJSON electoral Gold con votos y ganador: pendiente.
+- Generacion del GeoJSON electoral Gold desde el pipeline R: pendiente.
+- Capas electorales estaticas del dashboard: disponibles.
 
 `generar_geojson.py` valida prerequisitos y finaliza sin producir archivos
 vacios. Si las geometrias existen, informa que la union espacial aun no esta
-implementada.
+implementada en el pipeline R.
+
+El dashboard usa insumos GeoJSON existentes bajo
+`data/gold/visualizaciones/mapas/`. Para regenerar su API estatica, incluidas
+las capas municipales divididas por departamento, ejecute:
+
+```bash
+cd dashboard/web
+npm install
+npm run build:data
+npm run validate
+```
+
+La validacion comprueba los contratos nacionales y departamentales, y tambien
+el matching entre los 1.122 municipios del GeoJSON DANE y los resultados
+electorales. Consulte [../dashboard/README.md](../dashboard/README.md) para el
+flujo completo de desarrollo y despliegue.
 
 ## 7. Solucion de problemas
 

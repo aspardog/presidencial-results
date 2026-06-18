@@ -2,17 +2,40 @@
 
 Los cambios relevantes del proyecto se documentan en este archivo.
 
-## [Unreleased] - 2026-06-16
+## [Unreleased] - 2026-06-18
+
+### Added
+
+- Capas GeoJSON municipales divididas en 33 archivos por departamento para
+  carga bajo demanda.
+- Validacion automatica del matching entre municipios DANE y resultados
+  electorales como parte de `npm run validate`.
+- Analisis de polarizacion y competitividad departamental y municipal.
+- Cache de 24 horas para los JSON estaticos servidos por Vercel.
+- Rankings departamentales de bastiones precalculados en el build de datos.
+
+### Fixed
+
+- Conversion de codigo departamental electoral a DANE al cargar mapas.
+- Tooltips, margenes, colores y datos electorales de los mapas municipales.
+- Matching municipal por nombre normalizado y aliases para cinco casos
+  especiales; cobertura actual de 100% (1.122/1.122).
 
 ### Changed
 
 - Documentacion actualizada para reflejar el estado real del pipeline, el
   dashboard estatico y las rutas vigentes de ejecucion.
-- Se aclaro que `generar_geojson.py` verifica prerrequisitos, pero aun no
-  genera GeoJSON electoral con votos.
+- Se aclaro la diferencia entre el verificador GeoJSON del pipeline R y las
+  capas electorales ya consumidas por el dashboard.
 - Se actualizaron las instrucciones del dashboard para usar
   `dashboard/web/` como raiz operativa.
 - Politica de seguridad alineada con la version soportada actual.
+- La carga municipal pasa de una capa nacional de 4,43 MB a archivos de unos
+  135 KB por departamento en promedio (97% menos por seleccion).
+- El grafico de candidatos ahora usa HTML/CSS nativo; se retiro `@nivo/bar` y
+  su arbol de dependencias sin cambiar votos, porcentajes ni colores.
+- Los GeoJSON municipales conservan geometria, codigos y nombres; los datos
+  electorales se resuelven desde el desglose municipal validado al 100%.
 
 ## [1.2.0] - 2026-06-15
 
