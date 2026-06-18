@@ -29,10 +29,7 @@ const margenesMunicipios = new Map<string, number>(
 
 /**
  * Devuelve un color basado en el margen (% primero - % segundo).
- * <2% = ultra-competido (rojo)
- * 2-10% = competido (naranja)
- * 10-20% = ventaja clara (amarillo)
- * >20% = bastión (verde)
+ * Escala rojo-naranja (competido) → verde (bastión)
  */
 function getColorPorMargen(margen: number): string {
   const m = Math.abs(margen);
@@ -40,7 +37,7 @@ function getColorPorMargen(margen: number): string {
   if (m < 2) return '#DC2626'; // ultra-competido - rojo
   if (m < 5) return '#EA580C'; // muy competido - naranja oscuro
   if (m < 10) return '#F97316'; // competido - naranja
-  if (m < 20) return '#FBBF24'; // ventaja clara - amarillo
+  if (m < 20) return '#84CC16'; // ventaja clara - lima/verde claro
   if (m < 40) return '#22C55E'; // bastión - verde
   return '#15803D'; // bastión fuerte - verde oscuro
 }
@@ -514,7 +511,7 @@ export default function MapaElectoral({
                 <span className="text-gb-slate">2-10% Competido</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: '#FBBF24' }} />
+                <div className="h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: '#84CC16' }} />
                 <span className="text-gb-slate">10-20% Ventaja clara</span>
               </div>
               <div className="flex items-center gap-2">
