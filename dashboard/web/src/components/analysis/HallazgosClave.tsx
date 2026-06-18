@@ -330,11 +330,11 @@ export default function HallazgosClave() {
             </div>
           </div>
 
-          {/* Bastiones */}
+          {/* Bastiones y ventajas claras */}
           <div className="gb-card">
-            <p className="gb-eyebrow">Bastiones</p>
+            <p className="gb-eyebrow">Bastiones y ventajas claras</p>
             <p className="mt-1 text-xs sm:text-sm text-gb-slate-muted">
-              {polMunicipal.competitividad_municipal.bastiones} municipios con margen &gt;20%
+              {polMunicipal.competitividad_municipal.bastiones + polMunicipal.competitividad_municipal.ventaja_clara} municipios con margen &gt;10%
             </p>
 
             <div className="mt-3 sm:mt-4 space-y-1.5 sm:space-y-2">
