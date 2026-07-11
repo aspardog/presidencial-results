@@ -27,9 +27,34 @@ npm run lint             # ESLint
 ### R Pipeline (from root)
 
 ```bash
-Rscript scripts/02_silver_to_gold/ejecutar_todas_agregaciones.R  # Generate Gold
+Rscript scripts/02_silver_to_gold/ejecutar_todas_agregaciones.R  # Generate Gold (primera)
 Rscript scripts/02_silver_to_gold/ejecutar_fase_4.R              # Generate dashboard JSON + check GeoJSON prerequisites
 ```
+
+### Regenerating both electoral rounds
+
+```bash
+# Bronze → Silver → Gold, per round (VUELTA_ELECTORAL: primera | segunda)
+VUELTA_ELECTORAL=segunda Rscript scripts/01_bronze_to_silver/limpieza_datos.R
+VUELTA_ELECTORAL=segunda Rscript scripts/02_silver_to_gold/ejecutar_todas_agregaciones.R
+
+# From dashboard/web/: Gold → public/api per round, then the comparison bundle
+VUELTA_ELECTORAL=primera node scripts/build-data.js   # → public/api/primera + shared mapas
+VUELTA_ELECTORAL=segunda node scripts/build-data.js   # → public/api/segunda
+# Estimated vote transfer (ecological inference, from repo root):
+Rscript scripts/02_silver_to_gold/electoral/estimacion_trasvase.R  # → data/gold/analisis/trasvase.csv
+node scripts/build-comparativa.js                     # → public/api/comparativa.json (incl. trasvase)
+```
+
+`npm run build:data` (in `dashboard/web/`) chains all of the above. Note the
+`estimacion_trasvase.R` step needs R + the municipal Gold of both rounds; it is
+NOT run on Vercel (which only consumes the committed `public/api/` JSON).
+
+**Trasvase methodology:** `estimacion_trasvase.R` estimates, per first-round
+candidate, the *territorial lean* of its vote — the weighted municipal
+correlation between that candidate's 1st-round strength and the winner's 2nd-round
+swing. It is ecological inference (a tendency, not individual vote counting);
+turnout rose between rounds, so part of the finalists' growth is new voters.
 
 ## Architecture
 
@@ -40,26 +65,37 @@ data/bronze/     Raw Registraduría CSVs + DANE shapefiles
       ↓
 data/silver/     Cleaned mesa-level data (datos_master.rds)
       ↓
-data/gold/       Aggregations (nacional/, departamental/, municipal/)
+data/gold/       Aggregations. primera at root (nacional/, departamental/, municipal/);
+                 segunda namespaced under data/gold/segunda/...
       ↓
-dashboard/web/public/api/   Static JSON consumed by Next.js
+dashboard/web/public/api/   Static JSON consumed by Next.js (per-round namespaces)
 ```
+
+The R pipeline and `build-data.js` are parameterized by the `VUELTA_ELECTORAL`
+env var (`primera` | `segunda`, default `primera`). `primera` writes to the
+historical root paths; `segunda` writes to namespaced subfolders. Bronze CSVs
+live in `data/bronze/raw/electoral/{Primera vuelta,Segunda vuelta}/`.
 
 ### Dashboard Static Data Pattern
 
 The dashboard uses **static imports only** - no runtime API calls. JSON files in `public/api/` are imported directly into components at build time. This ensures Vercel serves a closed, verifiable version.
 
-Key static endpoints:
-- `nacional/resumen.json` - National totals, winner, runner-up
-- `nacional/candidatos.json` - Candidates sorted by votes
-- `departamentos/lista.json` - Department summaries
-- `departamentos/detalle.json` - Per-department candidates and metrics
-- `departamentos/municipios.json` - Municipal vote data indexed by electoral department code
-- `analisis/claves-territoriales.json` - Territorial analysis data
-- `analisis/polarizacion.json` - Department-level polarization metrics
-- `analisis/polarizacion-municipal.json` - Municipal polarization metrics
-- `mapas/departamentos.json` - Simplified GeoJSON for interactive map
-- `mapas/municipios/{codigo}.json` - Per-department municipal GeoJSON (33 files, ~135KB each)
+**Two electoral rounds:** the election has a first round (`primera`, 11 candidates, no majority) and a runoff (`segunda`, 2 candidates). Round-specific JSON is namespaced under `public/api/{primera,segunda}/...`. The dashboard's main view defaults to **segunda vuelta** (the decisive result); the first round is surfaced through the `Comparativa` module (`comparativa.json`). Map geometry is round-independent and shared under `public/api/mapas/`.
+
+Key static endpoints (per round unless noted):
+- `{vuelta}/nacional/resumen.json` - National totals, winner, runner-up
+- `{vuelta}/nacional/candidatos.json` - Candidates sorted by votes
+- `{vuelta}/departamentos/lista.json` - Department summaries
+- `{vuelta}/departamentos/detalle.json` - Per-department candidates and metrics
+- `{vuelta}/departamentos/municipios.json` - Municipal vote data indexed by electoral department code
+- `{vuelta}/analisis/claves-territoriales.json` - Territorial analysis data
+- `{vuelta}/analisis/polarizacion.json` - Department-level polarization metrics
+- `{vuelta}/analisis/polarizacion-municipal.json` - Municipal polarization metrics
+- `comparativa.json` - **(shared)** Primera↔segunda comparison: finalist growth, "votos en juego", per-department flips, and `trasvase` (estimated territorial lean of each eliminated candidate's vote, from `estimacion_trasvase.R`)
+- `mapas/departamentos.json` - **(shared)** Simplified GeoJSON for interactive map
+- `mapas/municipios/{codigo}.json` - **(shared)** Per-department municipal GeoJSON (33 files, ~135KB each)
+
+Active-round imports live at `public/api/segunda/...` in `page.tsx`, `HallazgosClave.tsx`, and `MapaElectoral.tsx`. To change the main view to primera, repoint those imports to `public/api/primera/...`.
 
 ### GeoJSON Optimization
 
@@ -129,6 +165,7 @@ Electoral types are defined in `dashboard/web/src/types/electoral.ts`. Main inte
 
 - `MapaElectoral` - Interactive SVG map of Colombia
 - `HallazgosClave` - Unified national and territorial analysis section (replaces separate ClavesTerritoriales)
+- `Comparativa` - Primera↔segunda vuelta comparison / trasvase module (consumes `comparativa.json`)
 - `BarrasCandidatos` - Native HTML/CSS candidate comparison with accessible meter semantics
 - `CardResumen`, `CardGanador` - Summary cards
 

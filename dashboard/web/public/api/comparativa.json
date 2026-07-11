@@ -1,0 +1,1327 @@
+{
+  "generado": "2026-07-11T19:23:41.725Z",
+  "metodologia": "Comparación agregada primera vs segunda vuelta. Los deltas y la \"bolsa en juego\" son contabilidad de resultados, no atribución individual de trasvase de votos.",
+  "nacional": {
+    "primera": {
+      "votos_validos": 22683841,
+      "votos_emitidos": 23399401,
+      "candidatos": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "partido": "DEFENSORES DE LA PATRIA",
+          "color": "#1D4ED8",
+          "votos": 10045330,
+          "porcentaje": 44.28
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+          "color": "#C2410C",
+          "votos": 9536162,
+          "porcentaje": 42.04
+        },
+        {
+          "nombre": "PALOMA VALENCIA LASERNA",
+          "partido": "PARTIDO CENTRO DEMOCRÁTICO",
+          "color": "#7C3AED",
+          "votos": 1586296,
+          "porcentaje": 6.99
+        },
+        {
+          "nombre": "SERGIO FAJARDO VALDERRAMA",
+          "partido": "PARTIDO POLÍTICO DIGNIDAD & COMPROMISO",
+          "color": "#0F766E",
+          "votos": 977641,
+          "porcentaje": 4.31
+        },
+        {
+          "nombre": "CLAUDIA LÓPEZ",
+          "partido": "CON CLAUDIA IMPARABLES",
+          "color": "#CA8A04",
+          "votos": 217842,
+          "porcentaje": 0.96
+        },
+        {
+          "nombre": "RAÚL SANTIAGO BOTERO JARAMILLO",
+          "partido": "ROMPER EL SISTEMA",
+          "color": "#BE185D",
+          "votos": 202954,
+          "porcentaje": 0.89
+        },
+        {
+          "nombre": "ÓSCAR MAURICIO LIZCANO ARANGO",
+          "partido": "COALICIÓN F.A.M.I.L.I.A",
+          "color": "#0891B2",
+          "votos": 52383,
+          "porcentaje": 0.23
+        },
+        {
+          "nombre": "MIGUEL URIBE LONDOÑO",
+          "partido": "PARTIDO DEMÓCRATA COLOMBIANO",
+          "color": "#4F46E5",
+          "votos": 27818,
+          "porcentaje": 0.12
+        },
+        {
+          "nombre": "SONDRA MACOLLINS GARVIN PINTO",
+          "partido": "SONDRA MACOLLINS, LA ABOGADA DE HIERRO",
+          "color": "#65A30D",
+          "votos": 19035,
+          "porcentaje": 0.08
+        },
+        {
+          "nombre": "ROY LEONARDO BARRERAS MONTEALEGRE",
+          "partido": "PARTIDO POLÍTICO LA FUERZA",
+          "color": "#EA580C",
+          "votos": 13566,
+          "porcentaje": 0.06
+        },
+        {
+          "nombre": "GUSTAVO MATAMOROS CAMACHO",
+          "partido": "PARTIDO ECOLOGISTA COLOMBIANO",
+          "color": "#059669",
+          "votos": 4814,
+          "porcentaje": 0.02
+        }
+      ]
+    },
+    "segunda": {
+      "votos_validos": 25064373,
+      "votos_emitidos": 25730850,
+      "candidatos": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "partido": "DEFENSORES DE LA PATRIA",
+          "color": "#1D4ED8",
+          "votos": 12569192,
+          "porcentaje": 50.15
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+          "color": "#C2410C",
+          "votos": 12495181,
+          "porcentaje": 49.85
+        }
+      ]
+    },
+    "finalistas": [
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "color": "#1D4ED8",
+        "votos_primera": 10045330,
+        "pct_primera": 44.28,
+        "votos_segunda": 12569192,
+        "pct_segunda": 50.15,
+        "delta_votos": 2523862,
+        "delta_pct": 5.87
+      },
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "color": "#C2410C",
+        "votos_primera": 9536162,
+        "pct_primera": 42.04,
+        "votos_segunda": 12495181,
+        "pct_segunda": 49.85,
+        "delta_votos": 2959019,
+        "delta_pct": 7.81
+      }
+    ],
+    "eliminados": [
+      {
+        "nombre": "PALOMA VALENCIA LASERNA",
+        "partido": "PARTIDO CENTRO DEMOCRÁTICO",
+        "color": "#7C3AED",
+        "votos": 1586296,
+        "porcentaje": 6.99
+      },
+      {
+        "nombre": "SERGIO FAJARDO VALDERRAMA",
+        "partido": "PARTIDO POLÍTICO DIGNIDAD & COMPROMISO",
+        "color": "#0F766E",
+        "votos": 977641,
+        "porcentaje": 4.31
+      },
+      {
+        "nombre": "CLAUDIA LÓPEZ",
+        "partido": "CON CLAUDIA IMPARABLES",
+        "color": "#CA8A04",
+        "votos": 217842,
+        "porcentaje": 0.96
+      },
+      {
+        "nombre": "RAÚL SANTIAGO BOTERO JARAMILLO",
+        "partido": "ROMPER EL SISTEMA",
+        "color": "#BE185D",
+        "votos": 202954,
+        "porcentaje": 0.89
+      },
+      {
+        "nombre": "ÓSCAR MAURICIO LIZCANO ARANGO",
+        "partido": "COALICIÓN F.A.M.I.L.I.A",
+        "color": "#0891B2",
+        "votos": 52383,
+        "porcentaje": 0.23
+      },
+      {
+        "nombre": "MIGUEL URIBE LONDOÑO",
+        "partido": "PARTIDO DEMÓCRATA COLOMBIANO",
+        "color": "#4F46E5",
+        "votos": 27818,
+        "porcentaje": 0.12
+      },
+      {
+        "nombre": "SONDRA MACOLLINS GARVIN PINTO",
+        "partido": "SONDRA MACOLLINS, LA ABOGADA DE HIERRO",
+        "color": "#65A30D",
+        "votos": 19035,
+        "porcentaje": 0.08
+      },
+      {
+        "nombre": "ROY LEONARDO BARRERAS MONTEALEGRE",
+        "partido": "PARTIDO POLÍTICO LA FUERZA",
+        "color": "#EA580C",
+        "votos": 13566,
+        "porcentaje": 0.06
+      },
+      {
+        "nombre": "GUSTAVO MATAMOROS CAMACHO",
+        "partido": "PARTIDO ECOLOGISTA COLOMBIANO",
+        "color": "#059669",
+        "votos": 4814,
+        "porcentaje": 0.02
+      }
+    ],
+    "votos_en_juego": 3102349,
+    "cambio_votos_emitidos": {
+      "primera": 23399401,
+      "segunda": 25730850,
+      "delta": 2331449,
+      "delta_pct": 9.96
+    }
+  },
+  "trasvase": {
+    "referencia": "ABELARDO DE LA ESPRIELLA",
+    "otro": "IVÁN CEPEDA CASTRO",
+    "metodologia": "Afinidad territorial (inferencia ecológica): correlación municipal entre la fuerza de cada candidato en 1ª vuelta y el swing de ABELARDO DE LA ESPRIELLA en 2ª. Mide tendencia, no conteo individual; la participación subió entre vueltas, así que parte del crecimiento son votantes nuevos.",
+    "candidatos": [
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "es_finalista": true,
+        "votos_1a": 10045330,
+        "pct_1a": 44.28,
+        "lean": 0.506,
+        "hacia": "ABELARDO DE LA ESPRIELLA",
+        "fuerza": 0.506,
+        "color": "#1D4ED8"
+      },
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "es_finalista": true,
+        "votos_1a": 9536162,
+        "pct_1a": 42.04,
+        "lean": -0.728,
+        "hacia": "IVÁN CEPEDA CASTRO",
+        "fuerza": 0.728,
+        "color": "#C2410C"
+      },
+      {
+        "nombre": "PALOMA VALENCIA LASERNA",
+        "es_finalista": false,
+        "votos_1a": 1586296,
+        "pct_1a": 6.99,
+        "lean": 0.924,
+        "hacia": "ABELARDO DE LA ESPRIELLA",
+        "fuerza": 0.924,
+        "color": "#7C3AED"
+      },
+      {
+        "nombre": "SERGIO FAJARDO VALDERRAMA",
+        "es_finalista": false,
+        "votos_1a": 977641,
+        "pct_1a": 4.31,
+        "lean": 0.475,
+        "hacia": "ABELARDO DE LA ESPRIELLA",
+        "fuerza": 0.475,
+        "color": "#0F766E"
+      },
+      {
+        "nombre": "CLAUDIA LÓPEZ",
+        "es_finalista": false,
+        "votos_1a": 217842,
+        "pct_1a": 0.96,
+        "lean": 0.247,
+        "hacia": "ABELARDO DE LA ESPRIELLA",
+        "fuerza": 0.247,
+        "color": "#CA8A04"
+      },
+      {
+        "nombre": "RAÚL SANTIAGO BOTERO JARAMILLO",
+        "es_finalista": false,
+        "votos_1a": 202954,
+        "pct_1a": 0.89,
+        "lean": 0.287,
+        "hacia": "ABELARDO DE LA ESPRIELLA",
+        "fuerza": 0.287,
+        "color": "#BE185D"
+      },
+      {
+        "nombre": "ÓSCAR MAURICIO LIZCANO ARANGO",
+        "es_finalista": false,
+        "votos_1a": 52383,
+        "pct_1a": 0.23,
+        "lean": 0.227,
+        "hacia": "ABELARDO DE LA ESPRIELLA",
+        "fuerza": 0.227,
+        "color": "#0891B2"
+      },
+      {
+        "nombre": "MIGUEL URIBE LONDOÑO",
+        "es_finalista": false,
+        "votos_1a": 27818,
+        "pct_1a": 0.12,
+        "lean": 0.377,
+        "hacia": "ABELARDO DE LA ESPRIELLA",
+        "fuerza": 0.377,
+        "color": "#4F46E5"
+      },
+      {
+        "nombre": "SONDRA MACOLLINS GARVIN PINTO",
+        "es_finalista": false,
+        "votos_1a": 19035,
+        "pct_1a": 0.08,
+        "lean": 0.198,
+        "hacia": "ABELARDO DE LA ESPRIELLA",
+        "fuerza": 0.198,
+        "color": "#65A30D"
+      },
+      {
+        "nombre": "ROY LEONARDO BARRERAS MONTEALEGRE",
+        "es_finalista": false,
+        "votos_1a": 13566,
+        "pct_1a": 0.06,
+        "lean": 0.202,
+        "hacia": "ABELARDO DE LA ESPRIELLA",
+        "fuerza": 0.202,
+        "color": "#EA580C"
+      },
+      {
+        "nombre": "GUSTAVO MATAMOROS CAMACHO",
+        "es_finalista": false,
+        "votos_1a": 4814,
+        "pct_1a": 0.02,
+        "lean": -0.015,
+        "hacia": "IVÁN CEPEDA CASTRO",
+        "fuerza": 0.015,
+        "color": "#059669"
+      }
+    ]
+  },
+  "departamentos": [
+    {
+      "codigo": "01",
+      "nombre": "ANTIOQUIA",
+      "primera": {
+        "ganador": "ABELARDO DE LA ESPRIELLA",
+        "pct": 55.49
+      },
+      "segunda": {
+        "ganador": "ABELARDO DE LA ESPRIELLA",
+        "pct": 65.87,
+        "margen": 31.74
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 55.49,
+          "pct_segunda": 65.87,
+          "delta_pct": 10.38
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 25.96,
+          "pct_segunda": 34.13,
+          "delta_pct": 8.17
+        }
+      ]
+    },
+    {
+      "codigo": "03",
+      "nombre": "ATLANTICO",
+      "primera": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 52.98
+      },
+      "segunda": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 59.21,
+        "margen": 18.42
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 41.48,
+          "pct_segunda": 40.79,
+          "delta_pct": -0.69
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 52.98,
+          "pct_segunda": 59.21,
+          "delta_pct": 6.23
+        }
+      ]
+    },
+    {
+      "codigo": "05",
+      "nombre": "BOLIVAR",
+      "primera": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 54.98
+      },
+      "segunda": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 60.17,
+        "margen": 20.34
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 38.76,
+          "pct_segunda": 39.83,
+          "delta_pct": 1.07
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 54.98,
+          "pct_segunda": 60.17,
+          "delta_pct": 5.19
+        }
+      ]
+    },
+    {
+      "codigo": "07",
+      "nombre": "BOYACA",
+      "primera": {
+        "ganador": "ABELARDO DE LA ESPRIELLA",
+        "pct": 51.33
+      },
+      "segunda": {
+        "ganador": "ABELARDO DE LA ESPRIELLA",
+        "pct": 61.2,
+        "margen": 22.4
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 51.33,
+          "pct_segunda": 61.2,
+          "delta_pct": 9.87
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 32.87,
+          "pct_segunda": 38.8,
+          "delta_pct": 5.93
+        }
+      ]
+    },
+    {
+      "codigo": "09",
+      "nombre": "CALDAS",
+      "primera": {
+        "ganador": "ABELARDO DE LA ESPRIELLA",
+        "pct": 45.53
+      },
+      "segunda": {
+        "ganador": "ABELARDO DE LA ESPRIELLA",
+        "pct": 60.12,
+        "margen": 20.24
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 45.53,
+          "pct_segunda": 60.12,
+          "delta_pct": 14.59
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 30.41,
+          "pct_segunda": 39.88,
+          "delta_pct": 9.47
+        }
+      ]
+    },
+    {
+      "codigo": "11",
+      "nombre": "CAUCA",
+      "primera": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 70.17
+      },
+      "segunda": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 76.81,
+        "margen": 53.62
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 19.88,
+          "pct_segunda": 23.19,
+          "delta_pct": 3.31
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 70.17,
+          "pct_segunda": 76.81,
+          "delta_pct": 6.64
+        }
+      ]
+    },
+    {
+      "codigo": "12",
+      "nombre": "CESAR",
+      "primera": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 47.28
+      },
+      "segunda": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 51.5,
+        "margen": 3
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 47.07,
+          "pct_segunda": 48.5,
+          "delta_pct": 1.43
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 47.28,
+          "pct_segunda": 51.5,
+          "delta_pct": 4.22
+        }
+      ]
+    },
+    {
+      "codigo": "13",
+      "nombre": "CORDOBA",
+      "primera": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 56.52
+      },
+      "segunda": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 58.85,
+        "margen": 17.7
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 38.51,
+          "pct_segunda": 41.15,
+          "delta_pct": 2.64
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 56.52,
+          "pct_segunda": 58.85,
+          "delta_pct": 2.33
+        }
+      ]
+    },
+    {
+      "codigo": "15",
+      "nombre": "CUNDINAMARCA",
+      "primera": {
+        "ganador": "ABELARDO DE LA ESPRIELLA",
+        "pct": 46.18
+      },
+      "segunda": {
+        "ganador": "ABELARDO DE LA ESPRIELLA",
+        "pct": 53.86,
+        "margen": 7.72
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 46.18,
+          "pct_segunda": 53.86,
+          "delta_pct": 7.68
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 38.2,
+          "pct_segunda": 46.14,
+          "delta_pct": 7.94
+        }
+      ]
+    },
+    {
+      "codigo": "16",
+      "nombre": "BOGOTA D.C.",
+      "primera": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 42.43
+      },
+      "segunda": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 53.61,
+        "margen": 7.22
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 38.4,
+          "pct_segunda": 46.39,
+          "delta_pct": 7.99
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 42.43,
+          "pct_segunda": 53.61,
+          "delta_pct": 11.18
+        }
+      ]
+    },
+    {
+      "codigo": "17",
+      "nombre": "CHOCO",
+      "primera": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 77.17
+      },
+      "segunda": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 82.08,
+        "margen": 64.16
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 16.04,
+          "pct_segunda": 17.92,
+          "delta_pct": 1.88
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 77.17,
+          "pct_segunda": 82.08,
+          "delta_pct": 4.91
+        }
+      ]
+    },
+    {
+      "codigo": "19",
+      "nombre": "HUILA",
+      "primera": {
+        "ganador": "ABELARDO DE LA ESPRIELLA",
+        "pct": 55.35
+      },
+      "segunda": {
+        "ganador": "ABELARDO DE LA ESPRIELLA",
+        "pct": 62.09,
+        "margen": 24.18
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 55.35,
+          "pct_segunda": 62.09,
+          "delta_pct": 6.74
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 32.85,
+          "pct_segunda": 37.91,
+          "delta_pct": 5.06
+        }
+      ]
+    },
+    {
+      "codigo": "21",
+      "nombre": "MAGDALENA",
+      "primera": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 53.35
+      },
+      "segunda": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 57.65,
+        "margen": 15.3
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 40.08,
+          "pct_segunda": 42.35,
+          "delta_pct": 2.27
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 53.35,
+          "pct_segunda": 57.65,
+          "delta_pct": 4.3
+        }
+      ]
+    },
+    {
+      "codigo": "23",
+      "nombre": "NARIÑO",
+      "primera": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 70.02
+      },
+      "segunda": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 77.64,
+        "margen": 55.28
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 21.84,
+          "pct_segunda": 22.36,
+          "delta_pct": 0.52
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 70.02,
+          "pct_segunda": 77.64,
+          "delta_pct": 7.62
+        }
+      ]
+    },
+    {
+      "codigo": "24",
+      "nombre": "RISARALDA",
+      "primera": {
+        "ganador": "ABELARDO DE LA ESPRIELLA",
+        "pct": 45.74
+      },
+      "segunda": {
+        "ganador": "ABELARDO DE LA ESPRIELLA",
+        "pct": 54.86,
+        "margen": 9.72
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 45.74,
+          "pct_segunda": 54.86,
+          "delta_pct": 9.12
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 36.83,
+          "pct_segunda": 45.14,
+          "delta_pct": 8.31
+        }
+      ]
+    },
+    {
+      "codigo": "25",
+      "nombre": "NORTE DE SANTANDER",
+      "primera": {
+        "ganador": "ABELARDO DE LA ESPRIELLA",
+        "pct": 71.51
+      },
+      "segunda": {
+        "ganador": "ABELARDO DE LA ESPRIELLA",
+        "pct": 77.58,
+        "margen": 55.16
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 71.51,
+          "pct_segunda": 77.58,
+          "delta_pct": 6.07
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 17.64,
+          "pct_segunda": 22.42,
+          "delta_pct": 4.78
+        }
+      ]
+    },
+    {
+      "codigo": "26",
+      "nombre": "QUINDIO",
+      "primera": {
+        "ganador": "ABELARDO DE LA ESPRIELLA",
+        "pct": 49.6
+      },
+      "segunda": {
+        "ganador": "ABELARDO DE LA ESPRIELLA",
+        "pct": 59.48,
+        "margen": 18.96
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 49.6,
+          "pct_segunda": 59.48,
+          "delta_pct": 9.88
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 32.76,
+          "pct_segunda": 40.52,
+          "delta_pct": 7.76
+        }
+      ]
+    },
+    {
+      "codigo": "27",
+      "nombre": "SANTANDER",
+      "primera": {
+        "ganador": "ABELARDO DE LA ESPRIELLA",
+        "pct": 57.99
+      },
+      "segunda": {
+        "ganador": "ABELARDO DE LA ESPRIELLA",
+        "pct": 65.61,
+        "margen": 31.22
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 57.99,
+          "pct_segunda": 65.61,
+          "delta_pct": 7.62
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 29.18,
+          "pct_segunda": 34.39,
+          "delta_pct": 5.21
+        }
+      ]
+    },
+    {
+      "codigo": "28",
+      "nombre": "SUCRE",
+      "primera": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 57.38
+      },
+      "segunda": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 59.73,
+        "margen": 19.46
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 36.88,
+          "pct_segunda": 40.27,
+          "delta_pct": 3.39
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 57.38,
+          "pct_segunda": 59.73,
+          "delta_pct": 2.35
+        }
+      ]
+    },
+    {
+      "codigo": "29",
+      "nombre": "TOLIMA",
+      "primera": {
+        "ganador": "ABELARDO DE LA ESPRIELLA",
+        "pct": 47.79
+      },
+      "segunda": {
+        "ganador": "ABELARDO DE LA ESPRIELLA",
+        "pct": 58.68,
+        "margen": 17.36
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 47.79,
+          "pct_segunda": 58.68,
+          "delta_pct": 10.89
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 35.73,
+          "pct_segunda": 41.32,
+          "delta_pct": 5.59
+        }
+      ]
+    },
+    {
+      "codigo": "31",
+      "nombre": "VALLE DEL CAUCA",
+      "primera": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 54.35
+      },
+      "segunda": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 61.75,
+        "margen": 23.5
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 34.41,
+          "pct_segunda": 38.25,
+          "delta_pct": 3.84
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 54.35,
+          "pct_segunda": 61.75,
+          "delta_pct": 7.4
+        }
+      ]
+    },
+    {
+      "codigo": "40",
+      "nombre": "ARAUCA",
+      "primera": {
+        "ganador": "ABELARDO DE LA ESPRIELLA",
+        "pct": 52.79
+      },
+      "segunda": {
+        "ganador": "ABELARDO DE LA ESPRIELLA",
+        "pct": 57.81,
+        "margen": 15.62
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 52.79,
+          "pct_segunda": 57.81,
+          "delta_pct": 5.02
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 35.49,
+          "pct_segunda": 42.19,
+          "delta_pct": 6.7
+        }
+      ]
+    },
+    {
+      "codigo": "44",
+      "nombre": "CAQUETA",
+      "primera": {
+        "ganador": "ABELARDO DE LA ESPRIELLA",
+        "pct": 49.23
+      },
+      "segunda": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 50.17,
+        "margen": 0.34
+      },
+      "volteo": true,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 49.23,
+          "pct_segunda": 49.83,
+          "delta_pct": 0.6
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 40.03,
+          "pct_segunda": 50.17,
+          "delta_pct": 10.14
+        }
+      ]
+    },
+    {
+      "codigo": "46",
+      "nombre": "CASANARE",
+      "primera": {
+        "ganador": "ABELARDO DE LA ESPRIELLA",
+        "pct": 62.5
+      },
+      "segunda": {
+        "ganador": "ABELARDO DE LA ESPRIELLA",
+        "pct": 70.2,
+        "margen": 40.4
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 62.5,
+          "pct_segunda": 70.2,
+          "delta_pct": 7.7
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 25.19,
+          "pct_segunda": 29.8,
+          "delta_pct": 4.61
+        }
+      ]
+    },
+    {
+      "codigo": "48",
+      "nombre": "LA GUAJIRA",
+      "primera": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 56.37
+      },
+      "segunda": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 61.08,
+        "margen": 22.16
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 38.5,
+          "pct_segunda": 38.92,
+          "delta_pct": 0.42
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 56.37,
+          "pct_segunda": 61.08,
+          "delta_pct": 4.71
+        }
+      ]
+    },
+    {
+      "codigo": "50",
+      "nombre": "GUAINIA",
+      "primera": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 57.79
+      },
+      "segunda": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 64.74,
+        "margen": 29.48
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 31.73,
+          "pct_segunda": 35.26,
+          "delta_pct": 3.53
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 57.79,
+          "pct_segunda": 64.74,
+          "delta_pct": 6.95
+        }
+      ]
+    },
+    {
+      "codigo": "52",
+      "nombre": "META",
+      "primera": {
+        "ganador": "ABELARDO DE LA ESPRIELLA",
+        "pct": 53.17
+      },
+      "segunda": {
+        "ganador": "ABELARDO DE LA ESPRIELLA",
+        "pct": 60.07,
+        "margen": 20.14
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 53.17,
+          "pct_segunda": 60.07,
+          "delta_pct": 6.9
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 33.07,
+          "pct_segunda": 39.93,
+          "delta_pct": 6.86
+        }
+      ]
+    },
+    {
+      "codigo": "54",
+      "nombre": "GUAVIARE",
+      "primera": {
+        "ganador": "ABELARDO DE LA ESPRIELLA",
+        "pct": 48.86
+      },
+      "segunda": {
+        "ganador": "ABELARDO DE LA ESPRIELLA",
+        "pct": 54.15,
+        "margen": 8.3
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 48.86,
+          "pct_segunda": 54.15,
+          "delta_pct": 5.29
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 38.57,
+          "pct_segunda": 45.85,
+          "delta_pct": 7.28
+        }
+      ]
+    },
+    {
+      "codigo": "56",
+      "nombre": "SAN ANDRES Y PROVIDENCIA",
+      "primera": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 45.86
+      },
+      "segunda": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 55.12,
+        "margen": 10.24
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 45.04,
+          "pct_segunda": 44.88,
+          "delta_pct": -0.16
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 45.86,
+          "pct_segunda": 55.12,
+          "delta_pct": 9.26
+        }
+      ]
+    },
+    {
+      "codigo": "60",
+      "nombre": "AMAZONAS",
+      "primera": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 56.59
+      },
+      "segunda": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 62.77,
+        "margen": 25.54
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 31.95,
+          "pct_segunda": 37.23,
+          "delta_pct": 5.28
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 56.59,
+          "pct_segunda": 62.77,
+          "delta_pct": 6.18
+        }
+      ]
+    },
+    {
+      "codigo": "64",
+      "nombre": "PUTUMAYO",
+      "primera": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 73.04
+      },
+      "segunda": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 79.56,
+        "margen": 59.12
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 19.41,
+          "pct_segunda": 20.44,
+          "delta_pct": 1.03
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 73.04,
+          "pct_segunda": 79.56,
+          "delta_pct": 6.52
+        }
+      ]
+    },
+    {
+      "codigo": "68",
+      "nombre": "VAUPES",
+      "primera": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 76.77
+      },
+      "segunda": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 81.75,
+        "margen": 63.5
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 15.27,
+          "pct_segunda": 18.25,
+          "delta_pct": 2.98
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 76.77,
+          "pct_segunda": 81.75,
+          "delta_pct": 4.98
+        }
+      ]
+    },
+    {
+      "codigo": "72",
+      "nombre": "VICHADA",
+      "primera": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 46.79
+      },
+      "segunda": {
+        "ganador": "IVÁN CEPEDA CASTRO",
+        "pct": 54.98,
+        "margen": 9.96
+      },
+      "volteo": false,
+      "swing": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "color": "#1D4ED8",
+          "pct_primera": 44.52,
+          "pct_segunda": 45.02,
+          "delta_pct": 0.5
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "color": "#C2410C",
+          "pct_primera": 46.79,
+          "pct_segunda": 54.98,
+          "delta_pct": 8.19
+        }
+      ]
+    }
+  ],
+  "resumen": {
+    "n_departamentos": 33,
+    "n_volteados": 1,
+    "departamentos_volteados": [
+      {
+        "codigo": "44",
+        "nombre": "CAQUETA",
+        "de": "ABELARDO DE LA ESPRIELLA",
+        "a": "IVÁN CEPEDA CASTRO",
+        "margen_segunda": 0.34
+      }
+    ]
+  }
+}

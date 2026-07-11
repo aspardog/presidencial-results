@@ -131,19 +131,22 @@ function validateVercelProject() {
   );
 }
 
-function validatePublicApi() {
-  assert(fs.existsSync(PUBLIC_API_DIR), 'Missing public/api directory.');
-
-  const resumen = readJson('public/api/nacional/resumen.json');
-  const candidatos = readJson('public/api/nacional/candidatos.json');
-  const departamentos = readJson('public/api/departamentos/lista.json');
-  const detalle = readJson('public/api/departamentos/detalle.json');
-  const municipios = readJson('public/api/departamentos/municipios.json');
-  const claves = readJson('public/api/analisis/claves-territoriales.json');
-  const polarizacion = readJson('public/api/analisis/polarizacion.json');
+// Valida los contratos de una vuelta. `vuelta` es el namespace en public/api
+// ('primera' | 'segunda'); `goldRel` es el prefijo dentro de data/gold
+// ('' para primera, 'segunda/' para segunda). La geometría de mapas es compartida.
+function validateRound(vuelta, goldRel) {
+  const apiBase = `public/api/${vuelta}`;
+  const resumen = readJson(`${apiBase}/nacional/resumen.json`);
+  const candidatos = readJson(`${apiBase}/nacional/candidatos.json`);
+  const departamentos = readJson(`${apiBase}/departamentos/lista.json`);
+  const detalle = readJson(`${apiBase}/departamentos/detalle.json`);
+  const municipios = readJson(`${apiBase}/departamentos/municipios.json`);
+  const claves = readJson(`${apiBase}/analisis/claves-territoriales.json`);
+  const polarizacion = readJson(`${apiBase}/analisis/polarizacion.json`);
   const geojson = readJson('public/api/mapas/departamentos.json');
 
   if (!resumen || !Array.isArray(candidatos) || !Array.isArray(departamentos) || !detalle || !municipios || !claves || !polarizacion || !geojson) {
+    fail(`[${vuelta}] Missing or invalid required API files.`);
     return;
   }
 
@@ -212,7 +215,9 @@ function validatePublicApi() {
   assert(Array.isArray(claves.lectura) && claves.lectura.length >= 3, 'Key findings need at least three synthesis items.');
   assert(Array.isArray(claves.departamentos_competidos) && claves.departamentos_competidos.length >= 5, 'Key findings need competed departments.');
   assert(Array.isArray(claves.ventajas_decisivas) && claves.ventajas_decisivas.length >= 5, 'Key findings need decisive advantages.');
-  assert(Array.isArray(claves.fortalezas) && claves.fortalezas.length >= 3, 'Key findings need candidate strengths.');
+  // La segunda vuelta solo tiene 2 candidatos: las fortalezas son a lo sumo min(3, N).
+  const fortalezasEsperadas = Math.min(3, candidatos.length);
+  assert(Array.isArray(claves.fortalezas) && claves.fortalezas.length >= fortalezasEsperadas, `[${vuelta}] Key findings need candidate strengths.`);
   assert(Array.isArray(polarizacion.bastiones_ganador_nacional), 'Polarization data needs precomputed winner strongholds.');
   assert(Array.isArray(polarizacion.bastiones_segundo_nacional), 'Polarization data needs precomputed runner-up strongholds.');
 
@@ -238,13 +243,39 @@ function validatePublicApi() {
     assert(departamentoCodes.has(normalizeCode(item.codigo)), `Finding references unknown department code ${item.codigo}.`);
   }
 
-  const sourceCandidates = readSourceCSV('nacional/votos_por_candidato.csv');
+  const sourceCandidates = readSourceCSV(`${goldRel}nacional/votos_por_candidato.csv`);
   if (sourceCandidates) {
     const sourceValidVotes = sourceCandidates.reduce((sum, row) => sum + (row.TOTAL_VOTOS || 0), 0);
     assert(
       sourceValidVotes === resumen.votos_validos,
-      'public/api/nacional/resumen.json is stale against data/gold/nacional/votos_por_candidato.csv. Run npm run build:data.'
+      `${apiBase}/nacional/resumen.json is stale against data/gold/${goldRel}nacional/votos_por_candidato.csv. Run npm run build:data.`
     );
+  }
+}
+
+// Contrato del módulo comparativo primera ↔ segunda (comparativa.json).
+function validateComparativa() {
+  const comp = readJson('public/api/comparativa.json');
+  if (!comp) {
+    fail('Missing public/api/comparativa.json. Run node scripts/build-comparativa.js.');
+    return;
+  }
+
+  assert(comp.nacional && Array.isArray(comp.nacional.finalistas), 'comparativa.json needs nacional.finalistas.');
+  assert(comp.nacional?.finalistas?.length === 2, 'comparativa.json must have exactly two finalists.');
+  assert(Array.isArray(comp.nacional?.eliminados) && comp.nacional.eliminados.length >= 1, 'comparativa.json needs eliminated candidates.');
+  assert(Number(comp.nacional?.votos_en_juego) > 0, 'comparativa.json votos_en_juego must be greater than zero.');
+  assert(Array.isArray(comp.departamentos) && comp.departamentos.length === 33, 'comparativa.json must cover 33 departments.');
+  assert(comp.resumen && typeof comp.resumen.n_volteados === 'number', 'comparativa.json needs resumen.n_volteados.');
+
+  // Coherencia: los finalistas del comparativo son los candidatos de la 2ª vuelta.
+  const segunda = readJson('public/api/segunda/nacional/candidatos.json');
+  if (Array.isArray(segunda)) {
+    const nombresSegunda = new Set(segunda.map((c) => c.nombre));
+    for (const f of comp.nacional.finalistas) {
+      assert(nombresSegunda.has(f.nombre), `Finalist ${f.nombre} is not a segunda-vuelta candidate.`);
+      assert(f.votos_segunda === segunda.find((c) => c.nombre === f.nombre)?.votos, `Finalist ${f.nombre} segunda votes mismatch.`);
+    }
   }
 }
 
@@ -255,6 +286,7 @@ function validateSourceContracts() {
   const vercelConfig = readJson('vercel.json');
 
   assert(pageSource.includes('HallazgosClave'), 'Home page must render the unified HallazgosClave component.');
+  assert(pageSource.includes('Comparativa'), 'Home page must render the Comparativa (primera vs segunda) section.');
   assert(!pageSource.includes('ClavesTerritoriales'), 'Home page must not render a separate ClavesTerritoriales section.');
   assert(!fs.existsSync(path.join(ROOT_DIR, 'src/components/analysis/ClavesTerritoriales.tsx')), 'Separate ClavesTerritoriales component must not be restored.');
   assert(hallazgosSource.includes('Síntesis electoral'), 'Unified findings must include the territorial synthesis block.');
@@ -271,8 +303,11 @@ function validateSourceContracts() {
 }
 
 function main() {
+  assert(fs.existsSync(PUBLIC_API_DIR), 'Missing public/api directory.');
   validateVercelProject();
-  validatePublicApi();
+  validateRound('primera', '');
+  validateRound('segunda', 'segunda/');
+  validateComparativa();
   validateSourceContracts();
 
   if (failures.length) {

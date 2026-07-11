@@ -8,9 +8,24 @@ const fs = require('fs');
 const path = require('path');
 const { simplifyMunicipios, simplifyMunicipiosByDepartment, formatMB, formatKB } = require('./simplify-municipios');
 
+// Vuelta electoral: "primera" | "segunda" (por defecto "primera").
+// Cada vuelta se genera en su propio namespace: public/api/{vuelta}/...
+// La geometría de mapas (independiente de la vuelta) se comparte en public/api/mapas.
+const VUELTA = (process.env.VUELTA_ELECTORAL || 'primera').toLowerCase();
+if (!['primera', 'segunda'].includes(VUELTA)) {
+  throw new Error(`VUELTA_ELECTORAL debe ser 'primera' o 'segunda' (recibido: ${VUELTA})`);
+}
+
 // Rutas
-const DATA_DIR = path.resolve(__dirname, '../../../data/gold');
-const OUTPUT_DIR = path.resolve(__dirname, '../public/api');
+// Gold: primera en la raíz histórica; segunda namespaced.
+const DATA_DIR = path.resolve(
+  __dirname,
+  VUELTA === 'primera' ? '../../../data/gold' : `../../../data/gold/${VUELTA}`
+);
+const OUTPUT_DIR = path.resolve(__dirname, `../public/api/${VUELTA}`);
+// Geometría de mapas: fuente en la raíz de Gold, destino compartido (no namespaced).
+const GEO_SRC_DIR = path.resolve(__dirname, '../../../data/gold/visualizaciones/mapas/simplified');
+const SHARED_MAPAS_DIR = path.resolve(__dirname, '../public/api/mapas');
 
 // Colores de partidos (sincronizados con colors.ts)
 const COLORES_PARTIDO = {
@@ -98,6 +113,7 @@ function readJSON(relativePath) {
 
 function writeJSON(filename, data) {
   const fullPath = path.join(OUTPUT_DIR, filename);
+  fs.mkdirSync(path.dirname(fullPath), { recursive: true });
   fs.writeFileSync(fullPath, JSON.stringify(data, null, 2));
   console.log(`  ✓ ${filename}`);
 }
@@ -107,8 +123,14 @@ function buildResumenNacional() {
   const summary = readJSON('visualizaciones/dashboard/summary_nacional.json');
   const candidatos = readCSV('nacional/votos_por_candidato.csv');
   const metricas = readCSV('nacional/metricas_participacion.csv');
+  const resumenEjecutivo = readCSV('nacional/resumen_ejecutivo.csv');
 
   if (!candidatos.length) return null;
+
+  // Total de mesas: preferir el resumen ejecutivo de la vuelta (siempre presente
+  // en Gold); si no, el summary del dashboard; si no, un valor por defecto.
+  const totalMesasRow = resumenEjecutivo.find(r => r.METRICA === 'Total Mesas');
+  const totalMesas = (totalMesasRow && Number(totalMesasRow.VALOR)) || summary?.total_mesas || 118313;
 
   // Ordenar por votos
   candidatos.sort((a, b) => b.TOTAL_VOTOS - a.TOTAL_VOTOS);
@@ -133,7 +155,7 @@ function buildResumenNacional() {
     votos_blancos: votosBlancos,
     votos_nulos: votosNulos,
     votos_no_marcados: votosNoMarcados,
-    total_mesas: summary?.total_mesas || 118313,
+    total_mesas: totalMesas,
     total_departamentos: 33,
     ganador: ganador.CANNOMBRE,
     partido_ganador: ganador.PARNOMBRE,
@@ -797,8 +819,10 @@ function buildClavesTerritoriales() {
 }
 
 function copyGeoJSON() {
-  const srcDir = path.join(DATA_DIR, 'visualizaciones/mapas/simplified');
-  const destDir = path.join(OUTPUT_DIR, 'mapas');
+  // La geometría es independiente de la vuelta: se lee de la raíz de Gold y se
+  // escribe en el directorio compartido public/api/mapas.
+  const srcDir = GEO_SRC_DIR;
+  const destDir = SHARED_MAPAS_DIR;
 
   if (!fs.existsSync(destDir)) {
     fs.mkdirSync(destDir, { recursive: true });
@@ -839,7 +863,7 @@ function copyGeoJSON() {
 
 // Main
 function main() {
-  console.log('📊 Generando datos estáticos para el dashboard...\n');
+  console.log(`📊 Generando datos estáticos para el dashboard (vuelta: ${VUELTA})...\n`);
 
   // Crear directorio de salida
   if (!fs.existsSync(OUTPUT_DIR)) {
@@ -873,10 +897,17 @@ function main() {
   const polarizacionMunicipal = buildPolarizacionMunicipal();
   if (polarizacionMunicipal) writeJSON('analisis/polarizacion-municipal.json', polarizacionMunicipal);
 
-  console.log('\nGeoJSON:');
-  copyGeoJSON();
+  // La geometría de mapas es compartida entre vueltas: se genera una sola vez
+  // (en la corrida de 'primera') salvo que aún no exista.
+  const mapasExisten = fs.existsSync(path.join(SHARED_MAPAS_DIR, 'departamentos.json'));
+  if (VUELTA === 'primera' || !mapasExisten) {
+    console.log('\nGeoJSON (compartido):');
+    copyGeoJSON();
+  } else {
+    console.log('\nGeoJSON: se omite (geometría compartida ya generada).');
+  }
 
-  console.log('\n✅ Datos generados exitosamente en public/api/');
+  console.log(`\n✅ Datos generados exitosamente en public/api/${VUELTA}/`);
 }
 
 main();

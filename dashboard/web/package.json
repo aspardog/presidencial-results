@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build:data": "node scripts/build-data.js",
+    "build:data": "VUELTA_ELECTORAL=primera node scripts/build-data.js && VUELTA_ELECTORAL=segunda node scripts/build-data.js && (cd ../.. && Rscript scripts/02_silver_to_gold/electoral/estimacion_trasvase.R) && node scripts/build-comparativa.js",
     "validate": "node scripts/validate-static-contracts.js && node scripts/validate-municipal-matching.js",
     "verify:prod": "node scripts/verify-production.js",
     "build": "npm run validate && next build",

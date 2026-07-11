@@ -17,11 +17,14 @@ import type {
   MunicipioResumen,
 } from '@/types/electoral';
 
-// Importar datos estáticos (build time)
-import resumenData from '../../public/api/nacional/resumen.json';
-import candidatosData from '../../public/api/nacional/candidatos.json';
-import departamentosDetalleData from '../../public/api/departamentos/detalle.json';
-import municipiosData from '../../public/api/departamentos/municipios.json';
+// Importar datos estáticos (build time).
+// Vista principal = SEGUNDA vuelta (resultado decisivo). La primera vuelta se
+// muestra en el módulo comparativo (ver Comparativa / comparativa.json).
+import resumenData from '../../public/api/segunda/nacional/resumen.json';
+import candidatosData from '../../public/api/segunda/nacional/candidatos.json';
+import departamentosDetalleData from '../../public/api/segunda/departamentos/detalle.json';
+import municipiosData from '../../public/api/segunda/departamentos/municipios.json';
+import Comparativa from '@/components/analysis/Comparativa';
 
 const resumen = resumenData as ResumenNacional;
 const candidatos = candidatosData as CandidatoNacional[];
@@ -86,7 +89,7 @@ export default function HomePage() {
     ? [
         { label: 'Total Votos', value: resumen?.total_votos || 0 },
         { label: 'Mesas', value: resumen?.total_mesas || 0 },
-        { label: 'Departamentos', value: resumen?.total_departamentos || 33 },
+        { label: 'Departamentos', value: 32 },
         { label: 'Votos Válidos', value: resumen?.votos_validos || 0 },
       ]
     : [
@@ -267,6 +270,7 @@ export default function HomePage() {
         </div>
 
         {mostrarNacional && <HallazgosClave />}
+        {mostrarNacional && <Comparativa />}
       </main>
     </div>
   );

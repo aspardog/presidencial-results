@@ -10,8 +10,12 @@ suppressPackageStartupMessages({
   library(tidyr)
 })
 
-INPUT_PATH <- "data/silver/electoral/datos_master.parquet"
-OUTPUT_DIR <- "data/gold/municipal"
+# Parametrización por vuelta (ver limpieza_datos.R). primera => rutas raíz.
+VUELTA <- tolower(Sys.getenv("VUELTA_ELECTORAL", "primera"))
+SILVER_BASE <- if (VUELTA == "primera") "data/silver/electoral" else file.path("data/silver/electoral", VUELTA)
+GOLD_BASE <- if (VUELTA == "primera") "data/gold" else file.path("data/gold", VUELTA)
+INPUT_PATH <- file.path(SILVER_BASE, "datos_master.parquet")
+OUTPUT_DIR <- file.path(GOLD_BASE, "municipal")
 
 if (!file.exists(INPUT_PATH)) {
   stop("No existe el dataset Silver requerido: ", INPUT_PATH)

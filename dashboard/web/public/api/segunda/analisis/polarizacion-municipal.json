@@ -1,0 +1,1644 @@
+{
+  "resumen": {
+    "total_municipios": 1121,
+    "municipios_ganador_nacional": 723,
+    "municipios_segundo_nacional": 398,
+    "municipios_otros": 0,
+    "porcentaje_ganador": 64.5,
+    "porcentaje_segundo": 35.5,
+    "ganador_nacional": "ABELARDO DE LA ESPRIELLA",
+    "segundo_nacional": "IVÁN CEPEDA CASTRO"
+  },
+  "estadisticas": {
+    "nep_promedio": 1.68,
+    "nep_desviacion": 0.25,
+    "margen_promedio": 41.35,
+    "margen_desviacion": 23.32
+  },
+  "competitividad_municipal": {
+    "ultra_competidos": 19,
+    "competidos": 93,
+    "ventaja_clara": 136,
+    "bastiones": 873
+  },
+  "heterogeneidad_departamental": [
+    {
+      "codigo": "23",
+      "nombre": "NARIÑO",
+      "total_municipios": 64,
+      "desviacion_margenes": 25.64,
+      "margen_promedio": 54.85,
+      "nivel_heterogeneidad": "muy_heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 62,
+          "porcentaje": 96.875
+        },
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 2,
+          "porcentaje": 3.125
+        }
+      ],
+      "dominancia_ganador": 96.88,
+      "es_dividido": false
+    },
+    {
+      "codigo": "50",
+      "nombre": "GUAINIA",
+      "total_municipios": 8,
+      "desviacion_margenes": 22.49,
+      "margen_promedio": 29.47,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 6,
+          "porcentaje": 75
+        },
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 2,
+          "porcentaje": 25
+        }
+      ],
+      "dominancia_ganador": 75,
+      "es_dividido": true
+    },
+    {
+      "codigo": "60",
+      "nombre": "AMAZONAS",
+      "total_municipios": 10,
+      "desviacion_margenes": 21.51,
+      "margen_promedio": 67.16,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 10,
+          "porcentaje": 100
+        }
+      ],
+      "dominancia_ganador": 100,
+      "es_dividido": false
+    },
+    {
+      "codigo": "17",
+      "nombre": "CHOCO",
+      "total_municipios": 31,
+      "desviacion_margenes": 21.49,
+      "margen_promedio": 64.44,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 30,
+          "porcentaje": 96.7741935483871
+        },
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 1,
+          "porcentaje": 3.225806451612903
+        }
+      ],
+      "dominancia_ganador": 96.77,
+      "es_dividido": false
+    },
+    {
+      "codigo": "11",
+      "nombre": "CAUCA",
+      "total_municipios": 42,
+      "desviacion_margenes": 20.19,
+      "margen_promedio": 61.76,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 42,
+          "porcentaje": 100
+        }
+      ],
+      "dominancia_ganador": 100,
+      "es_dividido": false
+    },
+    {
+      "codigo": "25",
+      "nombre": "NORTE DE SANTANDER",
+      "total_municipios": 40,
+      "desviacion_margenes": 19.96,
+      "margen_promedio": 67.89,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 35,
+          "porcentaje": 87.5
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 5,
+          "porcentaje": 12.5
+        }
+      ],
+      "dominancia_ganador": 87.5,
+      "es_dividido": false
+    },
+    {
+      "codigo": "01",
+      "nombre": "ANTIOQUIA",
+      "total_municipios": 125,
+      "desviacion_margenes": 19.95,
+      "margen_promedio": 44.92,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 108,
+          "porcentaje": 86.4
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 17,
+          "porcentaje": 13.600000000000001
+        }
+      ],
+      "dominancia_ganador": 86.4,
+      "es_dividido": false
+    },
+    {
+      "codigo": "40",
+      "nombre": "ARAUCA",
+      "total_municipios": 7,
+      "desviacion_margenes": 19.93,
+      "margen_promedio": 38.01,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 4,
+          "porcentaje": 57.14285714285714
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 3,
+          "porcentaje": 42.857142857142854
+        }
+      ],
+      "dominancia_ganador": 57.14,
+      "es_dividido": true
+    },
+    {
+      "codigo": "15",
+      "nombre": "CUNDINAMARCA",
+      "total_municipios": 116,
+      "desviacion_margenes": 19.87,
+      "margen_promedio": 36.81,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 102,
+          "porcentaje": 87.93103448275862
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 14,
+          "porcentaje": 12.068965517241379
+        }
+      ],
+      "dominancia_ganador": 87.93,
+      "es_dividido": false
+    },
+    {
+      "codigo": "07",
+      "nombre": "BOYACA",
+      "total_municipios": 123,
+      "desviacion_margenes": 19.86,
+      "margen_promedio": 44.54,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 119,
+          "porcentaje": 96.7479674796748
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 4,
+          "porcentaje": 3.2520325203252036
+        }
+      ],
+      "dominancia_ganador": 96.75,
+      "es_dividido": false
+    },
+    {
+      "codigo": "29",
+      "nombre": "TOLIMA",
+      "total_municipios": 47,
+      "desviacion_margenes": 19.52,
+      "margen_promedio": 29.74,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 39,
+          "porcentaje": 82.97872340425532
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 8,
+          "porcentaje": 17.02127659574468
+        }
+      ],
+      "dominancia_ganador": 82.98,
+      "es_dividido": false
+    },
+    {
+      "codigo": "09",
+      "nombre": "CALDAS",
+      "total_municipios": 27,
+      "desviacion_margenes": 19.43,
+      "margen_promedio": 36.44,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 27,
+          "porcentaje": 100
+        }
+      ],
+      "dominancia_ganador": 100,
+      "es_dividido": false
+    },
+    {
+      "codigo": "52",
+      "nombre": "META",
+      "total_municipios": 29,
+      "desviacion_margenes": 19.21,
+      "margen_promedio": 29.53,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 22,
+          "porcentaje": 75.86206896551724
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 7,
+          "porcentaje": 24.137931034482758
+        }
+      ],
+      "dominancia_ganador": 75.86,
+      "es_dividido": true
+    },
+    {
+      "codigo": "72",
+      "nombre": "VICHADA",
+      "total_municipios": 4,
+      "desviacion_margenes": 18.45,
+      "margen_promedio": 49.43,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 3,
+          "porcentaje": 75
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 1,
+          "porcentaje": 25
+        }
+      ],
+      "dominancia_ganador": 75,
+      "es_dividido": true
+    },
+    {
+      "codigo": "31",
+      "nombre": "VALLE DEL CAUCA",
+      "total_municipios": 42,
+      "desviacion_margenes": 17.52,
+      "margen_promedio": 27.84,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 24,
+          "porcentaje": 57.14285714285714
+        },
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 18,
+          "porcentaje": 42.857142857142854
+        }
+      ],
+      "dominancia_ganador": 57.14,
+      "es_dividido": true
+    },
+    {
+      "codigo": "13",
+      "nombre": "CORDOBA",
+      "total_municipios": 30,
+      "desviacion_margenes": 17.38,
+      "margen_promedio": 20.73,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 22,
+          "porcentaje": 73.33333333333333
+        },
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 8,
+          "porcentaje": 26.666666666666668
+        }
+      ],
+      "dominancia_ganador": 73.33,
+      "es_dividido": true
+    },
+    {
+      "codigo": "19",
+      "nombre": "HUILA",
+      "total_municipios": 37,
+      "desviacion_margenes": 17.37,
+      "margen_promedio": 36.64,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 37,
+          "porcentaje": 100
+        }
+      ],
+      "dominancia_ganador": 100,
+      "es_dividido": false
+    },
+    {
+      "codigo": "27",
+      "nombre": "SANTANDER",
+      "total_municipios": 87,
+      "desviacion_margenes": 17.22,
+      "margen_promedio": 58.89,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 85,
+          "porcentaje": 97.70114942528735
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 2,
+          "porcentaje": 2.2988505747126435
+        }
+      ],
+      "dominancia_ganador": 97.7,
+      "es_dividido": false
+    },
+    {
+      "codigo": "54",
+      "nombre": "GUAVIARE",
+      "total_municipios": 4,
+      "desviacion_margenes": 16.02,
+      "margen_promedio": 26.63,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 2,
+          "porcentaje": 50
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 2,
+          "porcentaje": 50
+        }
+      ],
+      "dominancia_ganador": 50,
+      "es_dividido": true
+    },
+    {
+      "codigo": "68",
+      "nombre": "VAUPES",
+      "total_municipios": 6,
+      "desviacion_margenes": 15.95,
+      "margen_promedio": 69.15,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 6,
+          "porcentaje": 100
+        }
+      ],
+      "dominancia_ganador": 100,
+      "es_dividido": false
+    },
+    {
+      "codigo": "05",
+      "nombre": "BOLIVAR",
+      "total_municipios": 46,
+      "desviacion_margenes": 15.65,
+      "margen_promedio": 25.7,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 23,
+          "porcentaje": 50
+        },
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 23,
+          "porcentaje": 50
+        }
+      ],
+      "dominancia_ganador": 50,
+      "es_dividido": true
+    },
+    {
+      "codigo": "44",
+      "nombre": "CAQUETA",
+      "total_municipios": 16,
+      "desviacion_margenes": 15.19,
+      "margen_promedio": 22.48,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 10,
+          "porcentaje": 62.5
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 6,
+          "porcentaje": 37.5
+        }
+      ],
+      "dominancia_ganador": 62.5,
+      "es_dividido": true
+    },
+    {
+      "codigo": "64",
+      "nombre": "PUTUMAYO",
+      "total_municipios": 13,
+      "desviacion_margenes": 14.49,
+      "margen_promedio": 55.5,
+      "nivel_heterogeneidad": "moderado",
+      "ganadores": [
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 13,
+          "porcentaje": 100
+        }
+      ],
+      "dominancia_ganador": 100,
+      "es_dividido": false
+    },
+    {
+      "codigo": "21",
+      "nombre": "MAGDALENA",
+      "total_municipios": 30,
+      "desviacion_margenes": 14.47,
+      "margen_promedio": 24.56,
+      "nivel_heterogeneidad": "moderado",
+      "ganadores": [
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 16,
+          "porcentaje": 53.333333333333336
+        },
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 14,
+          "porcentaje": 46.666666666666664
+        }
+      ],
+      "dominancia_ganador": 53.33,
+      "es_dividido": true
+    },
+    {
+      "codigo": "48",
+      "nombre": "LA GUAJIRA",
+      "total_municipios": 15,
+      "desviacion_margenes": 13.59,
+      "margen_promedio": 25.97,
+      "nivel_heterogeneidad": "moderado",
+      "ganadores": [
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 14,
+          "porcentaje": 93.33333333333333
+        },
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 1,
+          "porcentaje": 6.666666666666667
+        }
+      ],
+      "dominancia_ganador": 93.33,
+      "es_dividido": false
+    },
+    {
+      "codigo": "46",
+      "nombre": "CASANARE",
+      "total_municipios": 19,
+      "desviacion_margenes": 13.41,
+      "margen_promedio": 49.39,
+      "nivel_heterogeneidad": "moderado",
+      "ganadores": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 17,
+          "porcentaje": 89.47368421052632
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 2,
+          "porcentaje": 10.526315789473683
+        }
+      ],
+      "dominancia_ganador": 89.47,
+      "es_dividido": false
+    },
+    {
+      "codigo": "28",
+      "nombre": "SUCRE",
+      "total_municipios": 26,
+      "desviacion_margenes": 13.17,
+      "margen_promedio": 25.17,
+      "nivel_heterogeneidad": "moderado",
+      "ganadores": [
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 22,
+          "porcentaje": 84.61538461538461
+        },
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 4,
+          "porcentaje": 15.384615384615385
+        }
+      ],
+      "dominancia_ganador": 84.62,
+      "es_dividido": false
+    },
+    {
+      "codigo": "03",
+      "nombre": "ATLANTICO",
+      "total_municipios": 23,
+      "desviacion_margenes": 13.08,
+      "margen_promedio": 26.93,
+      "nivel_heterogeneidad": "moderado",
+      "ganadores": [
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 17,
+          "porcentaje": 73.91304347826086
+        },
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 6,
+          "porcentaje": 26.08695652173913
+        }
+      ],
+      "dominancia_ganador": 73.91,
+      "es_dividido": true
+    },
+    {
+      "codigo": "24",
+      "nombre": "RISARALDA",
+      "total_municipios": 14,
+      "desviacion_margenes": 13.06,
+      "margen_promedio": 26.43,
+      "nivel_heterogeneidad": "moderado",
+      "ganadores": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 10,
+          "porcentaje": 71.42857142857143
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 4,
+          "porcentaje": 28.57142857142857
+        }
+      ],
+      "dominancia_ganador": 71.43,
+      "es_dividido": true
+    },
+    {
+      "codigo": "26",
+      "nombre": "QUINDIO",
+      "total_municipios": 12,
+      "desviacion_margenes": 11.02,
+      "margen_promedio": 23.27,
+      "nivel_heterogeneidad": "moderado",
+      "ganadores": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 11,
+          "porcentaje": 91.66666666666666
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 1,
+          "porcentaje": 8.333333333333332
+        }
+      ],
+      "dominancia_ganador": 91.67,
+      "es_dividido": false
+    },
+    {
+      "codigo": "12",
+      "nombre": "CESAR",
+      "total_municipios": 25,
+      "desviacion_margenes": 10.65,
+      "margen_promedio": 19.3,
+      "nivel_heterogeneidad": "moderado",
+      "ganadores": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 13,
+          "porcentaje": 52
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 12,
+          "porcentaje": 48
+        }
+      ],
+      "dominancia_ganador": 52,
+      "es_dividido": true
+    },
+    {
+      "codigo": "56",
+      "nombre": "SAN ANDRES Y PROVIDENCIA",
+      "total_municipios": 2,
+      "desviacion_margenes": 5.94,
+      "margen_promedio": 15.22,
+      "nivel_heterogeneidad": "homogeneo",
+      "ganadores": [
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 2,
+          "porcentaje": 100
+        }
+      ],
+      "dominancia_ganador": 100,
+      "es_dividido": false
+    },
+    {
+      "codigo": "16",
+      "nombre": "BOGOTA D.C.",
+      "total_municipios": 1,
+      "desviacion_margenes": 0,
+      "margen_promedio": 7.22,
+      "nivel_heterogeneidad": "homogeneo",
+      "ganadores": [
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 1,
+          "porcentaje": 100
+        }
+      ],
+      "dominancia_ganador": 100,
+      "es_dividido": false
+    }
+  ],
+  "departamentos_mas_divididos": [
+    {
+      "codigo": "50",
+      "nombre": "GUAINIA",
+      "total_municipios": 8,
+      "desviacion_margenes": 22.49,
+      "margen_promedio": 29.47,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 6,
+          "porcentaje": 75
+        },
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 2,
+          "porcentaje": 25
+        }
+      ],
+      "dominancia_ganador": 75,
+      "es_dividido": true
+    },
+    {
+      "codigo": "40",
+      "nombre": "ARAUCA",
+      "total_municipios": 7,
+      "desviacion_margenes": 19.93,
+      "margen_promedio": 38.01,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 4,
+          "porcentaje": 57.14285714285714
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 3,
+          "porcentaje": 42.857142857142854
+        }
+      ],
+      "dominancia_ganador": 57.14,
+      "es_dividido": true
+    },
+    {
+      "codigo": "52",
+      "nombre": "META",
+      "total_municipios": 29,
+      "desviacion_margenes": 19.21,
+      "margen_promedio": 29.53,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 22,
+          "porcentaje": 75.86206896551724
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 7,
+          "porcentaje": 24.137931034482758
+        }
+      ],
+      "dominancia_ganador": 75.86,
+      "es_dividido": true
+    },
+    {
+      "codigo": "72",
+      "nombre": "VICHADA",
+      "total_municipios": 4,
+      "desviacion_margenes": 18.45,
+      "margen_promedio": 49.43,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 3,
+          "porcentaje": 75
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 1,
+          "porcentaje": 25
+        }
+      ],
+      "dominancia_ganador": 75,
+      "es_dividido": true
+    },
+    {
+      "codigo": "31",
+      "nombre": "VALLE DEL CAUCA",
+      "total_municipios": 42,
+      "desviacion_margenes": 17.52,
+      "margen_promedio": 27.84,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 24,
+          "porcentaje": 57.14285714285714
+        },
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 18,
+          "porcentaje": 42.857142857142854
+        }
+      ],
+      "dominancia_ganador": 57.14,
+      "es_dividido": true
+    },
+    {
+      "codigo": "13",
+      "nombre": "CORDOBA",
+      "total_municipios": 30,
+      "desviacion_margenes": 17.38,
+      "margen_promedio": 20.73,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 22,
+          "porcentaje": 73.33333333333333
+        },
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 8,
+          "porcentaje": 26.666666666666668
+        }
+      ],
+      "dominancia_ganador": 73.33,
+      "es_dividido": true
+    },
+    {
+      "codigo": "54",
+      "nombre": "GUAVIARE",
+      "total_municipios": 4,
+      "desviacion_margenes": 16.02,
+      "margen_promedio": 26.63,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 2,
+          "porcentaje": 50
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 2,
+          "porcentaje": 50
+        }
+      ],
+      "dominancia_ganador": 50,
+      "es_dividido": true
+    },
+    {
+      "codigo": "05",
+      "nombre": "BOLIVAR",
+      "total_municipios": 46,
+      "desviacion_margenes": 15.65,
+      "margen_promedio": 25.7,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 23,
+          "porcentaje": 50
+        },
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 23,
+          "porcentaje": 50
+        }
+      ],
+      "dominancia_ganador": 50,
+      "es_dividido": true
+    },
+    {
+      "codigo": "44",
+      "nombre": "CAQUETA",
+      "total_municipios": 16,
+      "desviacion_margenes": 15.19,
+      "margen_promedio": 22.48,
+      "nivel_heterogeneidad": "heterogeneo",
+      "ganadores": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 10,
+          "porcentaje": 62.5
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 6,
+          "porcentaje": 37.5
+        }
+      ],
+      "dominancia_ganador": 62.5,
+      "es_dividido": true
+    },
+    {
+      "codigo": "21",
+      "nombre": "MAGDALENA",
+      "total_municipios": 30,
+      "desviacion_margenes": 14.47,
+      "margen_promedio": 24.56,
+      "nivel_heterogeneidad": "moderado",
+      "ganadores": [
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 16,
+          "porcentaje": 53.333333333333336
+        },
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 14,
+          "porcentaje": 46.666666666666664
+        }
+      ],
+      "dominancia_ganador": 53.33,
+      "es_dividido": true
+    }
+  ],
+  "departamentos_mas_homogeneos": [
+    {
+      "codigo": "16",
+      "nombre": "BOGOTA D.C.",
+      "total_municipios": 1,
+      "desviacion_margenes": 0,
+      "margen_promedio": 7.22,
+      "nivel_heterogeneidad": "homogeneo",
+      "ganadores": [
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 1,
+          "porcentaje": 100
+        }
+      ],
+      "dominancia_ganador": 100,
+      "es_dividido": false
+    },
+    {
+      "codigo": "56",
+      "nombre": "SAN ANDRES Y PROVIDENCIA",
+      "total_municipios": 2,
+      "desviacion_margenes": 5.94,
+      "margen_promedio": 15.22,
+      "nivel_heterogeneidad": "homogeneo",
+      "ganadores": [
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 2,
+          "porcentaje": 100
+        }
+      ],
+      "dominancia_ganador": 100,
+      "es_dividido": false
+    },
+    {
+      "codigo": "12",
+      "nombre": "CESAR",
+      "total_municipios": 25,
+      "desviacion_margenes": 10.65,
+      "margen_promedio": 19.3,
+      "nivel_heterogeneidad": "moderado",
+      "ganadores": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 13,
+          "porcentaje": 52
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 12,
+          "porcentaje": 48
+        }
+      ],
+      "dominancia_ganador": 52,
+      "es_dividido": true
+    },
+    {
+      "codigo": "26",
+      "nombre": "QUINDIO",
+      "total_municipios": 12,
+      "desviacion_margenes": 11.02,
+      "margen_promedio": 23.27,
+      "nivel_heterogeneidad": "moderado",
+      "ganadores": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 11,
+          "porcentaje": 91.66666666666666
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 1,
+          "porcentaje": 8.333333333333332
+        }
+      ],
+      "dominancia_ganador": 91.67,
+      "es_dividido": false
+    },
+    {
+      "codigo": "24",
+      "nombre": "RISARALDA",
+      "total_municipios": 14,
+      "desviacion_margenes": 13.06,
+      "margen_promedio": 26.43,
+      "nivel_heterogeneidad": "moderado",
+      "ganadores": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "count": 10,
+          "porcentaje": 71.42857142857143
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "count": 4,
+          "porcentaje": 28.57142857142857
+        }
+      ],
+      "dominancia_ganador": 71.43,
+      "es_dividido": true
+    }
+  ],
+  "municipios_mas_polarizados": [
+    {
+      "codigo_dep": "17",
+      "codigo_mun": "038",
+      "nombre_dep": "CHOCO",
+      "nombre_mun": "EL LITORAL DEL SAN JUAN",
+      "total_votos": 5434,
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "porcentaje_ganador": 98.33,
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_segundo": 1.67,
+      "margen": 96.66,
+      "nep": 1.03,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    },
+    {
+      "codigo_dep": "23",
+      "codigo_mun": "088",
+      "nombre_dep": "NARIÑO",
+      "nombre_mun": "MAGUI (PAYAN)",
+      "total_votos": 4809,
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "porcentaje_ganador": 97.96,
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_segundo": 2.04,
+      "margen": 95.92,
+      "nep": 1.04,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    },
+    {
+      "codigo_dep": "23",
+      "codigo_mun": "094",
+      "nombre_dep": "NARIÑO",
+      "nombre_mun": "MOSQUERA",
+      "total_votos": 4139,
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "porcentaje_ganador": 98.21,
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_segundo": 1.79,
+      "margen": 96.42,
+      "nep": 1.04,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    },
+    {
+      "codigo_dep": "23",
+      "codigo_mun": "112",
+      "nombre_dep": "NARIÑO",
+      "nombre_mun": "ROBERTO PAYAN (SAN JOSE)",
+      "total_votos": 6601,
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "porcentaje_ganador": 98.18,
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_segundo": 1.82,
+      "margen": 96.36,
+      "nep": 1.04,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    },
+    {
+      "codigo_dep": "11",
+      "codigo_mun": "034",
+      "nombre_dep": "CAUCA",
+      "nombre_mun": "JAMBALO",
+      "total_votos": 8966,
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "porcentaje_ganador": 97.77,
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_segundo": 2.23,
+      "margen": 95.54,
+      "nep": 1.05,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    },
+    {
+      "codigo_dep": "11",
+      "codigo_mun": "091",
+      "nombre_dep": "CAUCA",
+      "nombre_mun": "TIMBIQUI",
+      "total_votos": 10355,
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "porcentaje_ganador": 97.55,
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_segundo": 2.45,
+      "margen": 95.1,
+      "nep": 1.05,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    },
+    {
+      "codigo_dep": "23",
+      "codigo_mun": "047",
+      "nombre_dep": "NARIÑO",
+      "nombre_mun": "FRANCISCO PIZARRO (SALAHONDA)",
+      "total_votos": 4129,
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "porcentaje_ganador": 97.09,
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_segundo": 2.91,
+      "margen": 94.18,
+      "nep": 1.06,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    },
+    {
+      "codigo_dep": "17",
+      "codigo_mun": "006",
+      "nombre_dep": "CHOCO",
+      "nombre_mun": "ALTO BAUDO (PIE DE PATO)",
+      "total_votos": 6554,
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "porcentaje_ganador": 96.81,
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_segundo": 3.19,
+      "margen": 93.62,
+      "nep": 1.07,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    },
+    {
+      "codigo_dep": "11",
+      "codigo_mun": "004",
+      "nombre_dep": "CAUCA",
+      "nombre_mun": "ALMAGUER",
+      "total_votos": 9448,
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "porcentaje_ganador": 95.63,
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_segundo": 4.37,
+      "margen": 91.26,
+      "nep": 1.09,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    },
+    {
+      "codigo_dep": "23",
+      "codigo_mun": "125",
+      "nombre_dep": "NARIÑO",
+      "nombre_mun": "SANTA BARBARA (ISCUANDE)",
+      "total_votos": 4884,
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "porcentaje_ganador": 95.9,
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_segundo": 4.1,
+      "margen": 91.8,
+      "nep": 1.09,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    }
+  ],
+  "municipios_mas_competidos": [
+    {
+      "codigo_dep": "01",
+      "codigo_mun": "168",
+      "nombre_dep": "ANTIOQUIA",
+      "nombre_mun": "PUERTO NARE-LA MAGDALENA",
+      "total_votos": 6603,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_ganador": 50.04,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "porcentaje_segundo": 49.96,
+      "margen": 0.08,
+      "nep": 2,
+      "indice_bipartidista": 100,
+      "clasificacion": "ultra_competido"
+    },
+    {
+      "codigo_dep": "29",
+      "codigo_mun": "010",
+      "nombre_dep": "TOLIMA",
+      "nombre_mun": "AMBALEMA",
+      "total_votos": 3858,
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "porcentaje_ganador": 50.05,
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_segundo": 49.95,
+      "margen": 0.1,
+      "nep": 2,
+      "indice_bipartidista": 100,
+      "clasificacion": "ultra_competido"
+    },
+    {
+      "codigo_dep": "52",
+      "codigo_mun": "027",
+      "nombre_dep": "META",
+      "nombre_mun": "EL CASTILLO",
+      "total_votos": 3781,
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "porcentaje_ganador": 50.09,
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_segundo": 49.91,
+      "margen": 0.18,
+      "nep": 2,
+      "indice_bipartidista": 100,
+      "clasificacion": "ultra_competido"
+    },
+    {
+      "codigo_dep": "13",
+      "codigo_mun": "024",
+      "nombre_dep": "CORDOBA",
+      "nombre_mun": "MOMIL",
+      "total_votos": 9394,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_ganador": 50.11,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "porcentaje_segundo": 49.89,
+      "margen": 0.22,
+      "nep": 2,
+      "indice_bipartidista": 100,
+      "clasificacion": "ultra_competido"
+    },
+    {
+      "codigo_dep": "29",
+      "codigo_mun": "088",
+      "nombre_dep": "TOLIMA",
+      "nombre_mun": "PIEDRAS",
+      "total_votos": 3525,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_ganador": 50.16,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "porcentaje_segundo": 49.84,
+      "margen": 0.32,
+      "nep": 2,
+      "indice_bipartidista": 100,
+      "clasificacion": "ultra_competido"
+    },
+    {
+      "codigo_dep": "17",
+      "codigo_mun": "004",
+      "nombre_dep": "CHOCO",
+      "nombre_mun": "ACANDI",
+      "total_votos": 5091,
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "porcentaje_ganador": 50.17,
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_segundo": 49.83,
+      "margen": 0.34,
+      "nep": 2,
+      "indice_bipartidista": 100,
+      "clasificacion": "ultra_competido"
+    },
+    {
+      "codigo_dep": "15",
+      "codigo_mun": "238",
+      "nombre_dep": "CUNDINAMARCA",
+      "nombre_mun": "SESQUILE",
+      "total_votos": 7243,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_ganador": 50.28,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "porcentaje_segundo": 49.72,
+      "margen": 0.56,
+      "nep": 2,
+      "indice_bipartidista": 100,
+      "clasificacion": "ultra_competido"
+    },
+    {
+      "codigo_dep": "31",
+      "codigo_mun": "085",
+      "nombre_dep": "VALLE DEL CAUCA",
+      "nombre_mun": "RESTREPO",
+      "total_votos": 8961,
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "porcentaje_ganador": 50.35,
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_segundo": 49.65,
+      "margen": 0.7,
+      "nep": 2,
+      "indice_bipartidista": 100,
+      "clasificacion": "ultra_competido"
+    },
+    {
+      "codigo_dep": "07",
+      "codigo_mun": "079",
+      "nombre_dep": "BOYACA",
+      "nombre_mun": "DUITAMA",
+      "total_votos": 71431,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_ganador": 50.42,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "porcentaje_segundo": 49.58,
+      "margen": 0.84,
+      "nep": 2,
+      "indice_bipartidista": 100,
+      "clasificacion": "ultra_competido"
+    },
+    {
+      "codigo_dep": "13",
+      "codigo_mun": "027",
+      "nombre_dep": "CORDOBA",
+      "nombre_mun": "MOÑITOS",
+      "total_votos": 13011,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_ganador": 50.42,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "porcentaje_segundo": 49.58,
+      "margen": 0.84,
+      "nep": 2,
+      "indice_bipartidista": 100,
+      "clasificacion": "ultra_competido"
+    }
+  ],
+  "bastiones_ganador": [
+    {
+      "codigo_dep": "25",
+      "codigo_mun": "019",
+      "nombre_dep": "NORTE DE SANTANDER",
+      "nombre_mun": "CACHIRA",
+      "total_votos": 5092,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_ganador": 91.04,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "porcentaje_segundo": 8.96,
+      "margen": 82.08,
+      "nep": 1.19,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    },
+    {
+      "codigo_dep": "27",
+      "codigo_mun": "071",
+      "nombre_dep": "SANTANDER",
+      "nombre_mun": "EL CARMEN",
+      "total_votos": 8510,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_ganador": 90.13,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "porcentaje_segundo": 9.87,
+      "margen": 80.26,
+      "nep": 1.22,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    },
+    {
+      "codigo_dep": "25",
+      "codigo_mun": "073",
+      "nombre_dep": "NORTE DE SANTANDER",
+      "nombre_mun": "SALAZAR",
+      "total_votos": 5992,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_ganador": 90.05,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "porcentaje_segundo": 9.95,
+      "margen": 80.1,
+      "nep": 1.22,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    },
+    {
+      "codigo_dep": "25",
+      "codigo_mun": "007",
+      "nombre_dep": "NORTE DE SANTANDER",
+      "nombre_mun": "ARBOLEDAS",
+      "total_votos": 5267,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_ganador": 89.92,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "porcentaje_segundo": 10.08,
+      "margen": 79.84,
+      "nep": 1.22,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    },
+    {
+      "codigo_dep": "01",
+      "codigo_mun": "220",
+      "nombre_dep": "ANTIOQUIA",
+      "nombre_mun": "SALGAR",
+      "total_votos": 6967,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_ganador": 89.61,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "porcentaje_segundo": 10.39,
+      "margen": 79.22,
+      "nep": 1.23,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    },
+    {
+      "codigo_dep": "25",
+      "codigo_mun": "031",
+      "nombre_dep": "NORTE DE SANTANDER",
+      "nombre_mun": "CHITAGA",
+      "total_votos": 5952,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_ganador": 88.91,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "porcentaje_segundo": 11.09,
+      "margen": 77.82,
+      "nep": 1.25,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    },
+    {
+      "codigo_dep": "25",
+      "codigo_mun": "085",
+      "nombre_dep": "NORTE DE SANTANDER",
+      "nombre_mun": "SARDINATA",
+      "total_votos": 11544,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_ganador": 88.63,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "porcentaje_segundo": 11.37,
+      "margen": 77.26,
+      "nep": 1.25,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    },
+    {
+      "codigo_dep": "15",
+      "codigo_mun": "154",
+      "nombre_dep": "CUNDINAMARCA",
+      "nombre_mun": "LENGUAZAQUE",
+      "total_votos": 5875,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_ganador": 88.31,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "porcentaje_segundo": 11.69,
+      "margen": 76.62,
+      "nep": 1.26,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    },
+    {
+      "codigo_dep": "25",
+      "codigo_mun": "094",
+      "nombre_dep": "NORTE DE SANTANDER",
+      "nombre_mun": "TOLEDO",
+      "total_votos": 8417,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_ganador": 87.48,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "porcentaje_segundo": 12.52,
+      "margen": 74.96,
+      "nep": 1.28,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    },
+    {
+      "codigo_dep": "01",
+      "codigo_mun": "055",
+      "nombre_dep": "ANTIOQUIA",
+      "nombre_mun": "BETULIA",
+      "total_votos": 6465,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_ganador": 86.73,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "porcentaje_segundo": 13.27,
+      "margen": 73.46,
+      "nep": 1.3,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    }
+  ],
+  "bastiones_segundo": [
+    {
+      "codigo_dep": "17",
+      "codigo_mun": "038",
+      "nombre_dep": "CHOCO",
+      "nombre_mun": "EL LITORAL DEL SAN JUAN",
+      "total_votos": 5434,
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "porcentaje_ganador": 98.33,
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_segundo": 1.67,
+      "margen": 96.66,
+      "nep": 1.03,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    },
+    {
+      "codigo_dep": "23",
+      "codigo_mun": "112",
+      "nombre_dep": "NARIÑO",
+      "nombre_mun": "ROBERTO PAYAN (SAN JOSE)",
+      "total_votos": 6601,
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "porcentaje_ganador": 98.18,
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_segundo": 1.82,
+      "margen": 96.36,
+      "nep": 1.04,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    },
+    {
+      "codigo_dep": "11",
+      "codigo_mun": "034",
+      "nombre_dep": "CAUCA",
+      "nombre_mun": "JAMBALO",
+      "total_votos": 8966,
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "porcentaje_ganador": 97.77,
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_segundo": 2.23,
+      "margen": 95.54,
+      "nep": 1.05,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    },
+    {
+      "codigo_dep": "11",
+      "codigo_mun": "091",
+      "nombre_dep": "CAUCA",
+      "nombre_mun": "TIMBIQUI",
+      "total_votos": 10355,
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "porcentaje_ganador": 97.55,
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_segundo": 2.45,
+      "margen": 95.1,
+      "nep": 1.05,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    },
+    {
+      "codigo_dep": "17",
+      "codigo_mun": "006",
+      "nombre_dep": "CHOCO",
+      "nombre_mun": "ALTO BAUDO (PIE DE PATO)",
+      "total_votos": 6554,
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "porcentaje_ganador": 96.81,
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_segundo": 3.19,
+      "margen": 93.62,
+      "nep": 1.07,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    },
+    {
+      "codigo_dep": "11",
+      "codigo_mun": "004",
+      "nombre_dep": "CAUCA",
+      "nombre_mun": "ALMAGUER",
+      "total_votos": 9448,
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "porcentaje_ganador": 95.63,
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_segundo": 4.37,
+      "margen": 91.26,
+      "nep": 1.09,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    },
+    {
+      "codigo_dep": "23",
+      "codigo_mun": "039",
+      "nombre_dep": "NARIÑO",
+      "nombre_mun": "CUMBITARA",
+      "total_votos": 5643,
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "porcentaje_ganador": 95.34,
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_segundo": 4.66,
+      "margen": 90.68,
+      "nep": 1.1,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    },
+    {
+      "codigo_dep": "23",
+      "codigo_mun": "098",
+      "nombre_dep": "NARIÑO",
+      "nombre_mun": "POLICARPA",
+      "total_votos": 9476,
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "porcentaje_ganador": 95.04,
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_segundo": 4.96,
+      "margen": 90.08,
+      "nep": 1.1,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    },
+    {
+      "codigo_dep": "23",
+      "codigo_mun": "080",
+      "nombre_dep": "NARIÑO",
+      "nombre_mun": "LEIVA",
+      "total_votos": 6423,
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "porcentaje_ganador": 94.75,
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_segundo": 5.25,
+      "margen": 89.5,
+      "nep": 1.11,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    },
+    {
+      "codigo_dep": "11",
+      "codigo_mun": "028",
+      "nombre_dep": "CAUCA",
+      "nombre_mun": "GUAPI",
+      "total_votos": 10681,
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "porcentaje_ganador": 94.47,
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "porcentaje_segundo": 5.53,
+      "margen": 88.94,
+      "nep": 1.12,
+      "indice_bipartidista": 100,
+      "clasificacion": "bastion"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "nombre": "ABELARDO DE LA ESPRIELLA",
+    "partido": "DEFENSORES DE LA PATRIA",
+    "cedula": "11004242",
+    "votos": 12569192,
+    "porcentaje": 50.15,
+    "posicion": 1,
+    "color": "#1D4ED8"
+  },
+  {
+    "nombre": "IVÁN CEPEDA CASTRO",
+    "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+    "cedula": "79262397",
+    "votos": 12495181,
+    "porcentaje": 49.85,
+    "posicion": 2,
+    "color": "#C2410C"
+  }
+]

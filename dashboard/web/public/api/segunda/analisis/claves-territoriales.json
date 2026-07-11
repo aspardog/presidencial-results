@@ -1,0 +1,193 @@
+{
+  "lectura": [
+    "CAQUETA fue el departamento más competido: 686 votos de diferencia (0.34 puntos).",
+    "La mayor ventaja neta del ganador nacional salió de ANTIOQUIA: +1.053.933 votos frente al segundo nacional.",
+    "ABELARDO DE LA ESPRIELLA ganó 14 de 33 departamentos; IVÁN CEPEDA CASTRO ganó 19."
+  ],
+  "departamentos_competidos": [
+    {
+      "codigo": "44",
+      "nombre": "CAQUETA",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 203854,
+      "diferencia": 686,
+      "margen_porcentual": 0.34
+    },
+    {
+      "codigo": "12",
+      "nombre": "CESAR",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 547155,
+      "diferencia": 16415,
+      "margen_porcentual": 3
+    },
+    {
+      "codigo": "16",
+      "nombre": "BOGOTA D.C.",
+      "ganador": "IVÁN CEPEDA CASTRO",
+      "segundo": "ABELARDO DE LA ESPRIELLA",
+      "total_votos": 4168623,
+      "diferencia": 301335,
+      "margen_porcentual": 7.23
+    },
+    {
+      "codigo": "15",
+      "nombre": "CUNDINAMARCA",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "total_votos": 1664899,
+      "diferencia": 128475,
+      "margen_porcentual": 7.72
+    },
+    {
+      "codigo": "54",
+      "nombre": "GUAVIARE",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "total_votos": 38002,
+      "diferencia": 3154,
+      "margen_porcentual": 8.3
+    },
+    {
+      "codigo": "24",
+      "nombre": "RISARALDA",
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "total_votos": 526156,
+      "diferencia": 51146,
+      "margen_porcentual": 9.72
+    }
+  ],
+  "ventajas_decisivas": [
+    {
+      "codigo": "01",
+      "nombre": "ANTIOQUIA",
+      "ganador_nacional": "ABELARDO DE LA ESPRIELLA",
+      "segundo_nacional": "IVÁN CEPEDA CASTRO",
+      "votos_ganador_nacional": 2186826,
+      "votos_segundo_nacional": 1132893,
+      "ventaja": 1053933,
+      "margen_porcentual": 31.75
+    },
+    {
+      "codigo": "25",
+      "nombre": "NORTE DE SANTANDER",
+      "ganador_nacional": "ABELARDO DE LA ESPRIELLA",
+      "segundo_nacional": "IVÁN CEPEDA CASTRO",
+      "votos_ganador_nacional": 602974,
+      "votos_segundo_nacional": 174242,
+      "ventaja": 428732,
+      "margen_porcentual": 55.16
+    },
+    {
+      "codigo": "27",
+      "nombre": "SANTANDER",
+      "ganador_nacional": "ABELARDO DE LA ESPRIELLA",
+      "segundo_nacional": "IVÁN CEPEDA CASTRO",
+      "votos_ganador_nacional": 822859,
+      "votos_segundo_nacional": 431354,
+      "ventaja": 391505,
+      "margen_porcentual": 31.22
+    },
+    {
+      "codigo": "07",
+      "nombre": "BOYACA",
+      "ganador_nacional": "ABELARDO DE LA ESPRIELLA",
+      "segundo_nacional": "IVÁN CEPEDA CASTRO",
+      "votos_ganador_nacional": 441725,
+      "votos_segundo_nacional": 280073,
+      "ventaja": 161652,
+      "margen_porcentual": 22.4
+    },
+    {
+      "codigo": "19",
+      "nombre": "HUILA",
+      "ganador_nacional": "ABELARDO DE LA ESPRIELLA",
+      "segundo_nacional": "IVÁN CEPEDA CASTRO",
+      "votos_ganador_nacional": 375068,
+      "votos_segundo_nacional": 229022,
+      "ventaja": 146046,
+      "margen_porcentual": 24.18
+    },
+    {
+      "codigo": "15",
+      "nombre": "CUNDINAMARCA",
+      "ganador_nacional": "ABELARDO DE LA ESPRIELLA",
+      "segundo_nacional": "IVÁN CEPEDA CASTRO",
+      "votos_ganador_nacional": 896687,
+      "votos_segundo_nacional": 768212,
+      "ventaja": 128475,
+      "margen_porcentual": 7.72
+    }
+  ],
+  "fortalezas": [
+    {
+      "nombre": "ABELARDO DE LA ESPRIELLA",
+      "partido": "DEFENSORES DE LA PATRIA",
+      "color": "#1D4ED8",
+      "total_votos": 12569192,
+      "porcentaje_nacional": 50.15,
+      "departamentos": [
+        {
+          "codigo": "25",
+          "nombre": "NORTE DE SANTANDER",
+          "votos": 602974,
+          "porcentaje": 77.58
+        },
+        {
+          "codigo": "46",
+          "nombre": "CASANARE",
+          "votos": 161306,
+          "porcentaje": 70.2
+        },
+        {
+          "codigo": "01",
+          "nombre": "ANTIOQUIA",
+          "votos": 2186826,
+          "porcentaje": 65.87
+        },
+        {
+          "codigo": "27",
+          "nombre": "SANTANDER",
+          "votos": 822859,
+          "porcentaje": 65.61
+        }
+      ]
+    },
+    {
+      "nombre": "IVÁN CEPEDA CASTRO",
+      "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+      "color": "#C2410C",
+      "total_votos": 12495181,
+      "porcentaje_nacional": 49.85,
+      "departamentos": [
+        {
+          "codigo": "17",
+          "nombre": "CHOCO",
+          "votos": 152872,
+          "porcentaje": 82.08
+        },
+        {
+          "codigo": "68",
+          "nombre": "VAUPES",
+          "votos": 9480,
+          "porcentaje": 81.75
+        },
+        {
+          "codigo": "64",
+          "nombre": "PUTUMAYO",
+          "votos": 131958,
+          "porcentaje": 79.56
+        },
+        {
+          "codigo": "23",
+          "nombre": "NARIÑO",
+          "votos": 652971,
+          "porcentaje": 77.64
+        }
+      ]
+    }
+  ]
+}

@@ -23,11 +23,13 @@ function assert(condition, message) {
 }
 
 async function main() {
-  const resumen = await fetchJson('/api/nacional/resumen.json');
-  const candidatos = await fetchJson('/api/nacional/candidatos.json');
-  const departamentos = await fetchJson('/api/departamentos/lista.json');
-  const detalle = await fetchJson('/api/departamentos/detalle.json');
+  // Vista principal = SEGUNDA vuelta (endpoints namespaced). El mapa es compartido.
+  const resumen = await fetchJson('/api/segunda/nacional/resumen.json');
+  const candidatos = await fetchJson('/api/segunda/nacional/candidatos.json');
+  const departamentos = await fetchJson('/api/segunda/departamentos/lista.json');
+  const detalle = await fetchJson('/api/segunda/departamentos/detalle.json');
   const mapa = await fetchJson('/api/mapas/departamentos.json');
+  const comparativa = await fetchJson('/api/comparativa.json');
 
   const response = await fetch(PUBLIC_URL);
   assert(response.ok, `${PUBLIC_URL} returned HTTP ${response.status}`);
@@ -38,6 +40,8 @@ async function main() {
     'Más reñido',
     'Mayor ventaja',
     'Bastiones electorales',
+    'La primera vuelta',
+    'Hacia dónde se inclinó el voto eliminado',
     numberFormatter.format(resumen.total_votos),
     numberFormatter.format(resumen.votos_validos),
   ];
@@ -54,9 +58,12 @@ async function main() {
 
   assert(resumen.total_votos > 0, 'Production resumen.total_votos is zero.');
   assert(resumen.votos_validos === totalCandidatos, 'Production valid votes do not match candidate votes.');
+  assert(candidatos.length === 2, `Production segunda vuelta must have 2 candidates, found ${candidatos.length}.`);
   assert(departamentos.length === 33, `Production department list has ${departamentos.length} entries.`);
   assert(Object.keys(detalle).length === 33, `Production department detail has ${Object.keys(detalle).length} entries.`);
   assert(mapa.features?.length === 33, `Production map has ${mapa.features?.length || 0} features.`);
+  assert(comparativa.nacional?.finalistas?.length === 2, 'Production comparativa.json must have 2 finalists.');
+  assert(Array.isArray(comparativa.departamentos) && comparativa.departamentos.length === 33, 'Production comparativa.json must cover 33 departments.');
 
   console.log(`Production verification passed for ${PUBLIC_URL}.`);
 }
