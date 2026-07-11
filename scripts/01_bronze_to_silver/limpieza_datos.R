@@ -16,10 +16,27 @@ library(arrow)  # Para Parquet
 library(jsonlite)  # Para JSON
 
 # Rutas
-DIR_BRONZE <- "data/bronze/raw/electoral/registraduria_2026-06-15"
-DIR_SILVER <- "data/silver/electoral"
-DIR_METADATA <- "data/silver/metadata/electoral"
+# NOTA: la Registraduría publicó los datos en dos carpetas ("Primera vuelta" y
+# "Segunda vuelta"). El pipeline se parametriza por vuelta con la variable de
+# entorno VUELTA_ELECTORAL ("primera" | "segunda"; por defecto "primera").
+#   - primera: rutas raíz históricas (data/silver/electoral, data/gold/...)
+#   - segunda: rutas namespaced (data/silver/electoral/segunda, data/gold/segunda/...)
+VUELTA <- tolower(Sys.getenv("VUELTA_ELECTORAL", "primera"))
+if (!VUELTA %in% c("primera", "segunda")) {
+  stop("VUELTA_ELECTORAL debe ser 'primera' o 'segunda' (recibido: ", VUELTA, ")")
+}
+
+CARPETA_BRONZE <- if (VUELTA == "primera") "Primera vuelta" else "Segunda vuelta"
+DIR_BRONZE <- file.path("data/bronze/raw/electoral", CARPETA_BRONZE)
+DIR_SILVER <- if (VUELTA == "primera") "data/silver/electoral" else file.path("data/silver/electoral", VUELTA)
+DIR_METADATA <- if (VUELTA == "primera") "data/silver/metadata/electoral" else file.path("data/silver/metadata/electoral", VUELTA)
 DIR_LOGS <- "logs"
+
+# Asegurar que existan los directorios de destino (para la vuelta namespaced)
+for (d in c(DIR_SILVER, DIR_METADATA)) {
+  if (!dir.exists(d)) dir.create(d, recursive = TRUE)
+}
+cat(sprintf("[VUELTA=%s] Bronze=%s | Silver=%s\n", VUELTA, DIR_BRONZE, DIR_SILVER))
 
 # Crear directorio de logs si no existe
 if (!dir.exists(DIR_LOGS)) dir.create(DIR_LOGS, recursive = TRUE)

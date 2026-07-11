@@ -5,10 +5,11 @@ import { getColorGanador } from '@/lib/colors';
 import { getCodigoElectoralDesdeDane, getCodigoDaneDesdElectoral } from '@/lib/departamentos';
 import { formatNumber, formatPercent } from '@/lib/formatters';
 
+// Geometría compartida entre vueltas; datos de votos = SEGUNDA vuelta.
 import departamentosData from '../../../public/api/mapas/departamentos.json';
-import polarizacionData from '../../../public/api/analisis/polarizacion.json';
-import polarizacionMunicipalData from '../../../public/api/analisis/polarizacion-municipal.json';
-import municipiosVotosData from '../../../public/api/departamentos/municipios.json';
+import polarizacionData from '../../../public/api/segunda/analisis/polarizacion.json';
+import polarizacionMunicipalData from '../../../public/api/segunda/analisis/polarizacion-municipal.json';
+import municipiosVotosData from '../../../public/api/segunda/departamentos/municipios.json';
 
 type MunicipioVotos = {
   codigo: string;
@@ -629,10 +630,6 @@ export default function MapaElectoral({
               <div className="flex items-center gap-1.5 sm:gap-2">
                 <div className="h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-sm" style={{ backgroundColor: '#C2410C' }} />
                 <span className="text-gb-slate">Cepeda</span>
-              </div>
-              <div className="flex items-center gap-1.5 sm:gap-2">
-                <div className="h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-sm" style={{ backgroundColor: '#7C3AED' }} />
-                <span className="text-gb-slate">Valencia</span>
               </div>
             </div>
           </>

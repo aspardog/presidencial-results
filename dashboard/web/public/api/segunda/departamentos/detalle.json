@@ -1,0 +1,1058 @@
+{
+  "11": {
+    "codigo": "11",
+    "nombre": "CAUCA",
+    "total_votos": 762683,
+    "ganador": "IVÁN CEPEDA CASTRO",
+    "partido_ganador": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+    "votos_ganador": 585780,
+    "porcentaje_ganador": 76.81,
+    "segundo": "ABELARDO DE LA ESPRIELLA",
+    "diferencia": 408877,
+    "total_municipios": 42,
+    "candidatos": [
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 585780,
+        "porcentaje": 76.81,
+        "posicion": 1,
+        "color": "#C2410C"
+      },
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 176903,
+        "porcentaje": 23.19,
+        "posicion": 2,
+        "color": "#1D4ED8"
+      }
+    ]
+  },
+  "12": {
+    "codigo": "12",
+    "nombre": "CESAR",
+    "total_votos": 547155,
+    "ganador": "IVÁN CEPEDA CASTRO",
+    "partido_ganador": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+    "votos_ganador": 281785,
+    "porcentaje_ganador": 51.5,
+    "segundo": "ABELARDO DE LA ESPRIELLA",
+    "diferencia": 16415,
+    "total_municipios": 25,
+    "candidatos": [
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 281785,
+        "porcentaje": 51.5,
+        "posicion": 1,
+        "color": "#C2410C"
+      },
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 265370,
+        "porcentaje": 48.5,
+        "posicion": 2,
+        "color": "#1D4ED8"
+      }
+    ]
+  },
+  "13": {
+    "codigo": "13",
+    "nombre": "CORDOBA",
+    "total_votos": 847830,
+    "ganador": "IVÁN CEPEDA CASTRO",
+    "partido_ganador": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+    "votos_ganador": 498935,
+    "porcentaje_ganador": 58.85,
+    "segundo": "ABELARDO DE LA ESPRIELLA",
+    "diferencia": 150040,
+    "total_municipios": 30,
+    "candidatos": [
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 498935,
+        "porcentaje": 58.85,
+        "posicion": 1,
+        "color": "#C2410C"
+      },
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 348895,
+        "porcentaje": 41.15,
+        "posicion": 2,
+        "color": "#1D4ED8"
+      }
+    ]
+  },
+  "15": {
+    "codigo": "15",
+    "nombre": "CUNDINAMARCA",
+    "total_votos": 1664899,
+    "ganador": "ABELARDO DE LA ESPRIELLA",
+    "partido_ganador": "DEFENSORES DE LA PATRIA",
+    "votos_ganador": 896687,
+    "porcentaje_ganador": 53.86,
+    "segundo": "IVÁN CEPEDA CASTRO",
+    "diferencia": 128475,
+    "total_municipios": 116,
+    "candidatos": [
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 896687,
+        "porcentaje": 53.86,
+        "posicion": 1,
+        "color": "#1D4ED8"
+      },
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 768212,
+        "porcentaje": 46.14,
+        "posicion": 2,
+        "color": "#C2410C"
+      }
+    ]
+  },
+  "16": {
+    "codigo": "16",
+    "nombre": "BOGOTA D.C.",
+    "total_votos": 4168623,
+    "ganador": "IVÁN CEPEDA CASTRO",
+    "partido_ganador": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+    "votos_ganador": 2234979,
+    "porcentaje_ganador": 53.61,
+    "segundo": "ABELARDO DE LA ESPRIELLA",
+    "diferencia": 301335,
+    "total_municipios": 1,
+    "candidatos": [
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 2234979,
+        "porcentaje": 53.61,
+        "posicion": 1,
+        "color": "#C2410C"
+      },
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 1933644,
+        "porcentaje": 46.39,
+        "posicion": 2,
+        "color": "#1D4ED8"
+      }
+    ]
+  },
+  "17": {
+    "codigo": "17",
+    "nombre": "CHOCO",
+    "total_votos": 186258,
+    "ganador": "IVÁN CEPEDA CASTRO",
+    "partido_ganador": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+    "votos_ganador": 152872,
+    "porcentaje_ganador": 82.08,
+    "segundo": "ABELARDO DE LA ESPRIELLA",
+    "diferencia": 119486,
+    "total_municipios": 31,
+    "candidatos": [
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 152872,
+        "porcentaje": 82.08,
+        "posicion": 1,
+        "color": "#C2410C"
+      },
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 33386,
+        "porcentaje": 17.92,
+        "posicion": 2,
+        "color": "#1D4ED8"
+      }
+    ]
+  },
+  "19": {
+    "codigo": "19",
+    "nombre": "HUILA",
+    "total_votos": 604090,
+    "ganador": "ABELARDO DE LA ESPRIELLA",
+    "partido_ganador": "DEFENSORES DE LA PATRIA",
+    "votos_ganador": 375068,
+    "porcentaje_ganador": 62.09,
+    "segundo": "IVÁN CEPEDA CASTRO",
+    "diferencia": 146046,
+    "total_municipios": 37,
+    "candidatos": [
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 375068,
+        "porcentaje": 62.09,
+        "posicion": 1,
+        "color": "#1D4ED8"
+      },
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 229022,
+        "porcentaje": 37.91,
+        "posicion": 2,
+        "color": "#C2410C"
+      }
+    ]
+  },
+  "21": {
+    "codigo": "21",
+    "nombre": "MAGDALENA",
+    "total_votos": 602388,
+    "ganador": "IVÁN CEPEDA CASTRO",
+    "partido_ganador": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+    "votos_ganador": 347253,
+    "porcentaje_ganador": 57.65,
+    "segundo": "ABELARDO DE LA ESPRIELLA",
+    "diferencia": 92118,
+    "total_municipios": 30,
+    "candidatos": [
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 347253,
+        "porcentaje": 57.65,
+        "posicion": 1,
+        "color": "#C2410C"
+      },
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 255135,
+        "porcentaje": 42.35,
+        "posicion": 2,
+        "color": "#1D4ED8"
+      }
+    ]
+  },
+  "23": {
+    "codigo": "23",
+    "nombre": "NARIÑO",
+    "total_votos": 840990,
+    "ganador": "IVÁN CEPEDA CASTRO",
+    "partido_ganador": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+    "votos_ganador": 652971,
+    "porcentaje_ganador": 77.64,
+    "segundo": "ABELARDO DE LA ESPRIELLA",
+    "diferencia": 464952,
+    "total_municipios": 64,
+    "candidatos": [
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 652971,
+        "porcentaje": 77.64,
+        "posicion": 1,
+        "color": "#C2410C"
+      },
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 188019,
+        "porcentaje": 22.36,
+        "posicion": 2,
+        "color": "#1D4ED8"
+      }
+    ]
+  },
+  "24": {
+    "codigo": "24",
+    "nombre": "RISARALDA",
+    "total_votos": 526156,
+    "ganador": "ABELARDO DE LA ESPRIELLA",
+    "partido_ganador": "DEFENSORES DE LA PATRIA",
+    "votos_ganador": 288651,
+    "porcentaje_ganador": 54.86,
+    "segundo": "IVÁN CEPEDA CASTRO",
+    "diferencia": 51146,
+    "total_municipios": 14,
+    "candidatos": [
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 288651,
+        "porcentaje": 54.86,
+        "posicion": 1,
+        "color": "#1D4ED8"
+      },
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 237505,
+        "porcentaje": 45.14,
+        "posicion": 2,
+        "color": "#C2410C"
+      }
+    ]
+  },
+  "25": {
+    "codigo": "25",
+    "nombre": "NORTE DE SANTANDER",
+    "total_votos": 777216,
+    "ganador": "ABELARDO DE LA ESPRIELLA",
+    "partido_ganador": "DEFENSORES DE LA PATRIA",
+    "votos_ganador": 602974,
+    "porcentaje_ganador": 77.58,
+    "segundo": "IVÁN CEPEDA CASTRO",
+    "diferencia": 428732,
+    "total_municipios": 40,
+    "candidatos": [
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 602974,
+        "porcentaje": 77.58,
+        "posicion": 1,
+        "color": "#1D4ED8"
+      },
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 174242,
+        "porcentaje": 22.42,
+        "posicion": 2,
+        "color": "#C2410C"
+      }
+    ]
+  },
+  "26": {
+    "codigo": "26",
+    "nombre": "QUINDIO",
+    "total_votos": 301591,
+    "ganador": "ABELARDO DE LA ESPRIELLA",
+    "partido_ganador": "DEFENSORES DE LA PATRIA",
+    "votos_ganador": 179397,
+    "porcentaje_ganador": 59.48,
+    "segundo": "IVÁN CEPEDA CASTRO",
+    "diferencia": 57203,
+    "total_municipios": 12,
+    "candidatos": [
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 179397,
+        "porcentaje": 59.48,
+        "posicion": 1,
+        "color": "#1D4ED8"
+      },
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 122194,
+        "porcentaje": 40.52,
+        "posicion": 2,
+        "color": "#C2410C"
+      }
+    ]
+  },
+  "27": {
+    "codigo": "27",
+    "nombre": "SANTANDER",
+    "total_votos": 1254213,
+    "ganador": "ABELARDO DE LA ESPRIELLA",
+    "partido_ganador": "DEFENSORES DE LA PATRIA",
+    "votos_ganador": 822859,
+    "porcentaje_ganador": 65.61,
+    "segundo": "IVÁN CEPEDA CASTRO",
+    "diferencia": 391505,
+    "total_municipios": 87,
+    "candidatos": [
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 822859,
+        "porcentaje": 65.61,
+        "posicion": 1,
+        "color": "#1D4ED8"
+      },
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 431354,
+        "porcentaje": 34.39,
+        "posicion": 2,
+        "color": "#C2410C"
+      }
+    ]
+  },
+  "28": {
+    "codigo": "28",
+    "nombre": "SUCRE",
+    "total_votos": 467794,
+    "ganador": "IVÁN CEPEDA CASTRO",
+    "partido_ganador": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+    "votos_ganador": 279405,
+    "porcentaje_ganador": 59.73,
+    "segundo": "ABELARDO DE LA ESPRIELLA",
+    "diferencia": 91016,
+    "total_municipios": 26,
+    "candidatos": [
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 279405,
+        "porcentaje": 59.73,
+        "posicion": 1,
+        "color": "#C2410C"
+      },
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 188389,
+        "porcentaje": 40.27,
+        "posicion": 2,
+        "color": "#1D4ED8"
+      }
+    ]
+  },
+  "29": {
+    "codigo": "29",
+    "nombre": "TOLIMA",
+    "total_votos": 724830,
+    "ganador": "ABELARDO DE LA ESPRIELLA",
+    "partido_ganador": "DEFENSORES DE LA PATRIA",
+    "votos_ganador": 425300,
+    "porcentaje_ganador": 58.68,
+    "segundo": "IVÁN CEPEDA CASTRO",
+    "diferencia": 125770,
+    "total_municipios": 47,
+    "candidatos": [
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 425300,
+        "porcentaje": 58.68,
+        "posicion": 1,
+        "color": "#1D4ED8"
+      },
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 299530,
+        "porcentaje": 41.32,
+        "posicion": 2,
+        "color": "#C2410C"
+      }
+    ]
+  },
+  "31": {
+    "codigo": "31",
+    "nombre": "VALLE DEL CAUCA",
+    "total_votos": 2273795,
+    "ganador": "IVÁN CEPEDA CASTRO",
+    "partido_ganador": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+    "votos_ganador": 1403962,
+    "porcentaje_ganador": 61.75,
+    "segundo": "ABELARDO DE LA ESPRIELLA",
+    "diferencia": 534129,
+    "total_municipios": 42,
+    "candidatos": [
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 1403962,
+        "porcentaje": 61.75,
+        "posicion": 1,
+        "color": "#C2410C"
+      },
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 869833,
+        "porcentaje": 38.25,
+        "posicion": 2,
+        "color": "#1D4ED8"
+      }
+    ]
+  },
+  "40": {
+    "codigo": "40",
+    "nombre": "ARAUCA",
+    "total_votos": 109878,
+    "ganador": "ABELARDO DE LA ESPRIELLA",
+    "partido_ganador": "DEFENSORES DE LA PATRIA",
+    "votos_ganador": 63518,
+    "porcentaje_ganador": 57.81,
+    "segundo": "IVÁN CEPEDA CASTRO",
+    "diferencia": 17158,
+    "total_municipios": 7,
+    "candidatos": [
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 63518,
+        "porcentaje": 57.81,
+        "posicion": 1,
+        "color": "#1D4ED8"
+      },
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 46360,
+        "porcentaje": 42.19,
+        "posicion": 2,
+        "color": "#C2410C"
+      }
+    ]
+  },
+  "44": {
+    "codigo": "44",
+    "nombre": "CAQUETA",
+    "total_votos": 203854,
+    "ganador": "IVÁN CEPEDA CASTRO",
+    "partido_ganador": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+    "votos_ganador": 102270,
+    "porcentaje_ganador": 50.17,
+    "segundo": "ABELARDO DE LA ESPRIELLA",
+    "diferencia": 686,
+    "total_municipios": 16,
+    "candidatos": [
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 102270,
+        "porcentaje": 50.17,
+        "posicion": 1,
+        "color": "#C2410C"
+      },
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 101584,
+        "porcentaje": 49.83,
+        "posicion": 2,
+        "color": "#1D4ED8"
+      }
+    ]
+  },
+  "46": {
+    "codigo": "46",
+    "nombre": "CASANARE",
+    "total_votos": 229782,
+    "ganador": "ABELARDO DE LA ESPRIELLA",
+    "partido_ganador": "DEFENSORES DE LA PATRIA",
+    "votos_ganador": 161306,
+    "porcentaje_ganador": 70.2,
+    "segundo": "IVÁN CEPEDA CASTRO",
+    "diferencia": 92830,
+    "total_municipios": 19,
+    "candidatos": [
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 161306,
+        "porcentaje": 70.2,
+        "posicion": 1,
+        "color": "#1D4ED8"
+      },
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 68476,
+        "porcentaje": 29.8,
+        "posicion": 2,
+        "color": "#C2410C"
+      }
+    ]
+  },
+  "48": {
+    "codigo": "48",
+    "nombre": "LA GUAJIRA",
+    "total_votos": 325073,
+    "ganador": "IVÁN CEPEDA CASTRO",
+    "partido_ganador": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+    "votos_ganador": 198553,
+    "porcentaje_ganador": 61.08,
+    "segundo": "ABELARDO DE LA ESPRIELLA",
+    "diferencia": 72033,
+    "total_municipios": 15,
+    "candidatos": [
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 198553,
+        "porcentaje": 61.08,
+        "posicion": 1,
+        "color": "#C2410C"
+      },
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 126520,
+        "porcentaje": 38.92,
+        "posicion": 2,
+        "color": "#1D4ED8"
+      }
+    ]
+  },
+  "50": {
+    "codigo": "50",
+    "nombre": "GUAINIA",
+    "total_votos": 14592,
+    "ganador": "IVÁN CEPEDA CASTRO",
+    "partido_ganador": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+    "votos_ganador": 9447,
+    "porcentaje_ganador": 64.74,
+    "segundo": "ABELARDO DE LA ESPRIELLA",
+    "diferencia": 4302,
+    "total_municipios": 8,
+    "candidatos": [
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 9447,
+        "porcentaje": 64.74,
+        "posicion": 1,
+        "color": "#C2410C"
+      },
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 5145,
+        "porcentaje": 35.26,
+        "posicion": 2,
+        "color": "#1D4ED8"
+      }
+    ]
+  },
+  "52": {
+    "codigo": "52",
+    "nombre": "META",
+    "total_votos": 565546,
+    "ganador": "ABELARDO DE LA ESPRIELLA",
+    "partido_ganador": "DEFENSORES DE LA PATRIA",
+    "votos_ganador": 339750,
+    "porcentaje_ganador": 60.07,
+    "segundo": "IVÁN CEPEDA CASTRO",
+    "diferencia": 113954,
+    "total_municipios": 29,
+    "candidatos": [
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 339750,
+        "porcentaje": 60.07,
+        "posicion": 1,
+        "color": "#1D4ED8"
+      },
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 225796,
+        "porcentaje": 39.93,
+        "posicion": 2,
+        "color": "#C2410C"
+      }
+    ]
+  },
+  "54": {
+    "codigo": "54",
+    "nombre": "GUAVIARE",
+    "total_votos": 38002,
+    "ganador": "ABELARDO DE LA ESPRIELLA",
+    "partido_ganador": "DEFENSORES DE LA PATRIA",
+    "votos_ganador": 20578,
+    "porcentaje_ganador": 54.15,
+    "segundo": "IVÁN CEPEDA CASTRO",
+    "diferencia": 3154,
+    "total_municipios": 4,
+    "candidatos": [
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 20578,
+        "porcentaje": 54.15,
+        "posicion": 1,
+        "color": "#1D4ED8"
+      },
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 17424,
+        "porcentaje": 45.85,
+        "posicion": 2,
+        "color": "#C2410C"
+      }
+    ]
+  },
+  "56": {
+    "codigo": "56",
+    "nombre": "SAN ANDRES Y PROVIDENCIA",
+    "total_votos": 22335,
+    "ganador": "IVÁN CEPEDA CASTRO",
+    "partido_ganador": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+    "votos_ganador": 12311,
+    "porcentaje_ganador": 55.12,
+    "segundo": "ABELARDO DE LA ESPRIELLA",
+    "diferencia": 2287,
+    "total_municipios": 2,
+    "candidatos": [
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 12311,
+        "porcentaje": 55.12,
+        "posicion": 1,
+        "color": "#C2410C"
+      },
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 10024,
+        "porcentaje": 44.88,
+        "posicion": 2,
+        "color": "#1D4ED8"
+      }
+    ]
+  },
+  "60": {
+    "codigo": "60",
+    "nombre": "AMAZONAS",
+    "total_votos": 28433,
+    "ganador": "IVÁN CEPEDA CASTRO",
+    "partido_ganador": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+    "votos_ganador": 17848,
+    "porcentaje_ganador": 62.77,
+    "segundo": "ABELARDO DE LA ESPRIELLA",
+    "diferencia": 7263,
+    "total_municipios": 11,
+    "candidatos": [
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 17848,
+        "porcentaje": 62.77,
+        "posicion": 1,
+        "color": "#C2410C"
+      },
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 10585,
+        "porcentaje": 37.23,
+        "posicion": 2,
+        "color": "#1D4ED8"
+      }
+    ]
+  },
+  "64": {
+    "codigo": "64",
+    "nombre": "PUTUMAYO",
+    "total_votos": 165857,
+    "ganador": "IVÁN CEPEDA CASTRO",
+    "partido_ganador": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+    "votos_ganador": 131958,
+    "porcentaje_ganador": 79.56,
+    "segundo": "ABELARDO DE LA ESPRIELLA",
+    "diferencia": 98059,
+    "total_municipios": 13,
+    "candidatos": [
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 131958,
+        "porcentaje": 79.56,
+        "posicion": 1,
+        "color": "#C2410C"
+      },
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 33899,
+        "porcentaje": 20.44,
+        "posicion": 2,
+        "color": "#1D4ED8"
+      }
+    ]
+  },
+  "68": {
+    "codigo": "68",
+    "nombre": "VAUPES",
+    "total_votos": 11596,
+    "ganador": "IVÁN CEPEDA CASTRO",
+    "partido_ganador": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+    "votos_ganador": 9480,
+    "porcentaje_ganador": 81.75,
+    "segundo": "ABELARDO DE LA ESPRIELLA",
+    "diferencia": 7364,
+    "total_municipios": 6,
+    "candidatos": [
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 9480,
+        "porcentaje": 81.75,
+        "posicion": 1,
+        "color": "#C2410C"
+      },
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 2116,
+        "porcentaje": 18.25,
+        "posicion": 2,
+        "color": "#1D4ED8"
+      }
+    ]
+  },
+  "72": {
+    "codigo": "72",
+    "nombre": "VICHADA",
+    "total_votos": 25958,
+    "ganador": "IVÁN CEPEDA CASTRO",
+    "partido_ganador": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+    "votos_ganador": 14272,
+    "porcentaje_ganador": 54.98,
+    "segundo": "ABELARDO DE LA ESPRIELLA",
+    "diferencia": 2586,
+    "total_municipios": 4,
+    "candidatos": [
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 14272,
+        "porcentaje": 54.98,
+        "posicion": 1,
+        "color": "#C2410C"
+      },
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 11686,
+        "porcentaje": 45.02,
+        "posicion": 2,
+        "color": "#1D4ED8"
+      }
+    ]
+  },
+  "01": {
+    "codigo": "01",
+    "nombre": "ANTIOQUIA",
+    "total_votos": 3319719,
+    "ganador": "ABELARDO DE LA ESPRIELLA",
+    "partido_ganador": "DEFENSORES DE LA PATRIA",
+    "votos_ganador": 2186826,
+    "porcentaje_ganador": 65.87,
+    "segundo": "IVÁN CEPEDA CASTRO",
+    "diferencia": 1053933,
+    "total_municipios": 125,
+    "candidatos": [
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 2186826,
+        "porcentaje": 65.87,
+        "posicion": 1,
+        "color": "#1D4ED8"
+      },
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 1132893,
+        "porcentaje": 34.13,
+        "posicion": 2,
+        "color": "#C2410C"
+      }
+    ]
+  },
+  "03": {
+    "codigo": "03",
+    "nombre": "ATLANTICO",
+    "total_votos": 1237449,
+    "ganador": "IVÁN CEPEDA CASTRO",
+    "partido_ganador": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+    "votos_ganador": 732654,
+    "porcentaje_ganador": 59.21,
+    "segundo": "ABELARDO DE LA ESPRIELLA",
+    "diferencia": 227859,
+    "total_municipios": 23,
+    "candidatos": [
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 732654,
+        "porcentaje": 59.21,
+        "posicion": 1,
+        "color": "#C2410C"
+      },
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 504795,
+        "porcentaje": 40.79,
+        "posicion": 2,
+        "color": "#1D4ED8"
+      }
+    ]
+  },
+  "05": {
+    "codigo": "05",
+    "nombre": "BOLIVAR",
+    "total_votos": 983606,
+    "ganador": "IVÁN CEPEDA CASTRO",
+    "partido_ganador": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+    "votos_ganador": 591807,
+    "porcentaje_ganador": 60.17,
+    "segundo": "ABELARDO DE LA ESPRIELLA",
+    "diferencia": 200008,
+    "total_municipios": 46,
+    "candidatos": [
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 591807,
+        "porcentaje": 60.17,
+        "posicion": 1,
+        "color": "#C2410C"
+      },
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 391799,
+        "porcentaje": 39.83,
+        "posicion": 2,
+        "color": "#1D4ED8"
+      }
+    ]
+  },
+  "07": {
+    "codigo": "07",
+    "nombre": "BOYACA",
+    "total_votos": 721798,
+    "ganador": "ABELARDO DE LA ESPRIELLA",
+    "partido_ganador": "DEFENSORES DE LA PATRIA",
+    "votos_ganador": 441725,
+    "porcentaje_ganador": 61.2,
+    "segundo": "IVÁN CEPEDA CASTRO",
+    "diferencia": 161652,
+    "total_municipios": 123,
+    "candidatos": [
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 441725,
+        "porcentaje": 61.2,
+        "posicion": 1,
+        "color": "#1D4ED8"
+      },
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 280073,
+        "porcentaje": 38.8,
+        "posicion": 2,
+        "color": "#C2410C"
+      }
+    ]
+  },
+  "09": {
+    "codigo": "09",
+    "nombre": "CALDAS",
+    "total_votos": 510384,
+    "ganador": "ABELARDO DE LA ESPRIELLA",
+    "partido_ganador": "DEFENSORES DE LA PATRIA",
+    "votos_ganador": 306826,
+    "porcentaje_ganador": 60.12,
+    "segundo": "IVÁN CEPEDA CASTRO",
+    "diferencia": 103268,
+    "total_municipios": 27,
+    "candidatos": [
+      {
+        "nombre": "ABELARDO DE LA ESPRIELLA",
+        "partido": "DEFENSORES DE LA PATRIA",
+        "cedula": "11004242",
+        "votos": 306826,
+        "porcentaje": 60.12,
+        "posicion": 1,
+        "color": "#1D4ED8"
+      },
+      {
+        "nombre": "IVÁN CEPEDA CASTRO",
+        "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+        "cedula": "79262397",
+        "votos": 203558,
+        "porcentaje": 39.88,
+        "posicion": 2,
+        "color": "#C2410C"
+      }
+    ]
+  }
+}

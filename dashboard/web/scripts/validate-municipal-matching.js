@@ -53,10 +53,11 @@ function getCodigoElectoral(daneCodigo) {
 function validateMunicipalMatching() {
   console.log('Validating municipal data matching...\n');
 
-  // Cargar datos electorales
-  const municipiosPath = path.join(PUBLIC_API, 'departamentos/municipios.json');
+  // Cargar datos electorales (vuelta activa del dashboard = segunda).
+  // El matching por nombre de municipio es idéntico en ambas vueltas.
+  const municipiosPath = path.join(PUBLIC_API, 'segunda/departamentos/municipios.json');
   if (!fs.existsSync(municipiosPath)) {
-    console.error('ERROR: departamentos/municipios.json not found');
+    console.error('ERROR: segunda/departamentos/municipios.json not found');
     process.exit(1);
   }
   const municipiosData = JSON.parse(fs.readFileSync(municipiosPath, 'utf8'));
