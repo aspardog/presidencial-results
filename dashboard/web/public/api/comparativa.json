@@ -1,5 +1,5 @@
 {
-  "generado": "2026-07-11T19:23:41.725Z",
+  "generado": "2026-07-13T15:33:43.561Z",
   "metodologia": "Comparación agregada primera vs segunda vuelta. Los deltas y la \"bolsa en juego\" son contabilidad de resultados, no atribución individual de trasvase de votos.",
   "nacional": {
     "primera": {
@@ -1314,6 +1314,9 @@
   "resumen": {
     "n_departamentos": 33,
     "n_volteados": 1,
+    "n_municipios": 1122,
+    "municipios_volteados": 24,
+    "pct_municipios_volteados": 2.14,
     "departamentos_volteados": [
       {
         "codigo": "44",

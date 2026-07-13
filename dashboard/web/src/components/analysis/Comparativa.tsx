@@ -53,6 +53,9 @@ interface Comparativa {
   resumen: {
     n_departamentos: number;
     n_volteados: number;
+    n_municipios: number;
+    municipios_volteados: number;
+    pct_municipios_volteados: number;
     departamentos_volteados: { codigo: string; nombre: string; de: string | null; a: string; margen_segunda: number }[];
   };
 }
@@ -80,7 +83,8 @@ const etiquetaFuerza = (f: number) =>
 
 export default function Comparativa() {
   const { finalistas, votos_en_juego, cambio_votos_emitidos } = data.nacional;
-  const { n_volteados, departamentos_volteados } = data.resumen;
+  const { departamentos_volteados, n_municipios, municipios_volteados, pct_municipios_volteados } = data.resumen;
+  const pctMunEstables = Math.round((100 - pct_municipios_volteados) * 10) / 10;
 
   // Ganador primero.
   const finalistasOrden = [...finalistas].sort((a, b) => b.votos_segunda - a.votos_segunda);
@@ -233,7 +237,8 @@ export default function Comparativa() {
                 : 'se recompuso el electorado'}
               . Uno consolidó la derecha; el otro movilizó votantes nuevos. Al final ganó{' '}
               {nombreCorto(finalistasOrden[0].nombre)} por apenas{' '}
-              {formatNumber(finalistasOrden[0].votos_segunda - finalistasOrden[1].votos_segunda)} votos.
+              {formatNumber(finalistasOrden[0].votos_segunda - finalistasOrden[1].votos_segunda)} votos.{' '}
+              <span className="text-gb-slate-muted">Todas estas cifras corresponden únicamente a los votos nacionales (no incluyen el exterior).</span>
             </p>
           </div>
 
@@ -265,9 +270,9 @@ export default function Comparativa() {
           </p>
         </div>
         <div className="rounded-lg border border-gb-border bg-white p-3 sm:p-4">
-          <p className="text-[10px] sm:text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Deptos. volteados</p>
-          <p className="mt-1.5 sm:mt-2 font-display text-base sm:text-xl font-semibold text-gb-ink">{n_volteados}</p>
-          <p className="mt-0.5 sm:mt-1 text-xs sm:text-sm text-gb-slate">Cambiaron de ganador entre vueltas</p>
+          <p className="text-[10px] sm:text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Territorio estable</p>
+          <p className="mt-1.5 sm:mt-2 font-display text-base sm:text-xl font-semibold text-gb-ink">{pctMunEstables}%</p>
+          <p className="mt-0.5 sm:mt-1 text-xs sm:text-sm text-gb-slate">De municipios mantuvo su ganador</p>
         </div>
         <div className="rounded-lg border border-gb-border bg-white p-3 sm:p-4">
           <p className="text-[10px] sm:text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Margen final</p>
@@ -280,29 +285,56 @@ export default function Comparativa() {
         </div>
       </div>
 
-      {/* Departamento que cambió de ganador */}
-      {departamentos_volteados.length > 0 && (
-        <div className="mt-3 sm:mt-4 gb-card">
-          <p className="gb-eyebrow">
-            {departamentos_volteados.length === 1 ? 'El único departamento que cambió de ganador' : 'Departamentos que cambiaron de ganador'}
-          </p>
-          <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-            {departamentos_volteados.map((d) => (
-              <div key={d.codigo} className="rounded-lg border border-gb-border bg-white p-3">
-                <p className="font-display text-sm font-semibold text-gb-ink">{d.nombre}</p>
-                <p className="mt-1 text-xs text-gb-slate">
-                  {d.de ? nombreCorto(d.de) : '—'}
-                  <span className="mx-1 text-gb-slate-muted">→</span>
-                  <span className="font-semibold text-gb-teal-700">{nombreCorto(d.a)}</span>
-                </p>
-                <p className="mt-1 font-mono text-[10px] text-gb-slate-muted">
-                  Margen 2ª vuelta: {formatPercent(d.margen_segunda)}
-                </p>
+      {/* Subsección dedicada: qué territorios cambiaron de preferencia */}
+      <div className="mt-8 sm:mt-10">
+        <h3 className="mb-2 font-display text-base sm:text-lg font-semibold text-gb-ink">
+          ¿Qué territorios cambiaron de preferencia?
+        </h3>
+        <p className="mb-4 max-w-3xl text-xs sm:text-sm text-gb-slate-muted">
+          Muy pocos. Comparando el ganador de cada territorio entre las dos vueltas, el mapa se
+          mantuvo <strong className="font-semibold text-gb-slate">casi idéntico</strong>.
+        </p>
+
+        <div className="grid gap-3 sm:gap-4 md:grid-cols-2">
+          {/* Municipios */}
+          <div className="gb-card">
+            <p className="gb-eyebrow">Municipios</p>
+            <p className="mt-2 font-display text-3xl sm:text-4xl font-semibold text-gb-teal-700 tabular-nums">
+              {formatPercent(pct_municipios_volteados)}
+            </p>
+            <p className="mt-1 text-xs sm:text-sm text-gb-slate">
+              cambiaron de ganador: <strong>{formatNumber(municipios_volteados)}</strong> de {formatNumber(n_municipios)} municipios.
+              El {pctMunEstables}% mantuvo su preferencia.
+            </p>
+          </div>
+
+          {/* Departamentos */}
+          <div className="gb-card">
+            <p className="gb-eyebrow">
+              {departamentos_volteados.length === 1 ? 'El único departamento que cambió' : 'Departamentos que cambiaron'}
+            </p>
+            {departamentos_volteados.length > 0 ? (
+              <div className="mt-2 space-y-2">
+                {departamentos_volteados.map((d) => (
+                  <div key={d.codigo} className="rounded-lg border border-gb-border bg-white p-3">
+                    <p className="font-display text-sm font-semibold text-gb-ink">{d.nombre}</p>
+                    <p className="mt-1 text-xs text-gb-slate">
+                      1ª vuelta {d.de ? nombreCorto(d.de) : '—'}
+                      <span className="mx-1 text-gb-slate-muted">→</span>
+                      2ª vuelta <span className="font-semibold text-gb-teal-700">{nombreCorto(d.a)}</span>
+                    </p>
+                    <p className="mt-1 font-mono text-[10px] text-gb-slate-muted">
+                      Ganó por {formatPercent(d.margen_segunda)} en 2ª vuelta
+                    </p>
+                  </div>
+                ))}
               </div>
-            ))}
+            ) : (
+              <p className="mt-2 text-sm text-gb-slate">Ningún departamento cambió de ganador entre vueltas.</p>
+            )}
           </div>
         </div>
-      )}
+      </div>
     </section>
   );
 }
