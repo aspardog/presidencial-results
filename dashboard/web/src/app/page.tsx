@@ -107,6 +107,13 @@ export default function HomePage() {
       />
 
       <main className="px-4 py-4 sm:p-6">
+        <div className="mb-4 sm:mb-6 flex items-start gap-2 rounded-gb-md border border-gb-border bg-gb-teal-50 px-3 py-2.5 sm:px-4 sm:py-3">
+          <span className="mt-0.5 shrink-0 font-mono text-xs font-semibold text-gb-teal-700" aria-hidden>ℹ</span>
+          <p className="text-xs sm:text-sm text-gb-slate">
+            Estos resultados <strong>no incluyen los votos del exterior</strong> (consulados): solo cubren el territorio nacional.
+          </p>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           <div className="space-y-4 lg:col-span-2">
             <div className="gb-card flex h-[450px] sm:h-[550px] lg:h-[600px] flex-col gap-3 p-3 sm:p-4">
