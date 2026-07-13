@@ -40,8 +40,8 @@ async function main() {
     'Más reñido',
     'Mayor ventaja',
     'Bastiones electorales',
-    'La primera vuelta',
-    'Hacia dónde se inclinó el voto eliminado',
+    'Primera vuelta',
+    'A quién ayudó el voto de los que no pasaron',
     numberFormatter.format(resumen.total_votos),
     numberFormatter.format(resumen.votos_validos),
   ];
