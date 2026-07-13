@@ -47,13 +47,6 @@ export default function HallazgosClave() {
         </p>
       </header>
 
-      <div className="mb-4 sm:mb-6 flex items-start gap-2 rounded-gb-md border border-gb-border bg-gb-teal-50 px-3 py-2.5 sm:px-4 sm:py-3">
-        <span className="mt-0.5 shrink-0 font-mono text-xs font-semibold text-gb-teal-700" aria-hidden>ℹ</span>
-        <p className="text-xs sm:text-sm text-gb-slate">
-          Estos resultados <strong>no incluyen los votos del exterior</strong> (consulados): solo cubren el territorio nacional.
-        </p>
-      </div>
-
       {/* Hero: Resultado Nacional */}
       <div className="gb-card">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3 sm:gap-4">
