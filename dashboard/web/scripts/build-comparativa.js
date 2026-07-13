@@ -193,6 +193,29 @@ const departamentos = Object.keys(segByDep)
 
 const deptosVolteados = departamentos.filter((d) => d.volteo);
 
+// ── Municipios que cambiaron de ganador entre vueltas ─────────────────────────
+// Ganador por municipio (mayor voto). En primera ningún no-finalista gana un
+// municipio, así que comparar ganadores 1ª↔2ª equivale al cambio de preferencia.
+function ganadoresPorMunicipio(rows) {
+  const win = {};
+  const best = {};
+  rows.forEach((r) => {
+    const key = `${String(r.DEP).padStart(2, '0')}_${String(r.MUN).padStart(3, '0')}`;
+    const v = Number(r.VOTOS) || 0;
+    if (best[key] === undefined || v > best[key]) {
+      best[key] = v;
+      win[key] = r.CANNOMBRE;
+    }
+  });
+  return win;
+}
+const munPri = ganadoresPorMunicipio(readCSV('municipal/votos_por_candidato_mun.csv'));
+const munSeg = ganadoresPorMunicipio(readCSV('segunda/municipal/votos_por_candidato_mun.csv'));
+const munComunes = Object.keys(munSeg).filter((k) => munPri[k] !== undefined);
+const munVolteados = munComunes.filter((k) => munPri[k] !== munSeg[k]).length;
+const nMunicipios = munComunes.length;
+const pctMunVolteados = nMunicipios > 0 ? round2((munVolteados / nMunicipios) * 100) : 0;
+
 // ── Trasvase estimado (lean territorial, generado por estimacion_trasvase.R) ──
 // Lee data/gold/analisis/trasvase.csv si existe. Cada fila: candidato de 1ª con
 // su "lean" (correlación territorial firmada) hacia el finalista de referencia.
@@ -262,6 +285,9 @@ const comparativa = {
   resumen: {
     n_departamentos: departamentos.length,
     n_volteados: deptosVolteados.length,
+    n_municipios: nMunicipios,
+    municipios_volteados: munVolteados,
+    pct_municipios_volteados: pctMunVolteados,
     departamentos_volteados: deptosVolteados.map((d) => ({
       codigo: d.codigo,
       nombre: d.nombre,
