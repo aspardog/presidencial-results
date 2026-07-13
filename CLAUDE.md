@@ -80,7 +80,9 @@ live in `data/bronze/raw/electoral/{Primera vuelta,Segunda vuelta}/`.
 
 The dashboard uses **static imports only** - no runtime API calls. JSON files in `public/api/` are imported directly into components at build time. This ensures Vercel serves a closed, verifiable version.
 
-**Two electoral rounds:** the election has a first round (`primera`, 11 candidates, no majority) and a runoff (`segunda`, 2 candidates). Round-specific JSON is namespaced under `public/api/{primera,segunda}/...`. The dashboard's main view defaults to **segunda vuelta** (the decisive result); the first round is surfaced through the `Comparativa` module (`comparativa.json`). Map geometry is round-independent and shared under `public/api/mapas/`.
+**Two electoral rounds:** the election has a first round (`primera`, 11 candidates, no majority) and a runoff (`segunda`, 2 candidates). Round-specific JSON is namespaced under `public/api/{primera,segunda}/...`. The dashboard's main view defaults to **segunda vuelta** (the decisive result); the first round gets its own explicit **"Primera vuelta"** section (`Comparativa.tsx`, fed by `comparativa.json`) with three subsections: who advanced, the estimated vote transfer (`trasvase`), and which territories changed preference. Map geometry is round-independent and shared under `public/api/mapas/`.
+
+A page-top scope note states that results exclude overseas (consulado) votes; user-facing copy says **32 departamentos** (Bogotá D.C. is a district, counted apart), even though the data has 33 territorial units.
 
 Key static endpoints (per round unless noted):
 - `{vuelta}/nacional/resumen.json` - National totals, winner, runner-up
@@ -91,7 +93,7 @@ Key static endpoints (per round unless noted):
 - `{vuelta}/analisis/claves-territoriales.json` - Territorial analysis data
 - `{vuelta}/analisis/polarizacion.json` - Department-level polarization metrics
 - `{vuelta}/analisis/polarizacion-municipal.json` - Municipal polarization metrics
-- `comparativa.json` - **(shared)** Primera↔segunda comparison: finalist growth, "votos en juego", per-department flips, and `trasvase` (estimated territorial lean of each eliminated candidate's vote, from `estimacion_trasvase.R`)
+- `comparativa.json` - **(shared)** Primera↔segunda comparison: finalist growth, "votos en juego", turnout change, per-department and per-municipio winner flips (`resumen.pct_municipios_volteados`), and `trasvase` (estimated territorial lean of each eliminated candidate's vote, from `estimacion_trasvase.R`)
 - `mapas/departamentos.json` - **(shared)** Simplified GeoJSON for interactive map
 - `mapas/municipios/{codigo}.json` - **(shared)** Per-department municipal GeoJSON (33 files, ~135KB each)
 
@@ -165,7 +167,7 @@ Electoral types are defined in `dashboard/web/src/types/electoral.ts`. Main inte
 
 - `MapaElectoral` - Interactive SVG map of Colombia
 - `HallazgosClave` - Unified national and territorial analysis section (replaces separate ClavesTerritoriales)
-- `Comparativa` - Primera↔segunda vuelta comparison / trasvase module (consumes `comparativa.json`)
+- `Comparativa` - The explicit "Primera vuelta" section (consumes `comparativa.json`): finalist growth, plain-language vote-transfer analysis, and the "which territories changed preference" subsection
 - `BarrasCandidatos` - Native HTML/CSS candidate comparison with accessible meter semantics
 - `CardResumen`, `CardGanador` - Summary cards
 

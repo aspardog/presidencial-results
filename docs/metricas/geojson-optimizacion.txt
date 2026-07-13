@@ -285,6 +285,276 @@ Archivos a observar:
 
 
 ================================================================================
+MÉTRICAS DE ÉXITO CONTINUO
+================================================================================
+
+Las métricas siguientes permiten comprobar que la optimización continúa
+funcionando después de nuevos cambios. Deben reportarse con percentiles
+(especialmente p75 y p95), no solo con promedios.
+
+
+1. BYTES DESCARGADOS POR SELECCIÓN MUNICIPAL
+--------------------------------------------
+Definición: bytes transferidos al cargar el GeoJSON del departamento elegido.
+
+Fórmula:
+  bytes_selección = transferSize de /api/mapas/municipios/{codigo}.json
+
+Metas:
+  - Promedio <= 150 KB
+  - Máximo esperado <= 550 KB
+  - No descargar mapas/municipios.json durante la selección
+
+Ejemplo exitoso:
+  Usuario selecciona Antioquia -> descarga 519 KB -> cumple el máximo.
+  Usuario selecciona Bogotá   -> descarga 17 KB  -> cumple.
+
+Ejemplo de regresión:
+  Usuario selecciona Meta -> se descargan 4.43 MB desde municipios.json.
+  Resultado: falla, porque volvió la descarga de la capa nacional completa.
+
+
+2. REDUCCIÓN DE TRANSFERENCIA FRENTE A LA CAPA NACIONAL
+-------------------------------------------------------
+Definición: porcentaje de bytes evitados por cada selección.
+
+Fórmula:
+  reducción = (1 - bytes_departamento / 4.43 MB) * 100
+
+Meta:
+  - Reducción promedio >= 95%
+
+Ejemplo:
+  Departamento de 135 KB:
+  (1 - 0.135 / 4.43) * 100 = 96.95% de reducción.
+
+
+3. TIEMPO CLIC -> MAPA MUNICIPAL VISIBLE
+----------------------------------------
+Definición: tiempo desde que el usuario selecciona un departamento hasta que
+las geometrías municipales terminan de renderizarse.
+
+Evento recomendado:
+  municipal_map_load_ms
+
+Metas:
+  - p75 < 500 ms en 4G o banda ancha
+  - p95 < 1,000 ms en 4G o banda ancha
+  - p75 < 3,000 ms en una simulación 3G lenta
+
+Ejemplo:
+  Mediciones: 180, 240, 310, 420 y 680 ms.
+  p75 aproximado: 420 ms -> cumple.
+
+Es importante iniciar la medición antes del fetch y terminarla después de que
+el SVG tenga las features municipales visibles. Medir solo el fetch ocultaría
+el costo de procesamiento y renderizado.
+
+
+4. EFECTIVIDAD DEL CACHÉ
+------------------------
+Definición: proporción de cargas repetidas resueltas desde caché del navegador
+o CDN sin volver a transferir el archivo completo.
+
+Eventos recomendados:
+  municipal_cache_hit
+  municipal_geojson_bytes
+
+Fórmula:
+  cache_hit_rate = cargas_desde_cache / cargas_repetidas * 100
+
+Metas:
+  - Cache hit rate >= 90% en selecciones repetidas
+  - Transferencia cercana a 0 bytes en la segunda visita
+  - Cache-Control presente en 100% de los JSON: max-age=86400, immutable
+
+Ejemplo exitoso:
+  Primera selección de Antioquia: 519 KB transferidos.
+  Segunda selección: 0 bytes transferidos, recurso servido desde memoria/disco.
+
+Ejemplo de regresión:
+  Diez selecciones repetidas producen diez descargas de 519 KB.
+  Cache hit rate = 0/10 = 0% -> falla.
+
+
+5. TAMAÑO DE JAVASCRIPT INICIAL
+-------------------------------
+Definición: JavaScript comprimido requerido para cargar la ruta principal.
+
+Meta:
+  - Mantener @nivo/bar fuera del bundle
+  - Reducción >= 20% frente al build que incluía Nivo
+  - Evitar que una nueva librería replique el costo eliminado
+
+Ejemplo:
+  Build anterior: 800 KB de JavaScript comprimido.
+  Build actual:   600 KB.
+  Reducción: (1 - 600/800) * 100 = 25% -> cumple.
+
+La cifra debe tomarse del reporte de build o de la transferencia real de los
+chunks JavaScript, no del tamaño sin comprimir de node_modules.
+
+
+6. CORE WEB VITALS E INTERACCIÓN
+--------------------------------
+Métricas y metas:
+  - LCP (Largest Contentful Paint): p75 < 2.5 segundos
+  - INP (Interaction to Next Paint): p75 < 200 ms
+  - CLS (Cumulative Layout Shift): p75 < 0.1
+
+Ejemplo:
+  LCP=1.8 s, INP=110 ms, CLS=0.03 -> experiencia satisfactoria.
+  LCP=2.1 s, INP=420 ms, CLS=0.04 -> el contenido carga bien, pero la
+  interacción del selector o del mapa necesita investigación.
+
+
+7. MATCHING E INTEGRIDAD MUNICIPAL
+----------------------------------
+Definición: municipios geográficos que resuelven correctamente sus datos
+electorales.
+
+Evento/validación:
+  municipal_data_match_rate
+
+Metas obligatorias:
+  - Matching: 100% (1,122/1,122)
+  - Municipios con ganador y color: 100%
+  - Municipios con votos y porcentaje en tooltip: 100%
+  - Features con geometría válida: 100%
+
+Ejemplo exitoso:
+  1,122 features, 1,122 matches y 1,122 ganadores -> cumple.
+
+Ejemplo de regresión:
+  1,117 matches de 1,122:
+  1,117 / 1,122 * 100 = 99.55% -> falla aunque el porcentaje parezca alto.
+
+
+8. ERRORES DE CARGA DEL MAPA
+----------------------------
+Definición: selecciones que terminan en error de fetch, JSON inválido o mapa
+municipal vacío.
+
+Evento recomendado:
+  municipal_map_error
+
+Fórmula:
+  error_rate = selecciones_con_error / selecciones_totales * 100
+
+Metas:
+  - Error rate < 0.5%
+  - Mapas vacíos < 0.1%
+
+Ejemplo:
+  12 errores en 10,000 selecciones:
+  12 / 10,000 * 100 = 0.12% -> cumple.
+
+Cada error debe incluir como dimensiones el código departamental, tipo de
+conexión, URL solicitada y causa (HTTP, parseo, matching o renderizado).
+
+
+9. CORRECCIÓN DE RANKINGS PRECALCULADOS
+---------------------------------------
+Definición: igualdad entre los rankings guardados en polarizacion.json y el
+resultado de filtrar y ordenar la fuente departamental completa.
+
+Meta:
+  - Coincidencia 100% en cada build
+  - Cero operaciones filter/sort para estos rankings durante el render
+
+Ejemplo:
+  Los cinco bastiones precalculados del ganador coinciden, en el mismo orden,
+  con los cinco obtenidos desde por_departamento -> cumple.
+
+Esta comprobación ya forma parte de validate-static-contracts.js.
+
+
+10. USO Y PROFUNDIDAD DE EXPLORACIÓN
+------------------------------------
+Estas métricas miden adopción, no solo rendimiento. Primero debe recopilarse
+una línea base antes de establecer una meta de crecimiento.
+
+Métricas:
+  - Tasa de uso del mapa = sesiones con selección / sesiones totales
+  - Departamentos consultados por sesión
+  - Porcentaje de usuarios que cambia entre Ganador y Margen
+  - Abandono posterior a una selección lenta o fallida
+
+Ejemplo:
+  10,000 sesiones y 4,200 con al menos una selección:
+  tasa de uso = 4,200 / 10,000 * 100 = 42%.
+
+  Si después de optimizar sube de 42% a 50%, la mejora relativa es:
+  (50 - 42) / 42 * 100 = 19.05%.
+
+No debe atribuirse automáticamente todo cambio de uso al rendimiento; también
+pueden influir contenido, tráfico, dispositivo y coyuntura electoral.
+
+
+================================================================================
+EVENTOS MÍNIMOS RECOMENDADOS
+================================================================================
+
+Evento                      Cuándo se registra              Campos principales
+--------------------------  ------------------------------  -------------------
+municipal_map_load_ms       Mapa termina de renderizar      depto, ms, conexión,
+                                                            cache_hit, features
+municipal_geojson_bytes     Termina la descarga             depto, transfer_size,
+                                                            encoded_size
+municipal_cache_hit         Se reutiliza un archivo         depto, fuente_cache
+municipal_map_error         Falla carga o renderizado       depto, etapa, error
+municipal_data_match_rate   Durante build/validación        matched, total, rate
+
+Ejemplo de carga útil exitosa:
+
+  {
+    "event": "municipal_map_load_ms",
+    "departamento": "05",
+    "duracion_ms": 420,
+    "transfer_bytes": 526490,
+    "cache_hit": false,
+    "features": 125,
+    "conexion": "4g"
+  }
+
+Ejemplo de carga repetida:
+
+  {
+    "event": "municipal_map_load_ms",
+    "departamento": "05",
+    "duracion_ms": 85,
+    "transfer_bytes": 0,
+    "cache_hit": true,
+    "features": 125,
+    "conexion": "4g"
+  }
+
+
+================================================================================
+TABLERO MÍNIMO DE SEGUIMIENTO
+================================================================================
+
+El tablero semanal debe mostrar:
+
+1. p50, p75 y p95 de municipal_map_load_ms.
+2. Bytes promedio, p75 y máximo por departamento.
+3. Cache hit rate para selecciones repetidas.
+4. Error rate total y por departamento.
+5. Matching municipal del último build.
+6. LCP, INP y CLS p75 por móvil/escritorio.
+7. Tamaño de JavaScript del último build frente al baseline.
+8. Tasa de uso del mapa y departamentos explorados por sesión.
+
+Semáforo sugerido:
+  VERDE    Cumple la meta.
+  AMARILLO Está hasta 20% por encima de la meta.
+  ROJO     Supera 20% la meta o viola integridad de datos.
+
+Matching inferior a 100%, geometrías faltantes o tooltips incompletos siempre
+deben marcarse en ROJO, sin tolerancia.
+
+
+================================================================================
 NOTAS TÉCNICAS
 ================================================================================
 
