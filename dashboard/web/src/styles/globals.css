@@ -97,7 +97,7 @@ a:hover {
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0;
-  font-size: 0.72rem;
+  font-size: 0.82rem;
   color: var(--gb-teal-700);
 }
 
@@ -107,7 +107,7 @@ a:hover {
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0;
-  font-size: 0.7rem;
+  font-size: 0.78rem;
   background: var(--gb-teal-100);
   color: var(--gb-teal-700);
   padding: 6px 12px;
@@ -161,7 +161,7 @@ a:hover {
 
 .gb-stat .l {
   font-family: var(--gb-font-body);
-  font-size: 0.86rem;
+  font-size: 0.95rem;
   color: var(--gb-slate-muted);
   margin-top: 6px;
 }

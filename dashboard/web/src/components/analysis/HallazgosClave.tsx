@@ -51,8 +51,8 @@ export default function HallazgosClave() {
         <h2 className="font-display text-base sm:text-lg font-semibold text-gb-ink">
           Hallazgos clave
         </h2>
-        <p className="mt-1 text-xs sm:text-sm text-gb-slate-muted">
-          Lectura nacional y territorial de los resultados electorales
+        <p className="mt-1 text-sm text-gb-slate-muted">
+          Lectura nacional y territorial.
         </p>
       </header>
 
@@ -77,7 +77,7 @@ export default function HallazgosClave() {
             </p>
           </div>
         </div>
-        <p className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gb-border text-[10px] sm:text-xs text-gb-slate-muted">
+        <p className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gb-border text-xs text-gb-slate-muted">
           <span className="text-gb-teal-700 font-medium">*</span> Porcentaje sobre votos válidos. No incluye consulados.
         </p>
       </div>
@@ -85,7 +85,7 @@ export default function HallazgosClave() {
       {/* Síntesis electoral - highlight cards */}
       <div className="mt-3 sm:mt-4 grid gap-2 sm:gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
         <div className="rounded-lg border border-gb-border bg-white p-3 sm:p-4">
-          <p className="text-[10px] sm:text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Votos netos</p>
+          <p className="text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Votos netos</p>
           <p className="mt-1.5 sm:mt-2 font-display text-base sm:text-xl font-semibold text-gb-teal-700">
             +{formatNumber(margenVictoria)}
           </p>
@@ -94,7 +94,7 @@ export default function HallazgosClave() {
           </p>
         </div>
         <div className="rounded-lg border border-gb-border bg-white p-3 sm:p-4">
-          <p className="text-[10px] sm:text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Diferencia %</p>
+          <p className="text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Diferencia %</p>
           <p className="mt-1.5 sm:mt-2 font-display text-base sm:text-xl font-semibold text-gb-teal-700">
             +{formatPercent(diferenciaPorcentual)}
           </p>
@@ -103,7 +103,7 @@ export default function HallazgosClave() {
           </p>
         </div>
         <div className="rounded-lg border border-gb-border bg-white p-3 sm:p-4">
-          <p className="text-[10px] sm:text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Más reñido</p>
+          <p className="text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Más reñido</p>
           <p className="mt-1.5 sm:mt-2 font-display text-base sm:text-xl font-semibold text-gb-ink truncate">
             {claves.departamentos_competidos[0].nombre}
           </p>
@@ -112,7 +112,7 @@ export default function HallazgosClave() {
           </p>
         </div>
         <div className="rounded-lg border border-gb-border bg-white p-3 sm:p-4">
-          <p className="text-[10px] sm:text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Mayor ventaja</p>
+          <p className="text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Mayor ventaja</p>
           <p className="mt-1.5 sm:mt-2 font-display text-base sm:text-xl font-semibold text-gb-ink truncate">
             {claves.ventajas_decisivas[0].nombre}
           </p>
@@ -121,7 +121,7 @@ export default function HallazgosClave() {
           </p>
         </div>
         <div className="col-span-2 sm:col-span-1 rounded-lg border border-gb-border bg-white p-3 sm:p-4">
-          <p className="text-[10px] sm:text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Territorios</p>
+          <p className="text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Territorios</p>
           <p className="mt-1.5 sm:mt-2 font-display text-base sm:text-xl font-semibold text-gb-ink">
             {territoriosGanador} — {territoriosSegundo}
           </p>
@@ -285,7 +285,7 @@ export default function HallazgosClave() {
                   {polMunicipal.resumen.municipios_ganador_nacional}
                 </p>
                 <p className="text-xs sm:text-sm text-gb-slate">municipios</p>
-                <p className="text-[10px] sm:text-xs text-gb-slate-muted">{getApellido(polMunicipal.resumen.ganador_nacional)}</p>
+                <p className="text-xs text-gb-slate-muted">{getApellido(polMunicipal.resumen.ganador_nacional)}</p>
               </div>
               <span className="text-xl sm:text-2xl text-gb-slate-muted font-light">vs</span>
               <div className="text-center">
@@ -293,7 +293,7 @@ export default function HallazgosClave() {
                   {polMunicipal.resumen.municipios_segundo_nacional}
                 </p>
                 <p className="text-xs sm:text-sm text-gb-slate">municipios</p>
-                <p className="text-[10px] sm:text-xs text-gb-slate-muted">{getApellido(polMunicipal.resumen.segundo_nacional)}</p>
+                <p className="text-xs text-gb-slate-muted">{getApellido(polMunicipal.resumen.segundo_nacional)}</p>
               </div>
             </div>
           </div>
@@ -329,7 +329,7 @@ export default function HallazgosClave() {
           <div className="gb-card">
             <div className="flex items-center gap-1.5 sm:gap-2 mb-3 sm:mb-4">
               <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-blue-600"></div>
-              <p className="gb-eyebrow text-[10px] sm:text-xs">Bastiones y ventajas {getApellido(polMunicipal.resumen.ganador_nacional)}</p>
+              <p className="gb-eyebrow text-xs">Bastiones y ventajas {getApellido(polMunicipal.resumen.ganador_nacional)}</p>
             </div>
             <div className="space-y-2 sm:space-y-3">
               {polarizacion.bastiones_ganador_nacional.map((depto) => (
@@ -346,7 +346,7 @@ export default function HallazgosClave() {
           <div className="gb-card">
             <div className="flex items-center gap-1.5 sm:gap-2 mb-3 sm:mb-4">
               <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-orange-600"></div>
-              <p className="gb-eyebrow text-[10px] sm:text-xs">Bastiones y ventajas {getApellido(polMunicipal.resumen.segundo_nacional)}</p>
+              <p className="gb-eyebrow text-xs">Bastiones y ventajas {getApellido(polMunicipal.resumen.segundo_nacional)}</p>
             </div>
             <div className="space-y-2 sm:space-y-3">
               {polarizacion.bastiones_segundo_nacional.map((depto) => (
@@ -377,7 +377,7 @@ export default function HallazgosClave() {
                 return (
                   <div key={`${mun.codigo_dep}_${mun.codigo_mun}`} className="flex items-center justify-between py-0.5 sm:py-1 border-b border-gb-border last:border-0">
                     <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-                      <span className="w-4 shrink-0 font-mono text-[10px] sm:text-xs text-gb-slate-muted">{index + 1}.</span>
+                      <span className="w-4 shrink-0 font-mono text-xs text-gb-slate-muted">{index + 1}.</span>
                       <div className="min-w-0">
                         <span className="font-medium text-xs sm:text-sm text-gb-ink truncate block">
                           {mun.nombre_mun} <span className="text-gb-slate-muted font-normal">({mun.nombre_dep})</span>

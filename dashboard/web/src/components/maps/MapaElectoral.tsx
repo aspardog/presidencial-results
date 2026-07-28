@@ -417,7 +417,7 @@ export default function MapaElectoral({
     <div className="relative h-full min-h-[300px] w-full overflow-hidden rounded-gb-lg bg-gb-teal-50">
       <div className="absolute left-2 top-2 sm:left-4 sm:top-4 z-10 flex max-w-[calc(100%-1rem)] sm:max-w-[calc(100%-2rem)] flex-wrap items-center gap-1.5 sm:gap-2">
         <div className="rounded-gb-md border border-gb-border bg-white px-2 py-1.5 sm:px-3 sm:py-2 shadow-gb-sm">
-          <p className="gb-eyebrow leading-none text-[10px] sm:text-xs">{isZoomed ? 'Municipal' : 'Departamental'}</p>
+          <p className="gb-eyebrow leading-none text-xs">{isZoomed ? 'Municipal' : 'Departamental'}</p>
           <p className="mt-0.5 sm:mt-1 max-w-[140px] sm:max-w-[220px] truncate text-xs sm:text-sm font-semibold text-gb-ink">
             {mapTitle}
           </p>
@@ -427,7 +427,7 @@ export default function MapaElectoral({
         <div className="flex rounded-gb-md border border-gb-border bg-white shadow-gb-sm overflow-hidden">
           <button
             type="button"
-            className={`px-2 py-1.5 sm:px-3 sm:py-2 text-[10px] sm:text-xs font-semibold transition ${
+            className={`px-2 py-1.5 sm:px-3 sm:py-2 text-xs font-semibold transition ${
               mapMode === 'ganador'
                 ? 'bg-gb-teal-700 text-white'
                 : 'text-gb-slate hover:bg-gb-teal-50'
@@ -438,7 +438,7 @@ export default function MapaElectoral({
           </button>
           <button
             type="button"
-            className={`px-2 py-1.5 sm:px-3 sm:py-2 text-[10px] sm:text-xs font-semibold transition ${
+            className={`px-2 py-1.5 sm:px-3 sm:py-2 text-xs font-semibold transition ${
               mapMode === 'polarizacion'
                 ? 'bg-gb-teal-700 text-white'
                 : 'text-gb-slate hover:bg-gb-teal-50'
@@ -618,10 +618,10 @@ export default function MapaElectoral({
         );
       })()}
 
-      <div className="absolute bottom-2 left-2 sm:bottom-4 sm:left-4 gb-card p-2 sm:p-3 text-[10px] sm:text-xs shadow-gb-sm">
+      <div className="absolute bottom-2 left-2 sm:bottom-4 sm:left-4 gb-card p-2 sm:p-3 text-xs shadow-gb-sm">
         {mapMode === 'ganador' ? (
           <>
-            <p className="gb-eyebrow mb-1.5 sm:mb-2 text-[9px] sm:text-xs">Ganador</p>
+            <p className="gb-eyebrow mb-1.5 sm:mb-2 text-xs">Ganador</p>
             <div className="space-y-1 sm:space-y-1.5">
               <div className="flex items-center gap-1.5 sm:gap-2">
                 <div className="h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-sm" style={{ backgroundColor: '#1D4ED8' }} />
@@ -635,7 +635,7 @@ export default function MapaElectoral({
           </>
         ) : (
           <>
-            <p className="gb-eyebrow mb-1.5 sm:mb-2 text-[9px] sm:text-xs">Margen</p>
+            <p className="gb-eyebrow mb-1.5 sm:mb-2 text-xs">Margen</p>
             <div className="space-y-0.5 sm:space-y-1">
               <div className="flex items-center gap-1.5 sm:gap-2">
                 <div className="h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-sm" style={{ backgroundColor: '#DC2626' }} />

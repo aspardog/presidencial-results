@@ -42,6 +42,17 @@ module.exports = {
         body: ['var(--gb-font-body)', 'system-ui', 'sans-serif'],
         mono: ['var(--gb-font-mono)', 'monospace'],
       },
+      // Escala tipográfica con piso legible (accesibilidad): nada por debajo de
+      // ~13px. Sube el extremo pequeño —que es donde el tablero se veía diminuto—
+      // y deja las cifras display (3xl+) casi igual para no reventar layouts.
+      fontSize: {
+        xs: ['0.8125rem', '1.15rem'],   // 13px  (antes 12)
+        sm: ['0.9375rem', '1.45rem'],   // 15px  (antes 14)
+        base: ['1.0625rem', '1.7rem'],  // 17px  (antes 16)
+        lg: ['1.1875rem', '1.6rem'],    // 19px  (antes 18)
+        xl: ['1.375rem', '1.75rem'],    // 22px  (antes 20)
+        '2xl': ['1.625rem', '1.95rem'], // 26px  (antes 24)
+      },
       borderRadius: {
         'gb-sm': '6px',
         'gb-md': '10px',

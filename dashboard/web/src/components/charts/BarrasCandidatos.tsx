@@ -26,7 +26,7 @@ export default function BarrasCandidatos({
               <p className="truncate text-xs font-semibold text-gb-slate" title={candidato.nombre}>
                 {candidato.nombre}
               </p>
-              <p className="font-mono text-[10px] text-gb-slate-muted">
+              <p className="font-mono text-xs text-gb-slate-muted">
                 {formatPercent(candidato.porcentaje)}
               </p>
             </div>
@@ -43,7 +43,7 @@ export default function BarrasCandidatos({
                 aria-valuenow={candidato.votos}
                 style={{ width: `${ancho}%`, backgroundColor: candidato.color }}
               >
-                <span className="whitespace-nowrap font-mono text-[10px] font-semibold text-white drop-shadow-sm">
+                <span className="whitespace-nowrap font-mono text-xs font-semibold text-white drop-shadow-sm">
                   {formatNumber(candidato.votos)}
                 </span>
               </div>
