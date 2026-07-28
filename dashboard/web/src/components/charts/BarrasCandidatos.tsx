@@ -16,7 +16,7 @@ export default function BarrasCandidatos({
   const maxVotos = Math.max(...data.map((candidato) => candidato.votos), 1);
 
   return (
-    <div className="flex h-[300px] flex-col justify-evenly gap-2" role="list" aria-label="Votos por candidato">
+    <div className="flex h-[150px] flex-col justify-evenly gap-2" role="list" aria-label="Votos por candidato">
       {data.map((candidato) => {
         const ancho = Math.max((candidato.votos / maxVotos) * 100, 1);
 

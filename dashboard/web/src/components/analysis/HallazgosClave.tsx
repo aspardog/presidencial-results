@@ -318,9 +318,12 @@ export default function HallazgosClave() {
             </div>
           </div>
 
-          <p className="mt-3 sm:mt-4 text-xs sm:text-sm text-gb-slate">
-            El <strong>{((polMunicipal.competitividad_municipal.bastiones / polMunicipal.resumen.total_municipios) * 100).toFixed(0)}%</strong> fueron bastiones (&gt;20 pts).
-            Solo <strong>{polMunicipal.competitividad_municipal.ultra_competidos}</strong> ultra-competidos (&lt;2%).
+          <p className="mt-3 sm:mt-4 w-full text-sm sm:text-base text-gb-slate">
+            El{' '}
+            <strong>{((polMunicipal.competitividad_municipal.bastiones / polMunicipal.resumen.total_municipios) * 100).toFixed(0)}%</strong>{' '}
+            fueron bastiones (&gt;20 pts). Solo{' '}
+            <strong>{polMunicipal.competitividad_municipal.ultra_competidos}</strong>{' '}
+            ultra-competidos (&lt;2%).
           </p>
         </div>
 
