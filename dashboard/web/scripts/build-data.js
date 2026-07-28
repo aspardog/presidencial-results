@@ -60,6 +60,48 @@ function getColorPartido(partido) {
   return COLORES_PARTIDO[partido] || DEFAULT_COLOR;
 }
 
+// Bogotá: la ZONA electoral de las mesas codifica la localidad (01-20).
+// Nombres de presentación (con tildes) por código de localidad.
+const BOGOTA_LOCALIDADES = {
+  '01': 'Usaquén', '02': 'Chapinero', '03': 'Santa Fe', '04': 'San Cristóbal',
+  '05': 'Usme', '06': 'Tunjuelito', '07': 'Bosa', '08': 'Kennedy', '09': 'Fontibón',
+  '10': 'Engativá', '11': 'Suba', '12': 'Barrios Unidos', '13': 'Teusaquillo',
+  '14': 'Los Mártires', '15': 'Antonio Nariño', '16': 'Puente Aranda',
+  '17': 'La Candelaria', '18': 'Rafael Uribe Uribe', '19': 'Ciudad Bolívar', '20': 'Sumapaz',
+};
+
+// Ciudades desagregadas por comuna (a partir de COMUCODIGO/COMUNOMBRE).
+const CIUDADES_COMUNA = [
+  { slug: 'medellin', nombre: 'Medellín' },
+  { slug: 'cali', nombre: 'Cali' },
+];
+
+// Título con artículos en minúscula y primera letra en mayúscula.
+function tituloCase(s) {
+  return s
+    .toLowerCase()
+    .replace(/\b\w/g, (c) => c.toUpperCase())
+    .replace(/\b(De|Del|La|Las|El|Los|Y)\b/g, (m) => m.toLowerCase())
+    .replace(/^./, (c) => c.toUpperCase());
+}
+
+// Deriva tipo/numero/nombre de una comuna a partir de COMUNOMBRE.
+function parseComuna(comunombre) {
+  const c = (comunombre || '').trim();
+  if (c === 'NACIONAL') return { tipo: 'especial', numero: null, nombre: 'Puestos especiales' };
+  if (/^CORR/i.test(c)) {
+    const limpio = c.replace(/^(?:CORREGIMIENTO|CORR\.?)\s*/i, '').trim();
+    return { tipo: 'corregimiento', numero: null, nombre: tituloCase(limpio) };
+  }
+  const m = c.match(/^COMUNA\s+(\d+)\s*(.*)$/i);
+  if (m) {
+    const numero = parseInt(m[1], 10);
+    const resto = (m[2] || '').trim();
+    return { tipo: 'comuna', numero, nombre: resto ? tituloCase(resto) : `Comuna ${numero}` };
+  }
+  return { tipo: 'comuna', numero: null, nombre: tituloCase(c) };
+}
+
 function parseCSV(content) {
   const lines = content.trim().split('\n');
   const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
@@ -875,6 +917,185 @@ function copyGeoJSON() {
   }
 }
 
+/**
+ * Bogotá desagregada por localidad (a partir de la ZONA electoral de las mesas).
+ * Estructura análoga al detalle municipal: ganador/2º/margen/% por localidad,
+ * con los "puestos especiales" (censo/cárceles, sin polígono) separados.
+ */
+function buildBogotaLocalidades() {
+  const data = readCSV('bogota/votos_por_candidato_localidad.csv');
+  if (!data.length) return null;
+
+  const porZona = {};
+  data.forEach((row) => {
+    const zona = String(row.ZONA).padStart(2, '0');
+    if (!porZona[zona]) porZona[zona] = { zona, candidatos: [] };
+    porZona[zona].candidatos.push({
+      nombre: row.CANNOMBRE,
+      partido: row.PARNOMBRE,
+      votos: row.VOTOS,
+      porcentaje: row.PORCENTAJE_LOC,
+      color: getColorPartido(row.PARNOMBRE),
+    });
+  });
+
+  const construirEntry = (z) => {
+    z.candidatos.sort((a, b) => b.votos - a.votos);
+    const totalVotos = z.candidatos.reduce((s, c) => s + c.votos, 0);
+    const ganador = z.candidatos[0];
+    const segundo = z.candidatos[1] || null;
+    const margen = totalVotos > 0 ? ((ganador.votos - (segundo ? segundo.votos : 0)) / totalVotos) * 100 : 0;
+    return {
+      codigo: z.zona,
+      nombre: BOGOTA_LOCALIDADES[z.zona] || 'Puestos especiales',
+      total_votos: totalVotos,
+      ganador: ganador.nombre,
+      partido_ganador: ganador.partido,
+      votos_ganador: ganador.votos,
+      porcentaje_ganador: Math.round(ganador.porcentaje * 100) / 100,
+      segundo: segundo ? segundo.nombre : '',
+      diferencia: ganador.votos - (segundo ? segundo.votos : 0),
+      margen: Math.round(margen * 100) / 100,
+      candidatos: z.candidatos.map((c, i) => ({
+        nombre: c.nombre,
+        partido: c.partido,
+        votos: c.votos,
+        porcentaje: Math.round(c.porcentaje * 100) / 100,
+        posicion: i + 1,
+        color: c.color,
+      })),
+    };
+  };
+
+  const localidades = [];
+  const especiales = [];
+  Object.values(porZona).forEach((z) => {
+    const entry = construirEntry(z);
+    if (BOGOTA_LOCALIDADES[z.zona]) localidades.push(entry);
+    else especiales.push(entry);
+  });
+  localidades.sort((a, b) => a.codigo.localeCompare(b.codigo));
+
+  // Ganador global de Bogotá (todas las zonas).
+  const acum = {};
+  data.forEach((row) => {
+    acum[row.CANNOMBRE] = (acum[row.CANNOMBRE] || 0) + row.VOTOS;
+  });
+  const rankGlobal = Object.entries(acum).sort((a, b) => b[1] - a[1]);
+  const ganadorBogota = rankGlobal[0] ? rankGlobal[0][0] : '';
+  const segundoBogota = rankGlobal[1] ? rankGlobal[1][0] : '';
+
+  const votosEspeciales = especiales.reduce((s, l) => s + l.total_votos, 0);
+  const totalBogota = localidades.reduce((s, l) => s + l.total_votos, 0) + votosEspeciales;
+
+  return {
+    vuelta: VUELTA,
+    resumen: {
+      total_votos: totalBogota,
+      votos_georreferenciados: totalBogota - votosEspeciales,
+      votos_especiales: votosEspeciales,
+      n_localidades: localidades.length,
+      ganador: ganadorBogota,
+      segundo: segundoBogota,
+      localidades_ganador: localidades.filter((l) => l.ganador === ganadorBogota).length,
+      localidades_segundo: localidades.filter((l) => l.ganador === segundoBogota).length,
+    },
+    localidades,
+    especiales,
+  };
+}
+
+/**
+ * Ciudad desagregada por comuna (Medellín, Cali, …), a partir de COMUCODIGO.
+ * Une por código de comuna; separa corregimientos (rurales) y el bucket
+ * "NACIONAL" (voto especial sin comuna).
+ */
+function buildCiudadComunas(slug, nombreCiudad) {
+  const data = readCSV(`ciudades/${slug}_comunas.csv`);
+  if (!data.length) return null;
+
+  const porUnidad = {};
+  data.forEach((row) => {
+    const codigo = String(row.COMUCODIGO).padStart(3, '0');
+    if (!porUnidad[codigo]) porUnidad[codigo] = { codigo, comunombre: row.COMUNOMBRE, candidatos: [] };
+    porUnidad[codigo].candidatos.push({
+      nombre: row.CANNOMBRE,
+      partido: row.PARNOMBRE,
+      votos: row.VOTOS,
+      porcentaje: row.PORCENTAJE_COM,
+      color: getColorPartido(row.PARNOMBRE),
+    });
+  });
+
+  const construir = (u) => {
+    u.candidatos.sort((a, b) => b.votos - a.votos);
+    const totalVotos = u.candidatos.reduce((s, c) => s + c.votos, 0);
+    const ganador = u.candidatos[0];
+    const segundo = u.candidatos[1] || null;
+    const margen = totalVotos > 0 ? ((ganador.votos - (segundo ? segundo.votos : 0)) / totalVotos) * 100 : 0;
+    const meta = parseComuna(u.comunombre);
+    return {
+      codigo: u.codigo,
+      numero: meta.numero,
+      tipo: meta.tipo,
+      nombre: meta.nombre,
+      total_votos: totalVotos,
+      ganador: ganador.nombre,
+      partido_ganador: ganador.partido,
+      votos_ganador: ganador.votos,
+      porcentaje_ganador: Math.round(ganador.porcentaje * 100) / 100,
+      segundo: segundo ? segundo.nombre : '',
+      diferencia: ganador.votos - (segundo ? segundo.votos : 0),
+      margen: Math.round(margen * 100) / 100,
+      candidatos: u.candidatos.map((c, i) => ({
+        nombre: c.nombre,
+        partido: c.partido,
+        votos: c.votos,
+        porcentaje: Math.round(c.porcentaje * 100) / 100,
+        posicion: i + 1,
+        color: c.color,
+      })),
+    };
+  };
+
+  const unidades = [];
+  const especiales = [];
+  Object.values(porUnidad).forEach((u) => {
+    const e = construir(u);
+    if (e.tipo === 'especial') especiales.push(e);
+    else unidades.push(e);
+  });
+  unidades.sort((a, b) => a.codigo.localeCompare(b.codigo));
+
+  const acum = {};
+  data.forEach((row) => { acum[row.CANNOMBRE] = (acum[row.CANNOMBRE] || 0) + row.VOTOS; });
+  const rank = Object.entries(acum).sort((a, b) => b[1] - a[1]);
+  const ganador = rank[0] ? rank[0][0] : '';
+  const segundo = rank[1] ? rank[1][0] : '';
+
+  const votosEspeciales = especiales.reduce((s, l) => s + l.total_votos, 0);
+  const totalCiudad = unidades.reduce((s, l) => s + l.total_votos, 0) + votosEspeciales;
+
+  return {
+    vuelta: VUELTA,
+    slug,
+    ciudad: nombreCiudad,
+    resumen: {
+      total_votos: totalCiudad,
+      votos_georreferenciados: totalCiudad - votosEspeciales,
+      votos_especiales: votosEspeciales,
+      n_comunas: unidades.filter((u) => u.tipo === 'comuna').length,
+      n_corregimientos: unidades.filter((u) => u.tipo === 'corregimiento').length,
+      ganador,
+      segundo,
+      unidades_ganador: unidades.filter((u) => u.ganador === ganador).length,
+      unidades_segundo: unidades.filter((u) => u.ganador === segundo).length,
+    },
+    unidades,
+    especiales,
+  };
+}
+
 // Main
 function main() {
   console.log(`📊 Generando datos estáticos para el dashboard (vuelta: ${VUELTA})...\n`);
@@ -910,6 +1131,14 @@ function main() {
 
   const polarizacionMunicipal = buildPolarizacionMunicipal();
   if (polarizacionMunicipal) writeJSON('analisis/polarizacion-municipal.json', polarizacionMunicipal);
+
+  const bogotaLocalidades = buildBogotaLocalidades();
+  if (bogotaLocalidades) writeJSON('bogota/localidades.json', bogotaLocalidades);
+
+  CIUDADES_COMUNA.forEach((c) => {
+    const ciudad = buildCiudadComunas(c.slug, c.nombre);
+    if (ciudad) writeJSON(`ciudades/${c.slug}.json`, ciudad);
+  });
 
   // La geometría de mapas es compartida entre vueltas: se genera una sola vez
   // (en la corrida de 'primera') salvo que aún no exista.

@@ -8,6 +8,13 @@ import CardResumen from '@/components/cards/CardResumen';
 import BarrasCandidatos from '@/components/charts/BarrasCandidatos';
 import HallazgosClave from '@/components/analysis/HallazgosClave';
 import HeroResultado from '@/components/analysis/HeroResultado';
+import VistaBogota from '@/components/analysis/VistaBogota';
+import VistaCiudad, { type CiudadData } from '@/components/analysis/VistaCiudad';
+import type { GeoFeatureCiudad } from '@/components/maps/MapaCiudad';
+import medellinCiudadData from '../../public/api/segunda/ciudades/medellin.json';
+import medellinGeoData from '../../public/api/mapas/medellin-comunas.json';
+import caliCiudadData from '../../public/api/segunda/ciudades/cali.json';
+import caliGeoData from '../../public/api/mapas/cali-comunas.json';
 import { formatNumber } from '@/lib/formatters';
 import { getColorPartido } from '@/lib/colors';
 import type {
@@ -31,12 +38,17 @@ const resumen = resumenData as ResumenNacional;
 const candidatos = candidatosData as CandidatoNacional[];
 const departamentosDetalle = departamentosDetalleData as Record<string, DepartamentoDetalle>;
 const municipiosPorDepartamento = municipiosData as Record<string, MunicipioResumen[]>;
+const medellinCiudad = medellinCiudadData as unknown as CiudadData;
+const caliCiudad = caliCiudadData as unknown as CiudadData;
+const medellinFeatures = (medellinGeoData as unknown as { features: GeoFeatureCiudad[] }).features;
+const caliFeatures = (caliGeoData as unknown as { features: GeoFeatureCiudad[] }).features;
 
 export default function HomePage() {
   const [departamentoSeleccionado, setDepartamentoSeleccionado] = useState<{
     codigo: string;
     nombre: string;
   } | null>(null);
+  const [vista, setVista] = useState<'nacional' | 'bogota' | 'medellin' | 'cali'>('nacional');
 
   const departamento = departamentoSeleccionado
     ? departamentosDetalle[departamentoSeleccionado.codigo]
@@ -108,6 +120,28 @@ export default function HomePage() {
       />
 
       <main className="px-4 py-4 sm:p-6">
+        {/* Tab de vista: Nacional | Bogotá */}
+        <div className="mb-4 inline-flex rounded-gb-md border border-gb-border bg-white p-1 shadow-gb-sm sm:mb-6">
+          {([['nacional', 'Nacional'], ['bogota', 'Bogotá'], ['medellin', 'Medellín'], ['cali', 'Cali']] as const).map(([v, label]) => (
+            <button
+              key={v}
+              type="button"
+              onClick={() => setVista(v)}
+              className={`rounded-gb-sm px-4 py-2 text-sm font-semibold transition ${
+                vista === v ? 'bg-gb-teal-700 text-white shadow-gb-sm' : 'text-gb-slate hover:text-gb-teal-700'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+
+        {vista === 'bogota' && <VistaBogota />}
+        {vista === 'medellin' && <VistaCiudad data={medellinCiudad} features={medellinFeatures} />}
+        {vista === 'cali' && <VistaCiudad data={caliCiudad} features={caliFeatures} />}
+
+        {vista === 'nacional' && (
+        <>
         <div className="mb-4 sm:mb-6 flex items-start gap-2 rounded-gb-md border border-gb-border bg-gb-teal-50 px-3 py-2.5 sm:px-4 sm:py-3">
           <span className="mt-0.5 shrink-0 font-mono text-sm font-semibold text-gb-teal-700" aria-hidden>ℹ</span>
           <p className="text-base text-gb-slate">
@@ -285,6 +319,8 @@ export default function HomePage() {
 
         {mostrarNacional && <HallazgosClave />}
         {mostrarNacional && <Comparativa />}
+        </>
+        )}
       </main>
     </div>
   );
