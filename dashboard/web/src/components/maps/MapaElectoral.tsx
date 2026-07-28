@@ -481,7 +481,7 @@ export default function MapaElectoral({
 
       <svg
         aria-label={`Mapa electoral de Colombia por ${isMunicipioView ? 'municipio' : 'departamento'}`}
-        className="h-full w-full"
+        className="absolute inset-0 h-full w-full"
         preserveAspectRatio="xMidYMid meet"
         role="img"
         viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}
