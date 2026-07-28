@@ -1,0 +1,2300 @@
+{
+  "vuelta": "primera",
+  "slug": "medellin",
+  "ciudad": "Medellín",
+  "resumen": {
+    "total_votos": 1203364,
+    "votos_georreferenciados": 1173684,
+    "votos_especiales": 29680,
+    "n_comunas": 16,
+    "n_corregimientos": 5,
+    "ganador": "ABELARDO DE LA ESPRIELLA",
+    "segundo": "IVÁN CEPEDA CASTRO",
+    "unidades_ganador": 21,
+    "unidades_segundo": 0
+  },
+  "unidades": [
+    {
+      "codigo": "001",
+      "numero": 1,
+      "tipo": "comuna",
+      "nombre": "Popular",
+      "total_votos": 48526,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "partido_ganador": "DEFENSORES DE LA PATRIA",
+      "votos_ganador": 21443,
+      "porcentaje_ganador": 44.19,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "diferencia": 3446,
+      "margen": 7.1,
+      "candidatos": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "partido": "DEFENSORES DE LA PATRIA",
+          "votos": 21443,
+          "porcentaje": 44.19,
+          "posicion": 1,
+          "color": "#1D4ED8"
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+          "votos": 17997,
+          "porcentaje": 37.09,
+          "posicion": 2,
+          "color": "#C2410C"
+        },
+        {
+          "nombre": "PALOMA VALENCIA LASERNA",
+          "partido": "PARTIDO CENTRO DEMOCRÁTICO",
+          "votos": 3902,
+          "porcentaje": 8.04,
+          "posicion": 3,
+          "color": "#7C3AED"
+        },
+        {
+          "nombre": "SERGIO FAJARDO VALDERRAMA",
+          "partido": "PARTIDO POLÍTICO DIGNIDAD & COMPROMISO",
+          "votos": 3731,
+          "porcentaje": 7.69,
+          "posicion": 4,
+          "color": "#0F766E"
+        },
+        {
+          "nombre": "RAÚL SANTIAGO BOTERO JARAMILLO",
+          "partido": "ROMPER EL SISTEMA",
+          "votos": 858,
+          "porcentaje": 1.77,
+          "posicion": 5,
+          "color": "#BE185D"
+        },
+        {
+          "nombre": "CLAUDIA LÓPEZ",
+          "partido": "CON CLAUDIA IMPARABLES",
+          "votos": 252,
+          "porcentaje": 0.52,
+          "posicion": 6,
+          "color": "#CA8A04"
+        },
+        {
+          "nombre": "MIGUEL URIBE LONDOÑO",
+          "partido": "PARTIDO DEMÓCRATA COLOMBIANO",
+          "votos": 115,
+          "porcentaje": 0.24,
+          "posicion": 7,
+          "color": "#4F46E5"
+        },
+        {
+          "nombre": "ÓSCAR MAURICIO LIZCANO ARANGO",
+          "partido": "COALICIÓN F.A.M.I.L.I.A",
+          "votos": 104,
+          "porcentaje": 0.21,
+          "posicion": 8,
+          "color": "#0891B2"
+        },
+        {
+          "nombre": "SONDRA MACOLLINS GARVIN PINTO",
+          "partido": "SONDRA MACOLLINS, LA ABOGADA DE HIERRO",
+          "votos": 64,
+          "porcentaje": 0.13,
+          "posicion": 9,
+          "color": "#65A30D"
+        },
+        {
+          "nombre": "ROY LEONARDO BARRERAS MONTEALEGRE",
+          "partido": "PARTIDO POLÍTICO LA FUERZA",
+          "votos": 44,
+          "porcentaje": 0.09,
+          "posicion": 10,
+          "color": "#EA580C"
+        },
+        {
+          "nombre": "GUSTAVO MATAMOROS CAMACHO",
+          "partido": "PARTIDO ECOLOGISTA COLOMBIANO",
+          "votos": 16,
+          "porcentaje": 0.03,
+          "posicion": 11,
+          "color": "#059669"
+        }
+      ]
+    },
+    {
+      "codigo": "002",
+      "numero": 2,
+      "tipo": "comuna",
+      "nombre": "Santa Cruz",
+      "total_votos": 40491,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "partido_ganador": "DEFENSORES DE LA PATRIA",
+      "votos_ganador": 19080,
+      "porcentaje_ganador": 47.12,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "diferencia": 5242,
+      "margen": 12.95,
+      "candidatos": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "partido": "DEFENSORES DE LA PATRIA",
+          "votos": 19080,
+          "porcentaje": 47.12,
+          "posicion": 1,
+          "color": "#1D4ED8"
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+          "votos": 13838,
+          "porcentaje": 34.18,
+          "posicion": 2,
+          "color": "#C2410C"
+        },
+        {
+          "nombre": "SERGIO FAJARDO VALDERRAMA",
+          "partido": "PARTIDO POLÍTICO DIGNIDAD & COMPROMISO",
+          "votos": 3522,
+          "porcentaje": 8.7,
+          "posicion": 3,
+          "color": "#0F766E"
+        },
+        {
+          "nombre": "PALOMA VALENCIA LASERNA",
+          "partido": "PARTIDO CENTRO DEMOCRÁTICO",
+          "votos": 3030,
+          "porcentaje": 7.48,
+          "posicion": 4,
+          "color": "#7C3AED"
+        },
+        {
+          "nombre": "RAÚL SANTIAGO BOTERO JARAMILLO",
+          "partido": "ROMPER EL SISTEMA",
+          "votos": 594,
+          "porcentaje": 1.47,
+          "posicion": 5,
+          "color": "#BE185D"
+        },
+        {
+          "nombre": "CLAUDIA LÓPEZ",
+          "partido": "CON CLAUDIA IMPARABLES",
+          "votos": 221,
+          "porcentaje": 0.55,
+          "posicion": 6,
+          "color": "#CA8A04"
+        },
+        {
+          "nombre": "MIGUEL URIBE LONDOÑO",
+          "partido": "PARTIDO DEMÓCRATA COLOMBIANO",
+          "votos": 68,
+          "porcentaje": 0.17,
+          "posicion": 7,
+          "color": "#4F46E5"
+        },
+        {
+          "nombre": "ÓSCAR MAURICIO LIZCANO ARANGO",
+          "partido": "COALICIÓN F.A.M.I.L.I.A",
+          "votos": 66,
+          "porcentaje": 0.16,
+          "posicion": 8,
+          "color": "#0891B2"
+        },
+        {
+          "nombre": "SONDRA MACOLLINS GARVIN PINTO",
+          "partido": "SONDRA MACOLLINS, LA ABOGADA DE HIERRO",
+          "votos": 31,
+          "porcentaje": 0.08,
+          "posicion": 9,
+          "color": "#65A30D"
+        },
+        {
+          "nombre": "ROY LEONARDO BARRERAS MONTEALEGRE",
+          "partido": "PARTIDO POLÍTICO LA FUERZA",
+          "votos": 29,
+          "porcentaje": 0.07,
+          "posicion": 10,
+          "color": "#EA580C"
+        },
+        {
+          "nombre": "GUSTAVO MATAMOROS CAMACHO",
+          "partido": "PARTIDO ECOLOGISTA COLOMBIANO",
+          "votos": 12,
+          "porcentaje": 0.03,
+          "posicion": 11,
+          "color": "#059669"
+        }
+      ]
+    },
+    {
+      "codigo": "003",
+      "numero": 3,
+      "tipo": "comuna",
+      "nombre": "Manrique",
+      "total_votos": 62555,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "partido_ganador": "DEFENSORES DE LA PATRIA",
+      "votos_ganador": 30154,
+      "porcentaje_ganador": 48.2,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "diferencia": 9536,
+      "margen": 15.24,
+      "candidatos": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "partido": "DEFENSORES DE LA PATRIA",
+          "votos": 30154,
+          "porcentaje": 48.2,
+          "posicion": 1,
+          "color": "#1D4ED8"
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+          "votos": 20618,
+          "porcentaje": 32.96,
+          "posicion": 2,
+          "color": "#C2410C"
+        },
+        {
+          "nombre": "SERGIO FAJARDO VALDERRAMA",
+          "partido": "PARTIDO POLÍTICO DIGNIDAD & COMPROMISO",
+          "votos": 5512,
+          "porcentaje": 8.81,
+          "posicion": 3,
+          "color": "#0F766E"
+        },
+        {
+          "nombre": "PALOMA VALENCIA LASERNA",
+          "partido": "PARTIDO CENTRO DEMOCRÁTICO",
+          "votos": 4919,
+          "porcentaje": 7.86,
+          "posicion": 4,
+          "color": "#7C3AED"
+        },
+        {
+          "nombre": "RAÚL SANTIAGO BOTERO JARAMILLO",
+          "partido": "ROMPER EL SISTEMA",
+          "votos": 700,
+          "porcentaje": 1.12,
+          "posicion": 5,
+          "color": "#BE185D"
+        },
+        {
+          "nombre": "CLAUDIA LÓPEZ",
+          "partido": "CON CLAUDIA IMPARABLES",
+          "votos": 318,
+          "porcentaje": 0.51,
+          "posicion": 6,
+          "color": "#CA8A04"
+        },
+        {
+          "nombre": "MIGUEL URIBE LONDOÑO",
+          "partido": "PARTIDO DEMÓCRATA COLOMBIANO",
+          "votos": 117,
+          "porcentaje": 0.19,
+          "posicion": 7,
+          "color": "#4F46E5"
+        },
+        {
+          "nombre": "ÓSCAR MAURICIO LIZCANO ARANGO",
+          "partido": "COALICIÓN F.A.M.I.L.I.A",
+          "votos": 95,
+          "porcentaje": 0.15,
+          "posicion": 8,
+          "color": "#0891B2"
+        },
+        {
+          "nombre": "SONDRA MACOLLINS GARVIN PINTO",
+          "partido": "SONDRA MACOLLINS, LA ABOGADA DE HIERRO",
+          "votos": 66,
+          "porcentaje": 0.11,
+          "posicion": 9,
+          "color": "#65A30D"
+        },
+        {
+          "nombre": "ROY LEONARDO BARRERAS MONTEALEGRE",
+          "partido": "PARTIDO POLÍTICO LA FUERZA",
+          "votos": 39,
+          "porcentaje": 0.06,
+          "posicion": 10,
+          "color": "#EA580C"
+        },
+        {
+          "nombre": "GUSTAVO MATAMOROS CAMACHO",
+          "partido": "PARTIDO ECOLOGISTA COLOMBIANO",
+          "votos": 17,
+          "porcentaje": 0.03,
+          "posicion": 11,
+          "color": "#059669"
+        }
+      ]
+    },
+    {
+      "codigo": "004",
+      "numero": 4,
+      "tipo": "comuna",
+      "nombre": "Aranjuez",
+      "total_votos": 70821,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "partido_ganador": "DEFENSORES DE LA PATRIA",
+      "votos_ganador": 35987,
+      "porcentaje_ganador": 50.81,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "diferencia": 14108,
+      "margen": 19.92,
+      "candidatos": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "partido": "DEFENSORES DE LA PATRIA",
+          "votos": 35987,
+          "porcentaje": 50.81,
+          "posicion": 1,
+          "color": "#1D4ED8"
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+          "votos": 21879,
+          "porcentaje": 30.89,
+          "posicion": 2,
+          "color": "#C2410C"
+        },
+        {
+          "nombre": "SERGIO FAJARDO VALDERRAMA",
+          "partido": "PARTIDO POLÍTICO DIGNIDAD & COMPROMISO",
+          "votos": 6480,
+          "porcentaje": 9.15,
+          "posicion": 3,
+          "color": "#0F766E"
+        },
+        {
+          "nombre": "PALOMA VALENCIA LASERNA",
+          "partido": "PARTIDO CENTRO DEMOCRÁTICO",
+          "votos": 5334,
+          "porcentaje": 7.53,
+          "posicion": 4,
+          "color": "#7C3AED"
+        },
+        {
+          "nombre": "RAÚL SANTIAGO BOTERO JARAMILLO",
+          "partido": "ROMPER EL SISTEMA",
+          "votos": 622,
+          "porcentaje": 0.88,
+          "posicion": 5,
+          "color": "#BE185D"
+        },
+        {
+          "nombre": "CLAUDIA LÓPEZ",
+          "partido": "CON CLAUDIA IMPARABLES",
+          "votos": 280,
+          "porcentaje": 0.4,
+          "posicion": 6,
+          "color": "#CA8A04"
+        },
+        {
+          "nombre": "ÓSCAR MAURICIO LIZCANO ARANGO",
+          "partido": "COALICIÓN F.A.M.I.L.I.A",
+          "votos": 82,
+          "porcentaje": 0.12,
+          "posicion": 7,
+          "color": "#0891B2"
+        },
+        {
+          "nombre": "MIGUEL URIBE LONDOÑO",
+          "partido": "PARTIDO DEMÓCRATA COLOMBIANO",
+          "votos": 81,
+          "porcentaje": 0.11,
+          "posicion": 8,
+          "color": "#4F46E5"
+        },
+        {
+          "nombre": "SONDRA MACOLLINS GARVIN PINTO",
+          "partido": "SONDRA MACOLLINS, LA ABOGADA DE HIERRO",
+          "votos": 34,
+          "porcentaje": 0.05,
+          "posicion": 9,
+          "color": "#65A30D"
+        },
+        {
+          "nombre": "ROY LEONARDO BARRERAS MONTEALEGRE",
+          "partido": "PARTIDO POLÍTICO LA FUERZA",
+          "votos": 33,
+          "porcentaje": 0.05,
+          "posicion": 10,
+          "color": "#EA580C"
+        },
+        {
+          "nombre": "GUSTAVO MATAMOROS CAMACHO",
+          "partido": "PARTIDO ECOLOGISTA COLOMBIANO",
+          "votos": 9,
+          "porcentaje": 0.01,
+          "posicion": 11,
+          "color": "#059669"
+        }
+      ]
+    },
+    {
+      "codigo": "005",
+      "numero": 5,
+      "tipo": "comuna",
+      "nombre": "Castilla",
+      "total_votos": 68892,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "partido_ganador": "DEFENSORES DE LA PATRIA",
+      "votos_ganador": 37005,
+      "porcentaje_ganador": 53.71,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "diferencia": 17886,
+      "margen": 25.96,
+      "candidatos": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "partido": "DEFENSORES DE LA PATRIA",
+          "votos": 37005,
+          "porcentaje": 53.71,
+          "posicion": 1,
+          "color": "#1D4ED8"
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+          "votos": 19119,
+          "porcentaje": 27.75,
+          "posicion": 2,
+          "color": "#C2410C"
+        },
+        {
+          "nombre": "SERGIO FAJARDO VALDERRAMA",
+          "partido": "PARTIDO POLÍTICO DIGNIDAD & COMPROMISO",
+          "votos": 6728,
+          "porcentaje": 9.77,
+          "posicion": 3,
+          "color": "#0F766E"
+        },
+        {
+          "nombre": "PALOMA VALENCIA LASERNA",
+          "partido": "PARTIDO CENTRO DEMOCRÁTICO",
+          "votos": 5021,
+          "porcentaje": 7.29,
+          "posicion": 4,
+          "color": "#7C3AED"
+        },
+        {
+          "nombre": "RAÚL SANTIAGO BOTERO JARAMILLO",
+          "partido": "ROMPER EL SISTEMA",
+          "votos": 543,
+          "porcentaje": 0.79,
+          "posicion": 5,
+          "color": "#BE185D"
+        },
+        {
+          "nombre": "CLAUDIA LÓPEZ",
+          "partido": "CON CLAUDIA IMPARABLES",
+          "votos": 276,
+          "porcentaje": 0.4,
+          "posicion": 6,
+          "color": "#CA8A04"
+        },
+        {
+          "nombre": "ÓSCAR MAURICIO LIZCANO ARANGO",
+          "partido": "COALICIÓN F.A.M.I.L.I.A",
+          "votos": 78,
+          "porcentaje": 0.11,
+          "posicion": 7,
+          "color": "#0891B2"
+        },
+        {
+          "nombre": "MIGUEL URIBE LONDOÑO",
+          "partido": "PARTIDO DEMÓCRATA COLOMBIANO",
+          "votos": 50,
+          "porcentaje": 0.07,
+          "posicion": 8,
+          "color": "#4F46E5"
+        },
+        {
+          "nombre": "SONDRA MACOLLINS GARVIN PINTO",
+          "partido": "SONDRA MACOLLINS, LA ABOGADA DE HIERRO",
+          "votos": 40,
+          "porcentaje": 0.06,
+          "posicion": 9,
+          "color": "#65A30D"
+        },
+        {
+          "nombre": "ROY LEONARDO BARRERAS MONTEALEGRE",
+          "partido": "PARTIDO POLÍTICO LA FUERZA",
+          "votos": 26,
+          "porcentaje": 0.04,
+          "posicion": 10,
+          "color": "#EA580C"
+        },
+        {
+          "nombre": "GUSTAVO MATAMOROS CAMACHO",
+          "partido": "PARTIDO ECOLOGISTA COLOMBIANO",
+          "votos": 6,
+          "porcentaje": 0.01,
+          "posicion": 11,
+          "color": "#059669"
+        }
+      ]
+    },
+    {
+      "codigo": "006",
+      "numero": 6,
+      "tipo": "comuna",
+      "nombre": "Doce de Octubre",
+      "total_votos": 69072,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "partido_ganador": "DEFENSORES DE LA PATRIA",
+      "votos_ganador": 36238,
+      "porcentaje_ganador": 52.46,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "diferencia": 16556,
+      "margen": 23.97,
+      "candidatos": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "partido": "DEFENSORES DE LA PATRIA",
+          "votos": 36238,
+          "porcentaje": 52.46,
+          "posicion": 1,
+          "color": "#1D4ED8"
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+          "votos": 19682,
+          "porcentaje": 28.49,
+          "posicion": 2,
+          "color": "#C2410C"
+        },
+        {
+          "nombre": "SERGIO FAJARDO VALDERRAMA",
+          "partido": "PARTIDO POLÍTICO DIGNIDAD & COMPROMISO",
+          "votos": 6386,
+          "porcentaje": 9.25,
+          "posicion": 3,
+          "color": "#0F766E"
+        },
+        {
+          "nombre": "PALOMA VALENCIA LASERNA",
+          "partido": "PARTIDO CENTRO DEMOCRÁTICO",
+          "votos": 5506,
+          "porcentaje": 7.97,
+          "posicion": 4,
+          "color": "#7C3AED"
+        },
+        {
+          "nombre": "RAÚL SANTIAGO BOTERO JARAMILLO",
+          "partido": "ROMPER EL SISTEMA",
+          "votos": 681,
+          "porcentaje": 0.99,
+          "posicion": 5,
+          "color": "#BE185D"
+        },
+        {
+          "nombre": "CLAUDIA LÓPEZ",
+          "partido": "CON CLAUDIA IMPARABLES",
+          "votos": 298,
+          "porcentaje": 0.43,
+          "posicion": 6,
+          "color": "#CA8A04"
+        },
+        {
+          "nombre": "MIGUEL URIBE LONDOÑO",
+          "partido": "PARTIDO DEMÓCRATA COLOMBIANO",
+          "votos": 110,
+          "porcentaje": 0.16,
+          "posicion": 7,
+          "color": "#4F46E5"
+        },
+        {
+          "nombre": "ÓSCAR MAURICIO LIZCANO ARANGO",
+          "partido": "COALICIÓN F.A.M.I.L.I.A",
+          "votos": 82,
+          "porcentaje": 0.12,
+          "posicion": 8,
+          "color": "#0891B2"
+        },
+        {
+          "nombre": "SONDRA MACOLLINS GARVIN PINTO",
+          "partido": "SONDRA MACOLLINS, LA ABOGADA DE HIERRO",
+          "votos": 40,
+          "porcentaje": 0.06,
+          "posicion": 9,
+          "color": "#65A30D"
+        },
+        {
+          "nombre": "ROY LEONARDO BARRERAS MONTEALEGRE",
+          "partido": "PARTIDO POLÍTICO LA FUERZA",
+          "votos": 36,
+          "porcentaje": 0.05,
+          "posicion": 10,
+          "color": "#EA580C"
+        },
+        {
+          "nombre": "GUSTAVO MATAMOROS CAMACHO",
+          "partido": "PARTIDO ECOLOGISTA COLOMBIANO",
+          "votos": 13,
+          "porcentaje": 0.02,
+          "posicion": 11,
+          "color": "#059669"
+        }
+      ]
+    },
+    {
+      "codigo": "007",
+      "numero": 7,
+      "tipo": "comuna",
+      "nombre": "Robledo",
+      "total_votos": 80443,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "partido_ganador": "DEFENSORES DE LA PATRIA",
+      "votos_ganador": 40992,
+      "porcentaje_ganador": 50.96,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "diferencia": 17013,
+      "margen": 21.15,
+      "candidatos": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "partido": "DEFENSORES DE LA PATRIA",
+          "votos": 40992,
+          "porcentaje": 50.96,
+          "posicion": 1,
+          "color": "#1D4ED8"
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+          "votos": 23979,
+          "porcentaje": 29.81,
+          "posicion": 2,
+          "color": "#C2410C"
+        },
+        {
+          "nombre": "SERGIO FAJARDO VALDERRAMA",
+          "partido": "PARTIDO POLÍTICO DIGNIDAD & COMPROMISO",
+          "votos": 8365,
+          "porcentaje": 10.4,
+          "posicion": 3,
+          "color": "#0F766E"
+        },
+        {
+          "nombre": "PALOMA VALENCIA LASERNA",
+          "partido": "PARTIDO CENTRO DEMOCRÁTICO",
+          "votos": 5817,
+          "porcentaje": 7.23,
+          "posicion": 4,
+          "color": "#7C3AED"
+        },
+        {
+          "nombre": "RAÚL SANTIAGO BOTERO JARAMILLO",
+          "partido": "ROMPER EL SISTEMA",
+          "votos": 676,
+          "porcentaje": 0.84,
+          "posicion": 5,
+          "color": "#BE185D"
+        },
+        {
+          "nombre": "CLAUDIA LÓPEZ",
+          "partido": "CON CLAUDIA IMPARABLES",
+          "votos": 355,
+          "porcentaje": 0.44,
+          "posicion": 6,
+          "color": "#CA8A04"
+        },
+        {
+          "nombre": "ÓSCAR MAURICIO LIZCANO ARANGO",
+          "partido": "COALICIÓN F.A.M.I.L.I.A",
+          "votos": 89,
+          "porcentaje": 0.11,
+          "posicion": 7,
+          "color": "#0891B2"
+        },
+        {
+          "nombre": "MIGUEL URIBE LONDOÑO",
+          "partido": "PARTIDO DEMÓCRATA COLOMBIANO",
+          "votos": 83,
+          "porcentaje": 0.1,
+          "posicion": 8,
+          "color": "#4F46E5"
+        },
+        {
+          "nombre": "SONDRA MACOLLINS GARVIN PINTO",
+          "partido": "SONDRA MACOLLINS, LA ABOGADA DE HIERRO",
+          "votos": 43,
+          "porcentaje": 0.05,
+          "posicion": 9,
+          "color": "#65A30D"
+        },
+        {
+          "nombre": "ROY LEONARDO BARRERAS MONTEALEGRE",
+          "partido": "PARTIDO POLÍTICO LA FUERZA",
+          "votos": 29,
+          "porcentaje": 0.04,
+          "posicion": 10,
+          "color": "#EA580C"
+        },
+        {
+          "nombre": "GUSTAVO MATAMOROS CAMACHO",
+          "partido": "PARTIDO ECOLOGISTA COLOMBIANO",
+          "votos": 15,
+          "porcentaje": 0.02,
+          "posicion": 11,
+          "color": "#059669"
+        }
+      ]
+    },
+    {
+      "codigo": "008",
+      "numero": 8,
+      "tipo": "comuna",
+      "nombre": "Villa Hermosa",
+      "total_votos": 55002,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "partido_ganador": "DEFENSORES DE LA PATRIA",
+      "votos_ganador": 27295,
+      "porcentaje_ganador": 49.63,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "diferencia": 9318,
+      "margen": 16.94,
+      "candidatos": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "partido": "DEFENSORES DE LA PATRIA",
+          "votos": 27295,
+          "porcentaje": 49.63,
+          "posicion": 1,
+          "color": "#1D4ED8"
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+          "votos": 17977,
+          "porcentaje": 32.68,
+          "posicion": 2,
+          "color": "#C2410C"
+        },
+        {
+          "nombre": "SERGIO FAJARDO VALDERRAMA",
+          "partido": "PARTIDO POLÍTICO DIGNIDAD & COMPROMISO",
+          "votos": 4364,
+          "porcentaje": 7.93,
+          "posicion": 3,
+          "color": "#0F766E"
+        },
+        {
+          "nombre": "PALOMA VALENCIA LASERNA",
+          "partido": "PARTIDO CENTRO DEMOCRÁTICO",
+          "votos": 4248,
+          "porcentaje": 7.72,
+          "posicion": 4,
+          "color": "#7C3AED"
+        },
+        {
+          "nombre": "RAÚL SANTIAGO BOTERO JARAMILLO",
+          "partido": "ROMPER EL SISTEMA",
+          "votos": 587,
+          "porcentaje": 1.07,
+          "posicion": 5,
+          "color": "#BE185D"
+        },
+        {
+          "nombre": "CLAUDIA LÓPEZ",
+          "partido": "CON CLAUDIA IMPARABLES",
+          "votos": 237,
+          "porcentaje": 0.43,
+          "posicion": 6,
+          "color": "#CA8A04"
+        },
+        {
+          "nombre": "ÓSCAR MAURICIO LIZCANO ARANGO",
+          "partido": "COALICIÓN F.A.M.I.L.I.A",
+          "votos": 98,
+          "porcentaje": 0.18,
+          "posicion": 7,
+          "color": "#0891B2"
+        },
+        {
+          "nombre": "MIGUEL URIBE LONDOÑO",
+          "partido": "PARTIDO DEMÓCRATA COLOMBIANO",
+          "votos": 93,
+          "porcentaje": 0.17,
+          "posicion": 8,
+          "color": "#4F46E5"
+        },
+        {
+          "nombre": "SONDRA MACOLLINS GARVIN PINTO",
+          "partido": "SONDRA MACOLLINS, LA ABOGADA DE HIERRO",
+          "votos": 57,
+          "porcentaje": 0.1,
+          "posicion": 9,
+          "color": "#65A30D"
+        },
+        {
+          "nombre": "ROY LEONARDO BARRERAS MONTEALEGRE",
+          "partido": "PARTIDO POLÍTICO LA FUERZA",
+          "votos": 32,
+          "porcentaje": 0.06,
+          "posicion": 10,
+          "color": "#EA580C"
+        },
+        {
+          "nombre": "GUSTAVO MATAMOROS CAMACHO",
+          "partido": "PARTIDO ECOLOGISTA COLOMBIANO",
+          "votos": 14,
+          "porcentaje": 0.03,
+          "posicion": 11,
+          "color": "#059669"
+        }
+      ]
+    },
+    {
+      "codigo": "009",
+      "numero": 9,
+      "tipo": "comuna",
+      "nombre": "Buenos Aires",
+      "total_votos": 75843,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "partido_ganador": "DEFENSORES DE LA PATRIA",
+      "votos_ganador": 41055,
+      "porcentaje_ganador": 54.13,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "diferencia": 20162,
+      "margen": 26.58,
+      "candidatos": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "partido": "DEFENSORES DE LA PATRIA",
+          "votos": 41055,
+          "porcentaje": 54.13,
+          "posicion": 1,
+          "color": "#1D4ED8"
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+          "votos": 20893,
+          "porcentaje": 27.55,
+          "posicion": 2,
+          "color": "#C2410C"
+        },
+        {
+          "nombre": "SERGIO FAJARDO VALDERRAMA",
+          "partido": "PARTIDO POLÍTICO DIGNIDAD & COMPROMISO",
+          "votos": 7175,
+          "porcentaje": 9.46,
+          "posicion": 3,
+          "color": "#0F766E"
+        },
+        {
+          "nombre": "PALOMA VALENCIA LASERNA",
+          "partido": "PARTIDO CENTRO DEMOCRÁTICO",
+          "votos": 5643,
+          "porcentaje": 7.44,
+          "posicion": 4,
+          "color": "#7C3AED"
+        },
+        {
+          "nombre": "RAÚL SANTIAGO BOTERO JARAMILLO",
+          "partido": "ROMPER EL SISTEMA",
+          "votos": 550,
+          "porcentaje": 0.73,
+          "posicion": 5,
+          "color": "#BE185D"
+        },
+        {
+          "nombre": "CLAUDIA LÓPEZ",
+          "partido": "CON CLAUDIA IMPARABLES",
+          "votos": 300,
+          "porcentaje": 0.4,
+          "posicion": 6,
+          "color": "#CA8A04"
+        },
+        {
+          "nombre": "MIGUEL URIBE LONDOÑO",
+          "partido": "PARTIDO DEMÓCRATA COLOMBIANO",
+          "votos": 87,
+          "porcentaje": 0.11,
+          "posicion": 7,
+          "color": "#4F46E5"
+        },
+        {
+          "nombre": "ÓSCAR MAURICIO LIZCANO ARANGO",
+          "partido": "COALICIÓN F.A.M.I.L.I.A",
+          "votos": 54,
+          "porcentaje": 0.07,
+          "posicion": 8,
+          "color": "#0891B2"
+        },
+        {
+          "nombre": "SONDRA MACOLLINS GARVIN PINTO",
+          "partido": "SONDRA MACOLLINS, LA ABOGADA DE HIERRO",
+          "votos": 49,
+          "porcentaje": 0.06,
+          "posicion": 9,
+          "color": "#65A30D"
+        },
+        {
+          "nombre": "ROY LEONARDO BARRERAS MONTEALEGRE",
+          "partido": "PARTIDO POLÍTICO LA FUERZA",
+          "votos": 26,
+          "porcentaje": 0.03,
+          "posicion": 10,
+          "color": "#EA580C"
+        },
+        {
+          "nombre": "GUSTAVO MATAMOROS CAMACHO",
+          "partido": "PARTIDO ECOLOGISTA COLOMBIANO",
+          "votos": 11,
+          "porcentaje": 0.01,
+          "posicion": 11,
+          "color": "#059669"
+        }
+      ]
+    },
+    {
+      "codigo": "010",
+      "numero": 10,
+      "tipo": "comuna",
+      "nombre": "La Candelaria",
+      "total_votos": 63212,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "partido_ganador": "DEFENSORES DE LA PATRIA",
+      "votos_ganador": 34749,
+      "porcentaje_ganador": 54.97,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "diferencia": 17869,
+      "margen": 28.27,
+      "candidatos": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "partido": "DEFENSORES DE LA PATRIA",
+          "votos": 34749,
+          "porcentaje": 54.97,
+          "posicion": 1,
+          "color": "#1D4ED8"
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+          "votos": 16880,
+          "porcentaje": 26.7,
+          "posicion": 2,
+          "color": "#C2410C"
+        },
+        {
+          "nombre": "PALOMA VALENCIA LASERNA",
+          "partido": "PARTIDO CENTRO DEMOCRÁTICO",
+          "votos": 6187,
+          "porcentaje": 9.79,
+          "posicion": 3,
+          "color": "#7C3AED"
+        },
+        {
+          "nombre": "SERGIO FAJARDO VALDERRAMA",
+          "partido": "PARTIDO POLÍTICO DIGNIDAD & COMPROMISO",
+          "votos": 4623,
+          "porcentaje": 7.31,
+          "posicion": 4,
+          "color": "#0F766E"
+        },
+        {
+          "nombre": "RAÚL SANTIAGO BOTERO JARAMILLO",
+          "partido": "ROMPER EL SISTEMA",
+          "votos": 301,
+          "porcentaje": 0.48,
+          "posicion": 5,
+          "color": "#BE185D"
+        },
+        {
+          "nombre": "CLAUDIA LÓPEZ",
+          "partido": "CON CLAUDIA IMPARABLES",
+          "votos": 287,
+          "porcentaje": 0.45,
+          "posicion": 6,
+          "color": "#CA8A04"
+        },
+        {
+          "nombre": "MIGUEL URIBE LONDOÑO",
+          "partido": "PARTIDO DEMÓCRATA COLOMBIANO",
+          "votos": 64,
+          "porcentaje": 0.1,
+          "posicion": 7,
+          "color": "#4F46E5"
+        },
+        {
+          "nombre": "ÓSCAR MAURICIO LIZCANO ARANGO",
+          "partido": "COALICIÓN F.A.M.I.L.I.A",
+          "votos": 56,
+          "porcentaje": 0.09,
+          "posicion": 8,
+          "color": "#0891B2"
+        },
+        {
+          "nombre": "SONDRA MACOLLINS GARVIN PINTO",
+          "partido": "SONDRA MACOLLINS, LA ABOGADA DE HIERRO",
+          "votos": 29,
+          "porcentaje": 0.05,
+          "posicion": 9,
+          "color": "#65A30D"
+        },
+        {
+          "nombre": "ROY LEONARDO BARRERAS MONTEALEGRE",
+          "partido": "PARTIDO POLÍTICO LA FUERZA",
+          "votos": 21,
+          "porcentaje": 0.03,
+          "posicion": 10,
+          "color": "#EA580C"
+        },
+        {
+          "nombre": "GUSTAVO MATAMOROS CAMACHO",
+          "partido": "PARTIDO ECOLOGISTA COLOMBIANO",
+          "votos": 15,
+          "porcentaje": 0.02,
+          "posicion": 11,
+          "color": "#059669"
+        }
+      ]
+    },
+    {
+      "codigo": "011",
+      "numero": 11,
+      "tipo": "comuna",
+      "nombre": "Laureles",
+      "total_votos": 76564,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "partido_ganador": "DEFENSORES DE LA PATRIA",
+      "votos_ganador": 49248,
+      "porcentaje_ganador": 64.32,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "diferencia": 37326,
+      "margen": 48.75,
+      "candidatos": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "partido": "DEFENSORES DE LA PATRIA",
+          "votos": 49248,
+          "porcentaje": 64.32,
+          "posicion": 1,
+          "color": "#1D4ED8"
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+          "votos": 11922,
+          "porcentaje": 15.57,
+          "posicion": 2,
+          "color": "#C2410C"
+        },
+        {
+          "nombre": "PALOMA VALENCIA LASERNA",
+          "partido": "PARTIDO CENTRO DEMOCRÁTICO",
+          "votos": 7604,
+          "porcentaje": 9.93,
+          "posicion": 3,
+          "color": "#7C3AED"
+        },
+        {
+          "nombre": "SERGIO FAJARDO VALDERRAMA",
+          "partido": "PARTIDO POLÍTICO DIGNIDAD & COMPROMISO",
+          "votos": 7227,
+          "porcentaje": 9.44,
+          "posicion": 4,
+          "color": "#0F766E"
+        },
+        {
+          "nombre": "CLAUDIA LÓPEZ",
+          "partido": "CON CLAUDIA IMPARABLES",
+          "votos": 326,
+          "porcentaje": 0.43,
+          "posicion": 5,
+          "color": "#CA8A04"
+        },
+        {
+          "nombre": "RAÚL SANTIAGO BOTERO JARAMILLO",
+          "partido": "ROMPER EL SISTEMA",
+          "votos": 133,
+          "porcentaje": 0.17,
+          "posicion": 6,
+          "color": "#BE185D"
+        },
+        {
+          "nombre": "MIGUEL URIBE LONDOÑO",
+          "partido": "PARTIDO DEMÓCRATA COLOMBIANO",
+          "votos": 36,
+          "porcentaje": 0.05,
+          "posicion": 7,
+          "color": "#4F46E5"
+        },
+        {
+          "nombre": "ÓSCAR MAURICIO LIZCANO ARANGO",
+          "partido": "COALICIÓN F.A.M.I.L.I.A",
+          "votos": 36,
+          "porcentaje": 0.05,
+          "posicion": 8,
+          "color": "#0891B2"
+        },
+        {
+          "nombre": "SONDRA MACOLLINS GARVIN PINTO",
+          "partido": "SONDRA MACOLLINS, LA ABOGADA DE HIERRO",
+          "votos": 21,
+          "porcentaje": 0.03,
+          "posicion": 9,
+          "color": "#65A30D"
+        },
+        {
+          "nombre": "ROY LEONARDO BARRERAS MONTEALEGRE",
+          "partido": "PARTIDO POLÍTICO LA FUERZA",
+          "votos": 8,
+          "porcentaje": 0.01,
+          "posicion": 10,
+          "color": "#EA580C"
+        },
+        {
+          "nombre": "GUSTAVO MATAMOROS CAMACHO",
+          "partido": "PARTIDO ECOLOGISTA COLOMBIANO",
+          "votos": 3,
+          "porcentaje": 0,
+          "posicion": 11,
+          "color": "#059669"
+        }
+      ]
+    },
+    {
+      "codigo": "012",
+      "numero": 12,
+      "tipo": "comuna",
+      "nombre": "La America",
+      "total_votos": 71886,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "partido_ganador": "DEFENSORES DE LA PATRIA",
+      "votos_ganador": 44238,
+      "porcentaje_ganador": 61.54,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "diferencia": 30565,
+      "margen": 42.52,
+      "candidatos": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "partido": "DEFENSORES DE LA PATRIA",
+          "votos": 44238,
+          "porcentaje": 61.54,
+          "posicion": 1,
+          "color": "#1D4ED8"
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+          "votos": 13673,
+          "porcentaje": 19.02,
+          "posicion": 2,
+          "color": "#C2410C"
+        },
+        {
+          "nombre": "SERGIO FAJARDO VALDERRAMA",
+          "partido": "PARTIDO POLÍTICO DIGNIDAD & COMPROMISO",
+          "votos": 7007,
+          "porcentaje": 9.75,
+          "posicion": 3,
+          "color": "#0F766E"
+        },
+        {
+          "nombre": "PALOMA VALENCIA LASERNA",
+          "partido": "PARTIDO CENTRO DEMOCRÁTICO",
+          "votos": 6314,
+          "porcentaje": 8.78,
+          "posicion": 4,
+          "color": "#7C3AED"
+        },
+        {
+          "nombre": "CLAUDIA LÓPEZ",
+          "partido": "CON CLAUDIA IMPARABLES",
+          "votos": 279,
+          "porcentaje": 0.39,
+          "posicion": 5,
+          "color": "#CA8A04"
+        },
+        {
+          "nombre": "RAÚL SANTIAGO BOTERO JARAMILLO",
+          "partido": "ROMPER EL SISTEMA",
+          "votos": 244,
+          "porcentaje": 0.34,
+          "posicion": 6,
+          "color": "#BE185D"
+        },
+        {
+          "nombre": "MIGUEL URIBE LONDOÑO",
+          "partido": "PARTIDO DEMÓCRATA COLOMBIANO",
+          "votos": 44,
+          "porcentaje": 0.06,
+          "posicion": 7,
+          "color": "#4F46E5"
+        },
+        {
+          "nombre": "ÓSCAR MAURICIO LIZCANO ARANGO",
+          "partido": "COALICIÓN F.A.M.I.L.I.A",
+          "votos": 40,
+          "porcentaje": 0.06,
+          "posicion": 8,
+          "color": "#0891B2"
+        },
+        {
+          "nombre": "SONDRA MACOLLINS GARVIN PINTO",
+          "partido": "SONDRA MACOLLINS, LA ABOGADA DE HIERRO",
+          "votos": 23,
+          "porcentaje": 0.03,
+          "posicion": 9,
+          "color": "#65A30D"
+        },
+        {
+          "nombre": "ROY LEONARDO BARRERAS MONTEALEGRE",
+          "partido": "PARTIDO POLÍTICO LA FUERZA",
+          "votos": 13,
+          "porcentaje": 0.02,
+          "posicion": 10,
+          "color": "#EA580C"
+        },
+        {
+          "nombre": "GUSTAVO MATAMOROS CAMACHO",
+          "partido": "PARTIDO ECOLOGISTA COLOMBIANO",
+          "votos": 11,
+          "porcentaje": 0.02,
+          "posicion": 11,
+          "color": "#059669"
+        }
+      ]
+    },
+    {
+      "codigo": "013",
+      "numero": 13,
+      "tipo": "comuna",
+      "nombre": "San Javier",
+      "total_votos": 59446,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "partido_ganador": "DEFENSORES DE LA PATRIA",
+      "votos_ganador": 31388,
+      "porcentaje_ganador": 52.8,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "diferencia": 14255,
+      "margen": 23.98,
+      "candidatos": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "partido": "DEFENSORES DE LA PATRIA",
+          "votos": 31388,
+          "porcentaje": 52.8,
+          "posicion": 1,
+          "color": "#1D4ED8"
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+          "votos": 17133,
+          "porcentaje": 28.82,
+          "posicion": 2,
+          "color": "#C2410C"
+        },
+        {
+          "nombre": "SERGIO FAJARDO VALDERRAMA",
+          "partido": "PARTIDO POLÍTICO DIGNIDAD & COMPROMISO",
+          "votos": 4991,
+          "porcentaje": 8.4,
+          "posicion": 3,
+          "color": "#0F766E"
+        },
+        {
+          "nombre": "PALOMA VALENCIA LASERNA",
+          "partido": "PARTIDO CENTRO DEMOCRÁTICO",
+          "votos": 4788,
+          "porcentaje": 8.05,
+          "posicion": 4,
+          "color": "#7C3AED"
+        },
+        {
+          "nombre": "RAÚL SANTIAGO BOTERO JARAMILLO",
+          "partido": "ROMPER EL SISTEMA",
+          "votos": 645,
+          "porcentaje": 1.09,
+          "posicion": 5,
+          "color": "#BE185D"
+        },
+        {
+          "nombre": "CLAUDIA LÓPEZ",
+          "partido": "CON CLAUDIA IMPARABLES",
+          "votos": 226,
+          "porcentaje": 0.38,
+          "posicion": 6,
+          "color": "#CA8A04"
+        },
+        {
+          "nombre": "ÓSCAR MAURICIO LIZCANO ARANGO",
+          "partido": "COALICIÓN F.A.M.I.L.I.A",
+          "votos": 88,
+          "porcentaje": 0.15,
+          "posicion": 7,
+          "color": "#0891B2"
+        },
+        {
+          "nombre": "MIGUEL URIBE LONDOÑO",
+          "partido": "PARTIDO DEMÓCRATA COLOMBIANO",
+          "votos": 78,
+          "porcentaje": 0.13,
+          "posicion": 8,
+          "color": "#4F46E5"
+        },
+        {
+          "nombre": "SONDRA MACOLLINS GARVIN PINTO",
+          "partido": "SONDRA MACOLLINS, LA ABOGADA DE HIERRO",
+          "votos": 60,
+          "porcentaje": 0.1,
+          "posicion": 9,
+          "color": "#65A30D"
+        },
+        {
+          "nombre": "ROY LEONARDO BARRERAS MONTEALEGRE",
+          "partido": "PARTIDO POLÍTICO LA FUERZA",
+          "votos": 32,
+          "porcentaje": 0.05,
+          "posicion": 10,
+          "color": "#EA580C"
+        },
+        {
+          "nombre": "GUSTAVO MATAMOROS CAMACHO",
+          "partido": "PARTIDO ECOLOGISTA COLOMBIANO",
+          "votos": 17,
+          "porcentaje": 0.03,
+          "posicion": 11,
+          "color": "#059669"
+        }
+      ]
+    },
+    {
+      "codigo": "014",
+      "numero": 14,
+      "tipo": "comuna",
+      "nombre": "El Poblado",
+      "total_votos": 81913,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "partido_ganador": "DEFENSORES DE LA PATRIA",
+      "votos_ganador": 61040,
+      "porcentaje_ganador": 74.52,
+      "segundo": "PALOMA VALENCIA LASERNA",
+      "diferencia": 50704,
+      "margen": 61.9,
+      "candidatos": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "partido": "DEFENSORES DE LA PATRIA",
+          "votos": 61040,
+          "porcentaje": 74.52,
+          "posicion": 1,
+          "color": "#1D4ED8"
+        },
+        {
+          "nombre": "PALOMA VALENCIA LASERNA",
+          "partido": "PARTIDO CENTRO DEMOCRÁTICO",
+          "votos": 10336,
+          "porcentaje": 12.62,
+          "posicion": 2,
+          "color": "#7C3AED"
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+          "votos": 5119,
+          "porcentaje": 6.25,
+          "posicion": 3,
+          "color": "#C2410C"
+        },
+        {
+          "nombre": "SERGIO FAJARDO VALDERRAMA",
+          "partido": "PARTIDO POLÍTICO DIGNIDAD & COMPROMISO",
+          "votos": 5099,
+          "porcentaje": 6.22,
+          "posicion": 4,
+          "color": "#0F766E"
+        },
+        {
+          "nombre": "CLAUDIA LÓPEZ",
+          "partido": "CON CLAUDIA IMPARABLES",
+          "votos": 204,
+          "porcentaje": 0.25,
+          "posicion": 5,
+          "color": "#CA8A04"
+        },
+        {
+          "nombre": "RAÚL SANTIAGO BOTERO JARAMILLO",
+          "partido": "ROMPER EL SISTEMA",
+          "votos": 54,
+          "porcentaje": 0.07,
+          "posicion": 6,
+          "color": "#BE185D"
+        },
+        {
+          "nombre": "MIGUEL URIBE LONDOÑO",
+          "partido": "PARTIDO DEMÓCRATA COLOMBIANO",
+          "votos": 29,
+          "porcentaje": 0.04,
+          "posicion": 7,
+          "color": "#4F46E5"
+        },
+        {
+          "nombre": "ÓSCAR MAURICIO LIZCANO ARANGO",
+          "partido": "COALICIÓN F.A.M.I.L.I.A",
+          "votos": 14,
+          "porcentaje": 0.02,
+          "posicion": 8,
+          "color": "#0891B2"
+        },
+        {
+          "nombre": "ROY LEONARDO BARRERAS MONTEALEGRE",
+          "partido": "PARTIDO POLÍTICO LA FUERZA",
+          "votos": 10,
+          "porcentaje": 0.01,
+          "posicion": 9,
+          "color": "#EA580C"
+        },
+        {
+          "nombre": "SONDRA MACOLLINS GARVIN PINTO",
+          "partido": "SONDRA MACOLLINS, LA ABOGADA DE HIERRO",
+          "votos": 5,
+          "porcentaje": 0.01,
+          "posicion": 10,
+          "color": "#65A30D"
+        },
+        {
+          "nombre": "GUSTAVO MATAMOROS CAMACHO",
+          "partido": "PARTIDO ECOLOGISTA COLOMBIANO",
+          "votos": 3,
+          "porcentaje": 0,
+          "posicion": 11,
+          "color": "#059669"
+        }
+      ]
+    },
+    {
+      "codigo": "015",
+      "numero": 15,
+      "tipo": "comuna",
+      "nombre": "Guayabal",
+      "total_votos": 36547,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "partido_ganador": "DEFENSORES DE LA PATRIA",
+      "votos_ganador": 22334,
+      "porcentaje_ganador": 61.11,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "diferencia": 15164,
+      "margen": 41.49,
+      "candidatos": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "partido": "DEFENSORES DE LA PATRIA",
+          "votos": 22334,
+          "porcentaje": 61.11,
+          "posicion": 1,
+          "color": "#1D4ED8"
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+          "votos": 7170,
+          "porcentaje": 19.62,
+          "posicion": 2,
+          "color": "#C2410C"
+        },
+        {
+          "nombre": "SERGIO FAJARDO VALDERRAMA",
+          "partido": "PARTIDO POLÍTICO DIGNIDAD & COMPROMISO",
+          "votos": 3470,
+          "porcentaje": 9.49,
+          "posicion": 3,
+          "color": "#0F766E"
+        },
+        {
+          "nombre": "PALOMA VALENCIA LASERNA",
+          "partido": "PARTIDO CENTRO DEMOCRÁTICO",
+          "votos": 3164,
+          "porcentaje": 8.66,
+          "posicion": 4,
+          "color": "#7C3AED"
+        },
+        {
+          "nombre": "RAÚL SANTIAGO BOTERO JARAMILLO",
+          "partido": "ROMPER EL SISTEMA",
+          "votos": 161,
+          "porcentaje": 0.44,
+          "posicion": 5,
+          "color": "#BE185D"
+        },
+        {
+          "nombre": "CLAUDIA LÓPEZ",
+          "partido": "CON CLAUDIA IMPARABLES",
+          "votos": 150,
+          "porcentaje": 0.41,
+          "posicion": 6,
+          "color": "#CA8A04"
+        },
+        {
+          "nombre": "ÓSCAR MAURICIO LIZCANO ARANGO",
+          "partido": "COALICIÓN F.A.M.I.L.I.A",
+          "votos": 36,
+          "porcentaje": 0.1,
+          "posicion": 7,
+          "color": "#0891B2"
+        },
+        {
+          "nombre": "MIGUEL URIBE LONDOÑO",
+          "partido": "PARTIDO DEMÓCRATA COLOMBIANO",
+          "votos": 28,
+          "porcentaje": 0.08,
+          "posicion": 8,
+          "color": "#4F46E5"
+        },
+        {
+          "nombre": "SONDRA MACOLLINS GARVIN PINTO",
+          "partido": "SONDRA MACOLLINS, LA ABOGADA DE HIERRO",
+          "votos": 20,
+          "porcentaje": 0.05,
+          "posicion": 9,
+          "color": "#65A30D"
+        },
+        {
+          "nombre": "ROY LEONARDO BARRERAS MONTEALEGRE",
+          "partido": "PARTIDO POLÍTICO LA FUERZA",
+          "votos": 8,
+          "porcentaje": 0.02,
+          "posicion": 10,
+          "color": "#EA580C"
+        },
+        {
+          "nombre": "GUSTAVO MATAMOROS CAMACHO",
+          "partido": "PARTIDO ECOLOGISTA COLOMBIANO",
+          "votos": 6,
+          "porcentaje": 0.02,
+          "posicion": 11,
+          "color": "#059669"
+        }
+      ]
+    },
+    {
+      "codigo": "016",
+      "numero": 16,
+      "tipo": "comuna",
+      "nombre": "Belen",
+      "total_votos": 128618,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "partido_ganador": "DEFENSORES DE LA PATRIA",
+      "votos_ganador": 82062,
+      "porcentaje_ganador": 63.8,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "diferencia": 59825,
+      "margen": 46.51,
+      "candidatos": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "partido": "DEFENSORES DE LA PATRIA",
+          "votos": 82062,
+          "porcentaje": 63.8,
+          "posicion": 1,
+          "color": "#1D4ED8"
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+          "votos": 22237,
+          "porcentaje": 17.29,
+          "posicion": 2,
+          "color": "#C2410C"
+        },
+        {
+          "nombre": "SERGIO FAJARDO VALDERRAMA",
+          "partido": "PARTIDO POLÍTICO DIGNIDAD & COMPROMISO",
+          "votos": 11995,
+          "porcentaje": 9.33,
+          "posicion": 3,
+          "color": "#0F766E"
+        },
+        {
+          "nombre": "PALOMA VALENCIA LASERNA",
+          "partido": "PARTIDO CENTRO DEMOCRÁTICO",
+          "votos": 11089,
+          "porcentaje": 8.62,
+          "posicion": 4,
+          "color": "#7C3AED"
+        },
+        {
+          "nombre": "RAÚL SANTIAGO BOTERO JARAMILLO",
+          "partido": "ROMPER EL SISTEMA",
+          "votos": 505,
+          "porcentaje": 0.39,
+          "posicion": 5,
+          "color": "#BE185D"
+        },
+        {
+          "nombre": "CLAUDIA LÓPEZ",
+          "partido": "CON CLAUDIA IMPARABLES",
+          "votos": 486,
+          "porcentaje": 0.38,
+          "posicion": 6,
+          "color": "#CA8A04"
+        },
+        {
+          "nombre": "ÓSCAR MAURICIO LIZCANO ARANGO",
+          "partido": "COALICIÓN F.A.M.I.L.I.A",
+          "votos": 88,
+          "porcentaje": 0.07,
+          "posicion": 7,
+          "color": "#0891B2"
+        },
+        {
+          "nombre": "MIGUEL URIBE LONDOÑO",
+          "partido": "PARTIDO DEMÓCRATA COLOMBIANO",
+          "votos": 54,
+          "porcentaje": 0.04,
+          "posicion": 8,
+          "color": "#4F46E5"
+        },
+        {
+          "nombre": "SONDRA MACOLLINS GARVIN PINTO",
+          "partido": "SONDRA MACOLLINS, LA ABOGADA DE HIERRO",
+          "votos": 54,
+          "porcentaje": 0.04,
+          "posicion": 9,
+          "color": "#65A30D"
+        },
+        {
+          "nombre": "ROY LEONARDO BARRERAS MONTEALEGRE",
+          "partido": "PARTIDO POLÍTICO LA FUERZA",
+          "votos": 39,
+          "porcentaje": 0.03,
+          "posicion": 10,
+          "color": "#EA580C"
+        },
+        {
+          "nombre": "GUSTAVO MATAMOROS CAMACHO",
+          "partido": "PARTIDO ECOLOGISTA COLOMBIANO",
+          "votos": 9,
+          "porcentaje": 0.01,
+          "posicion": 11,
+          "color": "#059669"
+        }
+      ]
+    },
+    {
+      "codigo": "017",
+      "numero": null,
+      "tipo": "corregimiento",
+      "nombre": "Altavista",
+      "total_votos": 6577,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "partido_ganador": "DEFENSORES DE LA PATRIA",
+      "votos_ganador": 3458,
+      "porcentaje_ganador": 52.58,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "diferencia": 1490,
+      "margen": 22.65,
+      "candidatos": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "partido": "DEFENSORES DE LA PATRIA",
+          "votos": 3458,
+          "porcentaje": 52.58,
+          "posicion": 1,
+          "color": "#1D4ED8"
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+          "votos": 1968,
+          "porcentaje": 29.92,
+          "posicion": 2,
+          "color": "#C2410C"
+        },
+        {
+          "nombre": "PALOMA VALENCIA LASERNA",
+          "partido": "PARTIDO CENTRO DEMOCRÁTICO",
+          "votos": 506,
+          "porcentaje": 7.69,
+          "posicion": 3,
+          "color": "#7C3AED"
+        },
+        {
+          "nombre": "SERGIO FAJARDO VALDERRAMA",
+          "partido": "PARTIDO POLÍTICO DIGNIDAD & COMPROMISO",
+          "votos": 470,
+          "porcentaje": 7.15,
+          "posicion": 4,
+          "color": "#0F766E"
+        },
+        {
+          "nombre": "RAÚL SANTIAGO BOTERO JARAMILLO",
+          "partido": "ROMPER EL SISTEMA",
+          "votos": 102,
+          "porcentaje": 1.55,
+          "posicion": 5,
+          "color": "#BE185D"
+        },
+        {
+          "nombre": "CLAUDIA LÓPEZ",
+          "partido": "CON CLAUDIA IMPARABLES",
+          "votos": 27,
+          "porcentaje": 0.41,
+          "posicion": 6,
+          "color": "#CA8A04"
+        },
+        {
+          "nombre": "MIGUEL URIBE LONDOÑO",
+          "partido": "PARTIDO DEMÓCRATA COLOMBIANO",
+          "votos": 19,
+          "porcentaje": 0.29,
+          "posicion": 7,
+          "color": "#4F46E5"
+        },
+        {
+          "nombre": "ÓSCAR MAURICIO LIZCANO ARANGO",
+          "partido": "COALICIÓN F.A.M.I.L.I.A",
+          "votos": 12,
+          "porcentaje": 0.18,
+          "posicion": 8,
+          "color": "#0891B2"
+        },
+        {
+          "nombre": "ROY LEONARDO BARRERAS MONTEALEGRE",
+          "partido": "PARTIDO POLÍTICO LA FUERZA",
+          "votos": 7,
+          "porcentaje": 0.11,
+          "posicion": 9,
+          "color": "#EA580C"
+        },
+        {
+          "nombre": "SONDRA MACOLLINS GARVIN PINTO",
+          "partido": "SONDRA MACOLLINS, LA ABOGADA DE HIERRO",
+          "votos": 7,
+          "porcentaje": 0.11,
+          "posicion": 10,
+          "color": "#65A30D"
+        },
+        {
+          "nombre": "GUSTAVO MATAMOROS CAMACHO",
+          "partido": "PARTIDO ECOLOGISTA COLOMBIANO",
+          "votos": 1,
+          "porcentaje": 0.02,
+          "posicion": 11,
+          "color": "#059669"
+        }
+      ]
+    },
+    {
+      "codigo": "018",
+      "numero": null,
+      "tipo": "corregimiento",
+      "nombre": "San Antonio de Prado",
+      "total_votos": 38510,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "partido_ganador": "DEFENSORES DE LA PATRIA",
+      "votos_ganador": 19504,
+      "porcentaje_ganador": 50.65,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "diferencia": 7645,
+      "margen": 19.85,
+      "candidatos": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "partido": "DEFENSORES DE LA PATRIA",
+          "votos": 19504,
+          "porcentaje": 50.65,
+          "posicion": 1,
+          "color": "#1D4ED8"
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+          "votos": 11859,
+          "porcentaje": 30.79,
+          "posicion": 2,
+          "color": "#C2410C"
+        },
+        {
+          "nombre": "SERGIO FAJARDO VALDERRAMA",
+          "partido": "PARTIDO POLÍTICO DIGNIDAD & COMPROMISO",
+          "votos": 3535,
+          "porcentaje": 9.18,
+          "posicion": 3,
+          "color": "#0F766E"
+        },
+        {
+          "nombre": "PALOMA VALENCIA LASERNA",
+          "partido": "PARTIDO CENTRO DEMOCRÁTICO",
+          "votos": 2805,
+          "porcentaje": 7.28,
+          "posicion": 4,
+          "color": "#7C3AED"
+        },
+        {
+          "nombre": "RAÚL SANTIAGO BOTERO JARAMILLO",
+          "partido": "ROMPER EL SISTEMA",
+          "votos": 460,
+          "porcentaje": 1.19,
+          "posicion": 5,
+          "color": "#BE185D"
+        },
+        {
+          "nombre": "CLAUDIA LÓPEZ",
+          "partido": "CON CLAUDIA IMPARABLES",
+          "votos": 165,
+          "porcentaje": 0.43,
+          "posicion": 6,
+          "color": "#CA8A04"
+        },
+        {
+          "nombre": "MIGUEL URIBE LONDOÑO",
+          "partido": "PARTIDO DEMÓCRATA COLOMBIANO",
+          "votos": 70,
+          "porcentaje": 0.18,
+          "posicion": 7,
+          "color": "#4F46E5"
+        },
+        {
+          "nombre": "ÓSCAR MAURICIO LIZCANO ARANGO",
+          "partido": "COALICIÓN F.A.M.I.L.I.A",
+          "votos": 60,
+          "porcentaje": 0.16,
+          "posicion": 8,
+          "color": "#0891B2"
+        },
+        {
+          "nombre": "SONDRA MACOLLINS GARVIN PINTO",
+          "partido": "SONDRA MACOLLINS, LA ABOGADA DE HIERRO",
+          "votos": 24,
+          "porcentaje": 0.06,
+          "posicion": 9,
+          "color": "#65A30D"
+        },
+        {
+          "nombre": "ROY LEONARDO BARRERAS MONTEALEGRE",
+          "partido": "PARTIDO POLÍTICO LA FUERZA",
+          "votos": 20,
+          "porcentaje": 0.05,
+          "posicion": 10,
+          "color": "#EA580C"
+        },
+        {
+          "nombre": "GUSTAVO MATAMOROS CAMACHO",
+          "partido": "PARTIDO ECOLOGISTA COLOMBIANO",
+          "votos": 8,
+          "porcentaje": 0.02,
+          "posicion": 11,
+          "color": "#059669"
+        }
+      ]
+    },
+    {
+      "codigo": "019",
+      "numero": null,
+      "tipo": "corregimiento",
+      "nombre": "Palmitas",
+      "total_votos": 1574,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "partido_ganador": "DEFENSORES DE LA PATRIA",
+      "votos_ganador": 914,
+      "porcentaje_ganador": 58.07,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "diferencia": 575,
+      "margen": 36.53,
+      "candidatos": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "partido": "DEFENSORES DE LA PATRIA",
+          "votos": 914,
+          "porcentaje": 58.07,
+          "posicion": 1,
+          "color": "#1D4ED8"
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+          "votos": 339,
+          "porcentaje": 21.54,
+          "posicion": 2,
+          "color": "#C2410C"
+        },
+        {
+          "nombre": "PALOMA VALENCIA LASERNA",
+          "partido": "PARTIDO CENTRO DEMOCRÁTICO",
+          "votos": 175,
+          "porcentaje": 11.12,
+          "posicion": 3,
+          "color": "#7C3AED"
+        },
+        {
+          "nombre": "SERGIO FAJARDO VALDERRAMA",
+          "partido": "PARTIDO POLÍTICO DIGNIDAD & COMPROMISO",
+          "votos": 93,
+          "porcentaje": 5.91,
+          "posicion": 4,
+          "color": "#0F766E"
+        },
+        {
+          "nombre": "RAÚL SANTIAGO BOTERO JARAMILLO",
+          "partido": "ROMPER EL SISTEMA",
+          "votos": 19,
+          "porcentaje": 1.21,
+          "posicion": 5,
+          "color": "#BE185D"
+        },
+        {
+          "nombre": "CLAUDIA LÓPEZ",
+          "partido": "CON CLAUDIA IMPARABLES",
+          "votos": 16,
+          "porcentaje": 1.02,
+          "posicion": 6,
+          "color": "#CA8A04"
+        },
+        {
+          "nombre": "ÓSCAR MAURICIO LIZCANO ARANGO",
+          "partido": "COALICIÓN F.A.M.I.L.I.A",
+          "votos": 6,
+          "porcentaje": 0.38,
+          "posicion": 7,
+          "color": "#0891B2"
+        },
+        {
+          "nombre": "MIGUEL URIBE LONDOÑO",
+          "partido": "PARTIDO DEMÓCRATA COLOMBIANO",
+          "votos": 5,
+          "porcentaje": 0.32,
+          "posicion": 8,
+          "color": "#4F46E5"
+        },
+        {
+          "nombre": "ROY LEONARDO BARRERAS MONTEALEGRE",
+          "partido": "PARTIDO POLÍTICO LA FUERZA",
+          "votos": 5,
+          "porcentaje": 0.32,
+          "posicion": 9,
+          "color": "#EA580C"
+        },
+        {
+          "nombre": "SONDRA MACOLLINS GARVIN PINTO",
+          "partido": "SONDRA MACOLLINS, LA ABOGADA DE HIERRO",
+          "votos": 2,
+          "porcentaje": 0.13,
+          "posicion": 10,
+          "color": "#65A30D"
+        }
+      ]
+    },
+    {
+      "codigo": "020",
+      "numero": null,
+      "tipo": "corregimiento",
+      "nombre": "San Cristobal",
+      "total_votos": 31187,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "partido_ganador": "DEFENSORES DE LA PATRIA",
+      "votos_ganador": 16108,
+      "porcentaje_ganador": 51.65,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "diferencia": 6993,
+      "margen": 22.42,
+      "candidatos": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "partido": "DEFENSORES DE LA PATRIA",
+          "votos": 16108,
+          "porcentaje": 51.65,
+          "posicion": 1,
+          "color": "#1D4ED8"
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+          "votos": 9115,
+          "porcentaje": 29.23,
+          "posicion": 2,
+          "color": "#C2410C"
+        },
+        {
+          "nombre": "PALOMA VALENCIA LASERNA",
+          "partido": "PARTIDO CENTRO DEMOCRÁTICO",
+          "votos": 2648,
+          "porcentaje": 8.49,
+          "posicion": 3,
+          "color": "#7C3AED"
+        },
+        {
+          "nombre": "SERGIO FAJARDO VALDERRAMA",
+          "partido": "PARTIDO POLÍTICO DIGNIDAD & COMPROMISO",
+          "votos": 2625,
+          "porcentaje": 8.42,
+          "posicion": 4,
+          "color": "#0F766E"
+        },
+        {
+          "nombre": "RAÚL SANTIAGO BOTERO JARAMILLO",
+          "partido": "ROMPER EL SISTEMA",
+          "votos": 399,
+          "porcentaje": 1.28,
+          "posicion": 5,
+          "color": "#BE185D"
+        },
+        {
+          "nombre": "CLAUDIA LÓPEZ",
+          "partido": "CON CLAUDIA IMPARABLES",
+          "votos": 141,
+          "porcentaje": 0.45,
+          "posicion": 6,
+          "color": "#CA8A04"
+        },
+        {
+          "nombre": "MIGUEL URIBE LONDOÑO",
+          "partido": "PARTIDO DEMÓCRATA COLOMBIANO",
+          "votos": 46,
+          "porcentaje": 0.15,
+          "posicion": 7,
+          "color": "#4F46E5"
+        },
+        {
+          "nombre": "ÓSCAR MAURICIO LIZCANO ARANGO",
+          "partido": "COALICIÓN F.A.M.I.L.I.A",
+          "votos": 45,
+          "porcentaje": 0.14,
+          "posicion": 8,
+          "color": "#0891B2"
+        },
+        {
+          "nombre": "SONDRA MACOLLINS GARVIN PINTO",
+          "partido": "SONDRA MACOLLINS, LA ABOGADA DE HIERRO",
+          "votos": 28,
+          "porcentaje": 0.09,
+          "posicion": 9,
+          "color": "#65A30D"
+        },
+        {
+          "nombre": "ROY LEONARDO BARRERAS MONTEALEGRE",
+          "partido": "PARTIDO POLÍTICO LA FUERZA",
+          "votos": 27,
+          "porcentaje": 0.09,
+          "posicion": 10,
+          "color": "#EA580C"
+        },
+        {
+          "nombre": "GUSTAVO MATAMOROS CAMACHO",
+          "partido": "PARTIDO ECOLOGISTA COLOMBIANO",
+          "votos": 5,
+          "porcentaje": 0.02,
+          "posicion": 11,
+          "color": "#059669"
+        }
+      ]
+    },
+    {
+      "codigo": "021",
+      "numero": null,
+      "tipo": "corregimiento",
+      "nombre": "Santa Elena",
+      "total_votos": 6005,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "partido_ganador": "DEFENSORES DE LA PATRIA",
+      "votos_ganador": 3108,
+      "porcentaje_ganador": 51.76,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "diferencia": 1466,
+      "margen": 24.41,
+      "candidatos": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "partido": "DEFENSORES DE LA PATRIA",
+          "votos": 3108,
+          "porcentaje": 51.76,
+          "posicion": 1,
+          "color": "#1D4ED8"
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+          "votos": 1642,
+          "porcentaje": 27.34,
+          "posicion": 2,
+          "color": "#C2410C"
+        },
+        {
+          "nombre": "PALOMA VALENCIA LASERNA",
+          "partido": "PARTIDO CENTRO DEMOCRÁTICO",
+          "votos": 632,
+          "porcentaje": 10.52,
+          "posicion": 3,
+          "color": "#7C3AED"
+        },
+        {
+          "nombre": "SERGIO FAJARDO VALDERRAMA",
+          "partido": "PARTIDO POLÍTICO DIGNIDAD & COMPROMISO",
+          "votos": 554,
+          "porcentaje": 9.23,
+          "posicion": 4,
+          "color": "#0F766E"
+        },
+        {
+          "nombre": "CLAUDIA LÓPEZ",
+          "partido": "CON CLAUDIA IMPARABLES",
+          "votos": 22,
+          "porcentaje": 0.37,
+          "posicion": 5,
+          "color": "#CA8A04"
+        },
+        {
+          "nombre": "RAÚL SANTIAGO BOTERO JARAMILLO",
+          "partido": "ROMPER EL SISTEMA",
+          "votos": 18,
+          "porcentaje": 0.3,
+          "posicion": 6,
+          "color": "#BE185D"
+        },
+        {
+          "nombre": "MIGUEL URIBE LONDOÑO",
+          "partido": "PARTIDO DEMÓCRATA COLOMBIANO",
+          "votos": 9,
+          "porcentaje": 0.15,
+          "posicion": 7,
+          "color": "#4F46E5"
+        },
+        {
+          "nombre": "ÓSCAR MAURICIO LIZCANO ARANGO",
+          "partido": "COALICIÓN F.A.M.I.L.I.A",
+          "votos": 9,
+          "porcentaje": 0.15,
+          "posicion": 8,
+          "color": "#0891B2"
+        },
+        {
+          "nombre": "SONDRA MACOLLINS GARVIN PINTO",
+          "partido": "SONDRA MACOLLINS, LA ABOGADA DE HIERRO",
+          "votos": 7,
+          "porcentaje": 0.12,
+          "posicion": 9,
+          "color": "#65A30D"
+        },
+        {
+          "nombre": "ROY LEONARDO BARRERAS MONTEALEGRE",
+          "partido": "PARTIDO POLÍTICO LA FUERZA",
+          "votos": 3,
+          "porcentaje": 0.05,
+          "posicion": 10,
+          "color": "#EA580C"
+        },
+        {
+          "nombre": "GUSTAVO MATAMOROS CAMACHO",
+          "partido": "PARTIDO ECOLOGISTA COLOMBIANO",
+          "votos": 1,
+          "porcentaje": 0.02,
+          "posicion": 11,
+          "color": "#059669"
+        }
+      ]
+    }
+  ],
+  "especiales": [
+    {
+      "codigo": "000",
+      "numero": null,
+      "tipo": "especial",
+      "nombre": "Puestos especiales",
+      "total_votos": 29680,
+      "ganador": "ABELARDO DE LA ESPRIELLA",
+      "partido_ganador": "DEFENSORES DE LA PATRIA",
+      "votos_ganador": 19708,
+      "porcentaje_ganador": 66.4,
+      "segundo": "IVÁN CEPEDA CASTRO",
+      "diferencia": 14230,
+      "margen": 47.94,
+      "candidatos": [
+        {
+          "nombre": "ABELARDO DE LA ESPRIELLA",
+          "partido": "DEFENSORES DE LA PATRIA",
+          "votos": 19708,
+          "porcentaje": 66.4,
+          "posicion": 1,
+          "color": "#1D4ED8"
+        },
+        {
+          "nombre": "IVÁN CEPEDA CASTRO",
+          "partido": "MOVIMIENTO POLÍTICO PACTO HISTÓRICO",
+          "votos": 5478,
+          "porcentaje": 18.46,
+          "posicion": 2,
+          "color": "#C2410C"
+        },
+        {
+          "nombre": "PALOMA VALENCIA LASERNA",
+          "partido": "PARTIDO CENTRO DEMOCRÁTICO",
+          "votos": 2339,
+          "porcentaje": 7.88,
+          "posicion": 3,
+          "color": "#7C3AED"
+        },
+        {
+          "nombre": "SERGIO FAJARDO VALDERRAMA",
+          "partido": "PARTIDO POLÍTICO DIGNIDAD & COMPROMISO",
+          "votos": 1643,
+          "porcentaje": 5.54,
+          "posicion": 4,
+          "color": "#0F766E"
+        },
+        {
+          "nombre": "RAÚL SANTIAGO BOTERO JARAMILLO",
+          "partido": "ROMPER EL SISTEMA",
+          "votos": 306,
+          "porcentaje": 1.03,
+          "posicion": 5,
+          "color": "#BE185D"
+        },
+        {
+          "nombre": "CLAUDIA LÓPEZ",
+          "partido": "CON CLAUDIA IMPARABLES",
+          "votos": 97,
+          "porcentaje": 0.33,
+          "posicion": 6,
+          "color": "#CA8A04"
+        },
+        {
+          "nombre": "MIGUEL URIBE LONDOÑO",
+          "partido": "PARTIDO DEMÓCRATA COLOMBIANO",
+          "votos": 43,
+          "porcentaje": 0.14,
+          "posicion": 7,
+          "color": "#4F46E5"
+        },
+        {
+          "nombre": "ÓSCAR MAURICIO LIZCANO ARANGO",
+          "partido": "COALICIÓN F.A.M.I.L.I.A",
+          "votos": 31,
+          "porcentaje": 0.1,
+          "posicion": 8,
+          "color": "#0891B2"
+        },
+        {
+          "nombre": "SONDRA MACOLLINS GARVIN PINTO",
+          "partido": "SONDRA MACOLLINS, LA ABOGADA DE HIERRO",
+          "votos": 20,
+          "porcentaje": 0.07,
+          "posicion": 9,
+          "color": "#65A30D"
+        },
+        {
+          "nombre": "ROY LEONARDO BARRERAS MONTEALEGRE",
+          "partido": "PARTIDO POLÍTICO LA FUERZA",
+          "votos": 9,
+          "porcentaje": 0.03,
+          "posicion": 10,
+          "color": "#EA580C"
+        },
+        {
+          "nombre": "GUSTAVO MATAMOROS CAMACHO",
+          "partido": "PARTIDO ECOLOGISTA COLOMBIANO",
+          "votos": 6,
+          "porcentaje": 0.02,
+          "posicion": 11,
+          "color": "#059669"
+        }
+      ]
+    }
+  ]
+}
