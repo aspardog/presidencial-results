@@ -1,11 +1,11 @@
 {
   "resumen": {
-    "total_municipios": 1121,
+    "total_municipios": 1122,
     "municipios_ganador_nacional": 723,
-    "municipios_segundo_nacional": 398,
+    "municipios_segundo_nacional": 399,
     "municipios_otros": 0,
-    "porcentaje_ganador": 64.5,
-    "porcentaje_segundo": 35.5,
+    "porcentaje_ganador": 64.44,
+    "porcentaje_segundo": 35.56,
     "ganador_nacional": "ABELARDO DE LA ESPRIELLA",
     "segundo_nacional": "IVÁN CEPEDA CASTRO"
   },

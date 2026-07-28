@@ -643,9 +643,23 @@ function buildPolarizacionMunicipal() {
     .slice(0, 10);
 
   // --- FRAGMENTACIÓN NACIONAL ---
-  const totalMunicipiosNacional = metricasMunicipales.length;
-  const municipiosGanadorNacional = metricasMunicipales.filter(m => m.ganador === ganadorNacional).length;
-  const municipiosSegundoNacional = metricasMunicipales.filter(m => m.ganador === segundoNacional).length;
+  // El conteo de "quién ganó cada municipio" debe cubrir TODOS los municipios con
+  // votos, incluidos los de un solo candidato (p.ej. La Victoria/Amazonas en 2ª
+  // vuelta, donde solo un finalista obtuvo votos). Esos municipios quedan fuera de
+  // las métricas de margen/competitividad (que requieren >=2 candidatos), pero sí
+  // tienen ganador, así que deben contar para que total_municipios cuadre con el
+  // resto del tablero (municipios.json, comparativa.json).
+  const ganadoresPorMunicipio = Object.values(municipios)
+    .map(mun => {
+      const orden = [...mun.candidatos].sort((a, b) => b.votos - a.votos);
+      const totalVotos = orden.reduce((sum, c) => sum + c.votos, 0);
+      return totalVotos > 0 ? orden[0].nombre : null;
+    })
+    .filter(Boolean);
+
+  const totalMunicipiosNacional = ganadoresPorMunicipio.length;
+  const municipiosGanadorNacional = ganadoresPorMunicipio.filter(nombre => nombre === ganadorNacional).length;
+  const municipiosSegundoNacional = ganadoresPorMunicipio.filter(nombre => nombre === segundoNacional).length;
   const municipiosOtros = totalMunicipiosNacional - municipiosGanadorNacional - municipiosSegundoNacional;
 
   // Conteo por clasificación

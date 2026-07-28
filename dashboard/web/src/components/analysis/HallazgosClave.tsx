@@ -2,18 +2,20 @@
 
 import { formatNumber, formatPercent } from '@/lib/formatters';
 import { getColorPartido } from '@/lib/colors';
-import type { ClavesTerritoriales, ResumenNacional, AnalisisPolarizacion, PolarizacionMunicipal } from '@/types/electoral';
+import type { ClavesTerritoriales, ResumenNacional, AnalisisPolarizacion, PolarizacionMunicipal, DepartamentoDetalle } from '@/types/electoral';
 
 // Importar datos estáticos (SEGUNDA vuelta = vista principal)
 import clavesData from '../../../public/api/segunda/analisis/claves-territoriales.json';
 import resumenData from '../../../public/api/segunda/nacional/resumen.json';
 import polarizacionData from '../../../public/api/segunda/analisis/polarizacion.json';
 import polarizacionMunicipalData from '../../../public/api/segunda/analisis/polarizacion-municipal.json';
+import departamentosDetalleData from '../../../public/api/segunda/departamentos/detalle.json';
 
 const claves = clavesData as ClavesTerritoriales;
 const resumen = resumenData as ResumenNacional;
 const polarizacion = polarizacionData as AnalisisPolarizacion;
 const polMunicipal = polarizacionMunicipalData as PolarizacionMunicipal;
+const departamentosDetalle = departamentosDetalleData as Record<string, DepartamentoDetalle>;
 
 // Helper para obtener apellido correcto (CEPEDA, no CASTRO)
 const getApellido = (nombre: string) => {
@@ -35,6 +37,13 @@ export default function HallazgosClave() {
   const munDosTotal = munGanador + munSegundo;
   const pctMunGanador = munDosTotal > 0 ? Math.round((munGanador / munDosTotal) * 100) : 0;
   const pctMunSegundo = 100 - pctMunGanador;
+
+  // Territorios (departamentos + Bogotá D.C.) ganados por cada finalista.
+  // Se cuenta directamente sobre el detalle departamental para que el dato
+  // nunca se desincronice del resultado real (antes estaba escrito a mano).
+  const territorios = Object.values(departamentosDetalle);
+  const territoriosGanador = territorios.filter((depto) => depto.ganador === resumen.ganador).length;
+  const territoriosSegundo = territorios.filter((depto) => depto.ganador === resumen.segundo).length;
 
   return (
     <section className="mt-6 sm:mt-10">
@@ -114,7 +123,7 @@ export default function HallazgosClave() {
         <div className="col-span-2 sm:col-span-1 rounded-lg border border-gb-border bg-white p-3 sm:p-4">
           <p className="text-[10px] sm:text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Territorios</p>
           <p className="mt-1.5 sm:mt-2 font-display text-base sm:text-xl font-semibold text-gb-ink">
-            15 — 18
+            {territoriosGanador} — {territoriosSegundo}
           </p>
           <p className="mt-1 text-sm text-gb-slate">
             {getApellido(resumen.ganador)} vs {getApellido(resumen.segundo)}
