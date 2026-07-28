@@ -109,8 +109,8 @@ export default function HomePage() {
       <main className="px-4 py-4 sm:p-6">
         <div className="mb-4 sm:mb-6 flex items-start gap-2 rounded-gb-md border border-gb-border bg-gb-teal-50 px-3 py-2.5 sm:px-4 sm:py-3">
           <span className="mt-0.5 shrink-0 font-mono text-xs font-semibold text-gb-teal-700" aria-hidden>ℹ</span>
-          <p className="text-xs sm:text-sm text-gb-slate">
-            Estos resultados <strong>no incluyen los votos del exterior</strong> (consulados): solo cubren el territorio nacional.
+          <p className="text-sm text-gb-slate">
+            <strong>No incluye votos del exterior</strong> (consulados): solo territorio nacional.
           </p>
         </div>
 

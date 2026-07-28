@@ -109,8 +109,8 @@ export default function Comparativa() {
           Primera vuelta
         </h2>
         <p className="mt-1.5 text-sm text-gb-slate-muted">
-          Once candidatos y ninguna mayoría: el balotaje enfrentó a los dos más votados. Aquí vemos
-          quiénes pasaron y qué pasó con los votos de los que quedaron por fuera.
+          Once candidatos, ninguna mayoría. El balotaje enfrentó a los dos más votados; aquí, qué
+          pasó con el resto.
         </p>
       </header>
 
@@ -131,7 +131,7 @@ export default function Comparativa() {
                   </span>
                 </div>
                 {i === 0 && (
-                  <span className="shrink-0 rounded-full bg-gb-teal-700/10 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase text-gb-teal-700">
+                  <span className="shrink-0 rounded-full bg-gb-teal-700/10 px-2 py-0.5 font-mono text-xs font-semibold uppercase text-gb-teal-700">
                     Ganador
                   </span>
                 )}
@@ -167,12 +167,10 @@ export default function Comparativa() {
           <h3 className="mb-2 font-display text-base sm:text-lg font-semibold text-gb-ink">
             ¿A quién ayudó el voto de los que no pasaron?
           </h3>
-          <p className="mb-3 max-w-3xl text-xs sm:text-sm text-gb-slate-muted">
-            Los {leanOtros.length + leanDestacados.length} candidatos que no llegaron al balotaje
-            sumaron {formatNumber(votos_en_juego)} votos. No sabemos cómo votó cada persona, pero sí
-            podemos mirar el mapa: <strong className="font-semibold text-gb-slate">en los municipios donde cada uno fue más fuerte,
-            ¿cuál de los dos finalistas creció más?</strong> Eso sugiere hacia dónde se inclinaron
-            sus votantes.
+          <p className="mb-3 max-w-3xl text-sm text-gb-slate-muted">
+            Los {leanOtros.length + leanDestacados.length} eliminados sumaron {formatNumber(votos_en_juego)} votos.
+            No sabemos el voto individual, pero sí <strong className="font-semibold text-gb-slate">dónde creció
+            cada finalista</strong>: en los municipios fuertes de cada eliminado.
           </p>
 
           <div className="grid gap-3 sm:gap-4 md:grid-cols-2">
@@ -186,12 +184,12 @@ export default function Comparativa() {
                       <p className="font-display text-sm sm:text-base font-semibold text-gb-ink">
                         {nombreCorto(c.nombre)}
                       </p>
-                      <p className="font-mono text-[11px] text-gb-slate-muted">
+                      <p className="font-mono text-xs text-gb-slate-muted">
                         {c.pct_1a.toFixed(1)}% en 1ª vuelta · {formatNumber(c.votos_1a)} votos
                       </p>
                     </div>
                     <span
-                      className="shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold"
+                      className="shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold"
                       style={{ backgroundColor: `${barColor}1A`, color: barColor }}
                     >
                       {etiquetaFuerza(c.fuerza)}
@@ -211,38 +209,36 @@ export default function Comparativa() {
             })}
           </div>
 
-          <p className="mt-3 flex flex-wrap items-center gap-x-2 text-[10px] sm:text-xs text-gb-slate-muted">
+          <p className="mt-3 flex flex-wrap items-center gap-x-2 text-xs text-gb-slate-muted">
             <span className="inline-flex items-center gap-1">
               <span className="inline-block h-2 w-6 rounded-full bg-gb-slate-muted/50" aria-hidden />
-              La barra indica qué tan marcada es la tendencia — no es el porcentaje de votos que recibió cada finalista.
+              La barra mide la intensidad de la tendencia, no el porcentaje de votos.
             </span>
           </p>
 
           {votosOtros > 0 && (
-            <p className="mt-2 text-[10px] sm:text-xs text-gb-slate-muted">
-              Los demás candidatos eliminados suman {formatNumber(votosOtros)} votos, muy repartidos: son
-              demasiado pequeños para leer una tendencia confiable.
+            <p className="mt-2 text-xs text-gb-slate-muted">
+              El resto suma {formatNumber(votosOtros)} votos, demasiado repartidos para leer una tendencia.
             </p>
           )}
 
           {/* La conclusión, en una frase */}
           <div className="mt-4 rounded-gb-md border border-gb-border bg-gb-teal-50 px-3 py-3 sm:px-4">
             <p className="text-sm text-gb-slate">
-              <strong>En resumen:</strong> el voto de los eliminados se inclinó más hacia{' '}
-              {nombreCorto(trasvase.referencia)} (sobre todo el de Paloma Valencia). Pero quien{' '}
-              <strong>más creció</strong> entre las dos vueltas fue {nombreCorto(quienCrecioMas.nombre)}{' '}
-              (+{quienCrecioMas.delta_pct.toFixed(1)} puntos), porque{' '}
+              <strong>En resumen:</strong> el voto de los eliminados favoreció a{' '}
+              {nombreCorto(trasvase.referencia)} (sobre todo Paloma Valencia), pero quien{' '}
+              <strong>más creció</strong> fue {nombreCorto(quienCrecioMas.nombre)}{' '}
+              (+{quienCrecioMas.delta_pct.toFixed(1)} pp), por{' '}
               {cambio_votos_emitidos.delta > 0
-                ? `salió a votar más gente (+${formatNumber(cambio_votos_emitidos.delta)} votos frente a la 1ª vuelta)`
-                : 'se recompuso el electorado'}
-              . Uno consolidó la derecha; el otro movilizó votantes nuevos. Al final ganó{' '}
-              {nombreCorto(finalistasOrden[0].nombre)} por apenas{' '}
+                ? `mayor participación (+${formatNumber(cambio_votos_emitidos.delta)} votos)`
+                : 'la recomposición del electorado'}
+              . Ganó {nombreCorto(finalistasOrden[0].nombre)} por{' '}
               {formatNumber(finalistasOrden[0].votos_segunda - finalistasOrden[1].votos_segunda)} votos.{' '}
-              <span className="text-gb-slate-muted">Todas estas cifras corresponden únicamente a los votos nacionales (no incluyen el exterior).</span>
+              <span className="text-gb-slate-muted">Solo votos nacionales (sin exterior).</span>
             </p>
           </div>
 
-          <details className="mt-3 text-[10px] sm:text-xs text-gb-slate-muted">
+          <details className="mt-3 text-xs text-gb-slate-muted">
             <summary className="cursor-pointer font-semibold text-gb-slate hover:text-gb-teal-700">
               ¿Cómo se calcula esta tendencia?
             </summary>
@@ -254,14 +250,14 @@ export default function Comparativa() {
       {/* Métricas del reacomodo */}
       <div className="mt-3 sm:mt-4 grid gap-2 sm:gap-3 grid-cols-2 lg:grid-cols-4">
         <div className="rounded-lg border border-gb-border bg-white p-3 sm:p-4">
-          <p className="text-[10px] sm:text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Votos en juego</p>
+          <p className="text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Votos en juego</p>
           <p className="mt-1.5 sm:mt-2 font-display text-base sm:text-xl font-semibold text-gb-teal-700">
             {formatNumber(votos_en_juego)}
           </p>
           <p className="mt-0.5 sm:mt-1 text-xs sm:text-sm text-gb-slate">De candidatos eliminados</p>
         </div>
         <div className="rounded-lg border border-gb-border bg-white p-3 sm:p-4">
-          <p className="text-[10px] sm:text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Participación</p>
+          <p className="text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Participación</p>
           <p className="mt-1.5 sm:mt-2 font-display text-base sm:text-xl font-semibold text-gb-ink">
             {cambio_votos_emitidos.delta >= 0 ? '+' : ''}{formatNumber(cambio_votos_emitidos.delta)}
           </p>
@@ -270,12 +266,12 @@ export default function Comparativa() {
           </p>
         </div>
         <div className="rounded-lg border border-gb-border bg-white p-3 sm:p-4">
-          <p className="text-[10px] sm:text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Territorio estable</p>
+          <p className="text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Territorio estable</p>
           <p className="mt-1.5 sm:mt-2 font-display text-base sm:text-xl font-semibold text-gb-ink">{pctMunEstables}%</p>
           <p className="mt-0.5 sm:mt-1 text-xs sm:text-sm text-gb-slate">De municipios mantuvo su ganador</p>
         </div>
         <div className="rounded-lg border border-gb-border bg-white p-3 sm:p-4">
-          <p className="text-[10px] sm:text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Margen final</p>
+          <p className="text-xs font-mono text-gb-slate-muted uppercase tracking-wide">Margen final</p>
           <p className="mt-1.5 sm:mt-2 font-display text-base sm:text-xl font-semibold text-gb-teal-700">
             +{formatNumber(finalistasOrden[0].votos_segunda - finalistasOrden[1].votos_segunda)}
           </p>
@@ -323,7 +319,7 @@ export default function Comparativa() {
                       <span className="mx-1 text-gb-slate-muted">→</span>
                       2ª vuelta <span className="font-semibold text-gb-teal-700">{nombreCorto(d.a)}</span>
                     </p>
-                    <p className="mt-1 font-mono text-[10px] text-gb-slate-muted">
+                    <p className="mt-1 font-mono text-xs text-gb-slate-muted">
                       Ganó por {formatPercent(d.margen_segunda)} en 2ª vuelta
                     </p>
                   </div>

@@ -12,7 +12,7 @@ export default function Header({ onReset, departamentoActual }: HeaderProps) {
         <div className="min-w-0">
           <div className="mb-1 flex items-center gap-2">
             <p className="gb-eyebrow">Elecciones · Colombia 2026</p>
-            <span className="inline-flex items-center rounded-full border border-gb-teal-600/30 bg-gb-teal-700/10 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wide text-gb-teal-700">
+            <span className="inline-flex items-center rounded-full border border-gb-teal-600/30 bg-gb-teal-700/10 px-2 py-0.5 font-mono text-xs font-semibold uppercase tracking-wide text-gb-teal-700">
               2ª vuelta
             </span>
           </div>
