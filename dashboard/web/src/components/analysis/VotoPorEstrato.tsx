@@ -50,7 +50,7 @@ export default function VotoPorEstrato({ data }: { data: EstratoData }) {
         <div className="space-y-2 sm:space-y-2.5">
           {bins.map((bin) => (
             <div key={bin.estrato} className="flex items-center gap-2 sm:gap-3">
-              <span className="w-16 shrink-0 font-mono text-xs text-gb-slate sm:text-sm">Estrato {bin.estrato}</span>
+              <span className="w-20 shrink-0 whitespace-nowrap font-mono text-xs text-gb-slate sm:w-24 sm:text-sm">Estrato {bin.estrato}</span>
               <div className="flex h-7 flex-1 overflow-hidden rounded-gb-sm sm:h-8">
                 {bin.candidatos.map((c) => (
                   <div
