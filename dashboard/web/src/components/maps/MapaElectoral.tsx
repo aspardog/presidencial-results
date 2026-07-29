@@ -319,6 +319,9 @@ export default function MapaElectoral({
   const [municipiosError, setMunicipiosError] = useState<{ codigo: string; mensaje: string } | null>(null);
   const [mapMode, setMapMode] = useState<MapMode>('ganador');
   const [loadedDepartamento, setLoadedDepartamento] = useState<string | null>(null);
+  // Vista nacional: por departamentos (default) o todos los municipios del país.
+  const [vistaNacional, setVistaNacional] = useState<'departamentos' | 'municipios'>('departamentos');
+  const [municipiosNacional, setMunicipiosNacional] = useState<FeatureCollection | null>(null);
 
   // Cargar GeoJSON del departamento seleccionado (archivos divididos por depto)
   useEffect(() => {
@@ -354,26 +357,43 @@ export default function MapaElectoral({
     return () => controller.abort();
   }, [departamentoSeleccionado, loadedDepartamento]);
 
+  // Carga diferida del mapa municipal nacional (solo al elegir esa vista).
+  useEffect(() => {
+    if (vistaNacional !== 'municipios' || municipiosNacional) return;
+    const controller = new AbortController();
+    fetch('/api/mapas/municipios-nacional.json', { signal: controller.signal })
+      .then((res) => { if (!res.ok) throw new Error(`HTTP ${res.status}`); return res.json(); })
+      .then((data) => setMunicipiosNacional(data as FeatureCollection))
+      .catch((err) => { if (!(err instanceof DOMException && err.name === 'AbortError')) console.error('Error cargando municipios nacional:', err); });
+    return () => controller.abort();
+  }, [vistaNacional, municipiosNacional]);
+
   const isMunicipioView = Boolean(departamentoSeleccionado);
+  // ¿Estamos mostrando municipios? (drill-down por depto O vista nacional municipal)
+  const municipalNacional = !departamentoSeleccionado && vistaNacional === 'municipios' && Boolean(municipiosNacional);
+  const esMunicipal = isMunicipioView || municipalNacional;
 
   const visibleFeatures = useMemo(() => {
-    if (!departamentoSeleccionado) return departamentosGeoJSON.features;
+    if (!departamentoSeleccionado) {
+      if (vistaNacional === 'municipios' && municipiosNacional) return municipiosNacional.features;
+      return departamentosGeoJSON.features;
+    }
     if (!municipiosGeoJSON || loadedDepartamento !== departamentoSeleccionado) return [];
 
     // El archivo ya contiene solo los municipios del departamento (no hay que filtrar)
     return municipiosGeoJSON.features;
-  }, [departamentoSeleccionado, loadedDepartamento, municipiosGeoJSON]);
+  }, [departamentoSeleccionado, loadedDepartamento, municipiosGeoJSON, vistaNacional, municipiosNacional]);
 
   const paths = useMemo(() => {
     if (!visibleFeatures.length) return [];
 
     const project = createProjection(visibleFeatures);
     return visibleFeatures.map((feature) => {
-      const codigo = getCodigoFeature(feature.properties, isMunicipioView);
+      const codigo = getCodigoFeature(feature.properties, esMunicipal);
       const codigoDaneDepto = feature.properties.dpto_ccdgo || '';
       const codigoElectoralDepto = getCodigoElectoralDesdeDane(codigoDaneDepto);
       const nombreMunicipio = feature.properties.mpio_cnmbr || '';
-      const municipioData = isMunicipioView
+      const municipioData = esMunicipal
         ? getMunicipioVotos(codigoElectoralDepto, nombreMunicipio)
         : undefined;
       const colorGanador = getColorGanador(
@@ -382,7 +402,7 @@ export default function MapaElectoral({
 
       // Obtener margen real de los datos de votos
       let margen: number;
-      if (isMunicipioView) {
+      if (esMunicipal) {
         margen = municipioData && municipioData.total_votos > 0
           ? municipioData.porcentaje_ganador - ((municipioData.votos_segundo / municipioData.total_votos) * 100)
           : 20;
@@ -395,18 +415,18 @@ export default function MapaElectoral({
         d: featureToPath(feature, project),
         properties: feature.properties,
         codigo,
-        nombre: getNombreFeature(feature.properties, isMunicipioView),
+        nombre: getNombreFeature(feature.properties, esMunicipal),
         colorGanador,
         colorPolarizacion: getColorPorMargen(margen),
         margen,
       };
     });
-  }, [isMunicipioView, visibleFeatures]);
+  }, [esMunicipal, visibleFeatures]);
 
   const isZoomed = Boolean(departamentoSeleccionado);
   const mapTitle = isZoomed && departamentoSeleccionadoNombre
     ? `Municipios de ${departamentoSeleccionadoNombre}`
-    : 'Colombia por departamentos';
+    : municipalNacional ? 'Colombia por municipios' : 'Colombia por departamentos';
   const errorMunicipiosActual = municipiosError && municipiosError.codigo === departamentoSeleccionado
     ? municipiosError.mensaje
     : null;
@@ -415,14 +435,15 @@ export default function MapaElectoral({
 
   return (
     <div className="relative h-full min-h-[300px] w-full overflow-hidden rounded-gb-lg bg-gb-teal-50">
-      <div className="absolute left-2 top-2 sm:left-4 sm:top-4 z-10 flex max-w-[calc(100%-1rem)] sm:max-w-[calc(100%-2rem)] flex-wrap items-center gap-1.5 sm:gap-2">
+      <div className="absolute left-2 top-2 sm:left-4 sm:top-4 z-10 flex max-w-[calc(100%-1rem)] sm:max-w-[calc(100%-2rem)] flex-col items-start gap-1.5 sm:gap-2">
         <div className="rounded-gb-md border border-gb-border bg-white px-2 py-1.5 sm:px-3 sm:py-2 shadow-gb-sm">
-          <p className="gb-eyebrow leading-none text-xs">{isZoomed ? 'Municipal' : 'Departamental'}</p>
+          <p className="gb-eyebrow leading-none text-xs">{esMunicipal ? 'Municipal' : 'Departamental'}</p>
           <p className="mt-0.5 sm:mt-1 max-w-[140px] sm:max-w-[220px] truncate text-xs sm:text-sm font-semibold text-gb-ink">
             {mapTitle}
           </p>
         </div>
 
+        <div className="flex flex-col items-start gap-1.5 sm:gap-2">
         {/* Tabs de modo */}
         <div className="flex rounded-gb-md border border-gb-border bg-white shadow-gb-sm overflow-hidden">
           <button
@@ -449,6 +470,25 @@ export default function MapaElectoral({
           </button>
         </div>
 
+        {!isZoomed && (
+          <div className="flex overflow-hidden rounded-gb-md border border-gb-border bg-white shadow-gb-sm">
+            <button
+              type="button"
+              className={`px-2 py-1.5 text-xs font-semibold transition sm:px-3 sm:py-2 ${vistaNacional === 'departamentos' ? 'bg-gb-teal-700 text-white' : 'text-gb-slate hover:bg-gb-teal-50'}`}
+              onClick={() => setVistaNacional('departamentos')}
+            >
+              Deptos
+            </button>
+            <button
+              type="button"
+              className={`px-2 py-1.5 text-xs font-semibold transition sm:px-3 sm:py-2 ${vistaNacional === 'municipios' ? 'bg-gb-teal-700 text-white' : 'text-gb-slate hover:bg-gb-teal-50'}`}
+              onClick={() => setVistaNacional('municipios')}
+            >
+              Municipios
+            </button>
+          </div>
+        )}
+
         {isZoomed && onReset && (
           <button
             className="rounded-gb-md border border-gb-border-strong bg-white px-2 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm font-semibold text-gb-slate shadow-gb-sm transition hover:border-gb-teal-600 hover:text-gb-teal-700"
@@ -458,6 +498,7 @@ export default function MapaElectoral({
             Volver a Colombia
           </button>
         )}
+        </div>
       </div>
 
       {loadingMunicipios && (
@@ -501,15 +542,15 @@ export default function MapaElectoral({
               key={codigo || nombre}
               d={d}
               fill={fillColor}
-              fillOpacity={isActive || isHovered ? 0.92 : isMunicipioView ? 0.8 : 0.74}
+              fillOpacity={isActive || isHovered ? 0.92 : esMunicipal ? 0.8 : 0.74}
               stroke={isHovered || isActive ? '#15252A' : '#ffffff'}
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeWidth={isHovered ? 1.5 : isMunicipioView ? 0.7 : isActive ? 3 : 1.2}
-              className={`${isMunicipioView ? 'cursor-default' : 'cursor-pointer'} transition-opacity duration-150 outline-none focus-visible:stroke-gb-ink`}
+              strokeWidth={isHovered ? 1.5 : esMunicipal ? 0.7 : isActive ? 3 : 1.2}
+              className={`${esMunicipal ? 'cursor-default' : 'cursor-pointer'} transition-opacity duration-150 outline-none focus-visible:stroke-gb-ink`}
               tabIndex={0}
               onClick={() => {
-                if (!isMunicipioView && codigo) onDepartamentoClick?.(codigo, nombre);
+                if (!esMunicipal && codigo) onDepartamentoClick?.(codigo, nombre);
               }}
               onFocus={(event) => {
                 setHoveredCode(codigo);
@@ -517,11 +558,11 @@ export default function MapaElectoral({
                   x: event.currentTarget.getBoundingClientRect().left,
                   y: event.currentTarget.getBoundingClientRect().top,
                   properties,
-                  isMunicipio: isMunicipioView,
+                  isMunicipio: esMunicipal,
                 });
               }}
               onKeyDown={(event) => {
-                if (!isMunicipioView && (event.key === 'Enter' || event.key === ' ') && codigo) {
+                if (!esMunicipal && (event.key === 'Enter' || event.key === ' ') && codigo) {
                   event.preventDefault();
                   onDepartamentoClick?.(codigo, nombre);
                 }
@@ -532,7 +573,7 @@ export default function MapaElectoral({
                   x: event.clientX,
                   y: event.clientY,
                   properties,
-                  isMunicipio: isMunicipioView,
+                  isMunicipio: esMunicipal,
                 });
               }}
             >
