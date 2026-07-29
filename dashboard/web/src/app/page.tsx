@@ -15,6 +15,9 @@ import medellinCiudadData from '../../public/api/segunda/ciudades/medellin.json'
 import medellinGeoData from '../../public/api/mapas/medellin-comunas.json';
 import caliCiudadData from '../../public/api/segunda/ciudades/cali.json';
 import caliGeoData from '../../public/api/mapas/cali-comunas.json';
+import caliEstratoData from '../../public/api/estrato/cali.json';
+import medellinEstratoData from '../../public/api/estrato/medellin.json';
+import type { EstratoData } from '@/components/analysis/VotoPorEstrato';
 import { formatNumber } from '@/lib/formatters';
 import { getColorPartido } from '@/lib/colors';
 import type {
@@ -42,6 +45,8 @@ const medellinCiudad = medellinCiudadData as unknown as CiudadData;
 const caliCiudad = caliCiudadData as unknown as CiudadData;
 const medellinFeatures = (medellinGeoData as unknown as { features: GeoFeatureCiudad[] }).features;
 const caliFeatures = (caliGeoData as unknown as { features: GeoFeatureCiudad[] }).features;
+const caliEstrato = caliEstratoData as unknown as EstratoData;
+const medellinEstrato = medellinEstratoData as unknown as EstratoData;
 
 export default function HomePage() {
   const [departamentoSeleccionado, setDepartamentoSeleccionado] = useState<{
@@ -137,8 +142,8 @@ export default function HomePage() {
         </div>
 
         {vista === 'bogota' && <VistaBogota />}
-        {vista === 'medellin' && <VistaCiudad data={medellinCiudad} features={medellinFeatures} />}
-        {vista === 'cali' && <VistaCiudad data={caliCiudad} features={caliFeatures} />}
+        {vista === 'medellin' && <VistaCiudad data={medellinCiudad} features={medellinFeatures} estrato={medellinEstrato} />}
+        {vista === 'cali' && <VistaCiudad data={caliCiudad} features={caliFeatures} estrato={caliEstrato} />}
 
         {vista === 'nacional' && (
         <>
