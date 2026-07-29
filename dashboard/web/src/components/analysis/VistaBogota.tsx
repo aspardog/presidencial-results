@@ -3,8 +3,10 @@
 import { getColorGanador } from '@/lib/colors';
 import { formatNumber, formatPercent } from '@/lib/formatters';
 import MapaBogotaLocalidades from '@/components/maps/MapaBogotaLocalidades';
+import VotoPorEstrato, { type EstratoData } from '@/components/analysis/VotoPorEstrato';
 
 import localidadesData from '../../../public/api/segunda/bogota/localidades.json';
+import estratoData from '../../../public/api/estrato/bogota.json';
 
 interface Candidato {
   nombre: string;
@@ -164,6 +166,8 @@ export default function VistaBogota() {
         {formatNumber(resumen.votos_especiales)} votos de puestos especiales (censo, cárceles, hospitales),
         sin localidad geográfica. Porcentajes sobre votos válidos.
       </p>
+
+      <VotoPorEstrato data={estratoData as unknown as EstratoData} />
     </section>
   );
 }

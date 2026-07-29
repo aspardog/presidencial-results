@@ -3,6 +3,7 @@
 import { getColorGanador } from '@/lib/colors';
 import { formatNumber, formatPercent } from '@/lib/formatters';
 import MapaCiudad, { GeoFeatureCiudad, UnidadCiudad } from '@/components/maps/MapaCiudad';
+import VotoPorEstrato, { type EstratoData } from '@/components/analysis/VotoPorEstrato';
 
 interface Candidato { nombre: string; votos: number; porcentaje: number; }
 interface Unidad extends UnidadCiudad {
@@ -36,9 +37,10 @@ const apellido = (nombre: string) =>
 interface Props {
   data: CiudadData;
   features: GeoFeatureCiudad[];
+  estrato?: EstratoData;
 }
 
-export default function VistaCiudad({ data, features }: Props) {
+export default function VistaCiudad({ data, features, estrato }: Props) {
   const { resumen, unidades, ciudad } = data;
   const dataByCode = new Map<string, UnidadCiudad>(unidades.map((u) => [u.codigo, u]));
 
@@ -146,6 +148,8 @@ export default function VistaCiudad({ data, features }: Props) {
         gran extensión geográfica), pero están en la tabla. No incluye {formatNumber(resumen.votos_especiales)} votos de
         puestos especiales (censo/cárceles), sin comuna. Porcentajes sobre votos válidos.
       </p>
+
+      {estrato && <VotoPorEstrato data={estrato} />}
     </section>
   );
 }
