@@ -83,3 +83,62 @@ Convierte el mapa de "quién ganó" en un mapa de "por qué".
 
 Relacionado: los otros insights propuestos (swing 1ª→2ª, dónde se decidió, bastiones espejo)
 también salen de los JSON actuales — ver historial de la sesión.
+
+---
+
+# Anexo: nivel barrio/puesto (el máximo rigor factible)
+
+**Sí se puede a nivel barrio (Bogotá y las 3 ciudades).** El voto no baja del **puesto de
+votación**, pero hay **216–1.083 puestos por ciudad** (Cali 216, Medellín 250, Bogotá 1.083) vs
+~16–22 comunas → ×10–50 más puntos, capturando la variación *dentro* de cada comuna.
+
+## El supuesto que lo habilita
+
+Asumir que **el votante reside en el barrio de su puesto** ⇒ puesto ≡ barrio, y el estrato del
+puesto = estrato asumido del votante. Es el supuesto estándar en análisis electoral colombiano.
+
+**Discusión de validez:**
+- A favor: la cédula se inscribe por residencia; los puestos son de barrio (colegios); la mayoría
+  vota cerca de casa.
+- Se rompe en: *inscripción de cédula* (re-registro), **mega-puestos** centrales (Corferias,
+  universidades) con captación amplia, y "puestos censo" especiales.
+- Mitigación: excluir especiales (ya bucketeados), **ponderar por votos**, bajar peso a
+  mega-puestos, declarar el supuesto en la UI. Efecto: ruido modesto, no sesgo sistemático.
+
+## Método (point-in-polygon, sin Voronoi)
+
+1. Voto por puesto (agregar `datos_master` por `PUESTO`) — ✅ disponible.
+2. **Geocodificar** cada puesto → coordenadas.
+3. **Point-in-polygon**: puesto → estrato de su manzana/barrio.
+4. Regresión ponderada por votos: `%voto_puesto ~ estrato_puesto` (+ incertidumbre).
+
+## Paso frágil = geocodificar + unir puestos
+
+Electoral identifica puestos por código DIVIPOL (dep/mun/zona/puesto) + `PUESNOMBRE` (nombre del
+colegio). Match con la capa geocodificada por **nombre** (fuzzy, ~200–1.000/ciudad, validar
+cobertura como con los corregimientos).
+- **Bogotá ✅:** capa dedicada georreferenciada en Datos Abiertos Bogotá (coords + WFS/REST).
+- **Nacional (datos.gov.co `iuwx-frrw`):** solo `departamento, municipio, colegio,
+  puesto_de_votacion, direccion` — **SIN coordenadas** → geocodificar direcciones (frágil).
+- **Cali/Medellín:** buscar capa de puestos en IDESC / GeoMedellín; si no, geocodificar direcciones.
+
+## Estrato-manzana por ciudad
+Cali ✅ WFS IDESC (`dapm:pdt_est_estrato_*`); Bogotá ✅ IDECA; Medellín GeoMedellín. Todos con
+estrato por manzana.
+
+## Dificultad por ciudad (nivel barrio/puesto)
+
+| Ciudad | Puestos | Puesto geocodificado | Estrato-manzana | Dificultad | Nota |
+|---|--:|---|---|---|---|
+| Bogotá | 1.083 | ✅ capa dedicada | ✅ IDECA | 🟡 media | mejor data + **máxima ganancia** (localidades no sirven) |
+| Cali | 216 | 🟠 buscar/geocodificar | ✅ IDESC | 🟠 media-alta | Nivel A (comuna) ya funciona (r=−0,96) |
+| Medellín | 250 | 🟠 buscar/geocodificar | 🟡 GeoMedellín | 🟠 media-alta | Nivel A ya funciona |
+
+## Recomendación
+Nivel barrio/puesto para las 3, **arrancando por Bogotá** (mejor data, mayor necesidad). El
+de-risking crítico: asegurar por ciudad una capa de puestos georreferenciada con join fiable al
+`PUESNOMBRE`/código. Cali/Medellín conservan el Nivel A (comuna) como respaldo.
+
+**Techo honesto:** bajo el supuesto de residencia, puesto/barrio es lo más fino que permite el
+voto secreto. Sigue siendo ecológico (área, no votante individual), pero es el estándar de oro
+factible.
