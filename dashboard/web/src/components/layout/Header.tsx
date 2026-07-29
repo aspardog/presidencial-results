@@ -24,14 +24,16 @@ export default function Header({ onReset, departamentoActual }: HeaderProps) {
           </p>
         </div>
 
-        {departamentoActual && onReset && (
-          <button
-            onClick={onReset}
-            className="gb-btn gb-btn--secondary w-fit"
-          >
-            ← Volver a Nacional
-          </button>
-        )}
+        <div className="flex flex-col gap-2 sm:items-end">
+          {departamentoActual && onReset && (
+            <button onClick={onReset} className="gb-btn gb-btn--secondary w-fit">
+              ← Volver a Nacional
+            </button>
+          )}
+          <p className="text-xs text-gb-slate-muted sm:text-right">
+            Fuente: <span className="font-semibold text-gb-slate">Registraduría Nacional del Estado Civil</span>
+          </p>
+        </div>
       </div>
     </header>
   );
